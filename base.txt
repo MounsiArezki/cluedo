@@ -1,0 +1,32 @@
+User {
+  String id,
+  String nom,
+  String mdp
+}
+
+Invitation {
+  String id,
+  String idPartie,
+  listeUser : [
+    User User
+  ]
+}
+
+Partie {
+  String id,
+  User maitreJeu,
+  List<Joueur> joueurs : [
+    {
+      User User,
+      position,
+      List<Carte> cartes,
+      Fiche fiche,
+      Personnage personnage
+    }
+  ],
+  Map<TypeCarte, Carte> resultat : {
+    TypeCarte lieux : Carte lieu ,
+    TypeCarte personne : Carte personne,
+    Type carte arme : Carte arme
+  }
+}

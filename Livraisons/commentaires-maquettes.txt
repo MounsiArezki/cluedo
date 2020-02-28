@@ -1,0 +1,18 @@
+La maquette est plutôt jolie. Il y a un manque concernant la fiche de détective. On ne voit pas quels joueurs vous ont révélé quelles cartes. 
+C'est important de savoir au fur et à mesure du jeu qui a quelle carte, sinon on peut faire des hypothèses foireuses. 
+Un use case est le suivant : parfois, j'ai envie de faire une hypothèse avec des cartes que je possède pour essayer de trouver une nouvelle information 
+et de ne pas donner d'indices aux autres joueurs. Par exemple, vous possédez la Bibliothèque et le chandelier. Vous émettez l'hypothèse du colonnel Moutarde avec le chandelier dans la bibliothèque. 
+Si aucune carte n'est donnée (en particulier le colonnel Moutarde étant donné que vous possèdez les deux autres) alors vous déduisez que le Colonnel Moutarde est le vrai coupable. 
+Les autres joueurs ont juste l'information qu'au moins une des trois informations est liée au meutre. Ils ne savent pas forcément quelles cartes sont dans votre main. 
+
+En gros, si vous ne faites pas la distinction sur la fiche, ça peut être chiant pour appliquer ce genre de stratégie. 
+
+ 
+Une solution simple serait de mettre un code couleur par joueur et de colorier la case en fonction qui vous a donné la carte. 
+. 
+De manière générale, suite à une réponse à une hypothèse, le remplissage de la fiche de détective peut se faire automatiquement. 
+
+
+Le travail est prometteur
+
+Appréciation : A

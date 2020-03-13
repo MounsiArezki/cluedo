@@ -1,0 +1,8 @@
+
+Xsquid:S1118":Add a private constructor to hide the implicit public one.(ö¥§ó8ÒµÛ˜.
+qsquid:S3008"SRename this field "URL_USER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üùØ 8ÒµÛ˜.
+Lsquid:S1444".Make this "public static URL_USER" field final(üùØ 8ÒµÛ˜.
+‰"squid:ClassVariableVisibilityCheck"TMake URL_USER a static final constant or non-public and provide accessors if needed.(üùØ 8ÒµÛ˜.
+Usquid:S1444"8Make this "public static URL_USER_CONNEXION" field final(˜‘–s8“úİ˜.
+’"squid:ClassVariableVisibilityCheck"^Make URL_USER_CONNEXION a static final constant or non-public and provide accessors if needed.(˜‘–s8“úİ˜.
+zsquid:S3008"]Rename this field "URL_USER_CONNEXION" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(˜‘–s8“úİ˜.

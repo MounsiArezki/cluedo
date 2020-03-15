@@ -1,0 +1,9 @@
+
+#background {
+    -fx-background-image: url("/image/regle-du-cluedo.jpg");
+    -fx-background-size: 100% 100%;
+    -fx-background-size: stretch;
+
+ }
+
+

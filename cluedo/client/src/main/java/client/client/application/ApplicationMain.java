@@ -1,5 +1,6 @@
 package client.client.application;
 
+import client.client.controleur.ConnexionControleur;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,6 +12,8 @@ public class ApplicationMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        ConnexionControleur connexionControleur = new ConnexionControleur(primaryStage);
 
     }
 }

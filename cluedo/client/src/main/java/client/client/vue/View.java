@@ -1,6 +1,10 @@
 package client.client.vue;
 
+import client.client.controleur.ConnexionControleur;
+import client.client.modele.entite.io.FxmlUrl;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -8,7 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class View {
+import java.io.IOException;
+import java.net.URL;
+
+public class View<T> {
 
 
 
@@ -16,6 +23,17 @@ public class View {
 
     @FXML
     private Pane root;
+
+
+    private T controleur;
+
+    public T getControleur() {
+        return controleur;
+    }
+
+    public void setControleur(T controleur) {
+        this.controleur = controleur;
+    }
 
 
     public Stage getStage() {
@@ -26,7 +44,22 @@ public class View {
         this.stage = stage;
     }
 
+    public static View creerInstance(ConnexionControleur controleur, Stage stage,URL url){
+        URL location = url ;
+        FXMLLoader fxmlLoader = new FXMLLoader(location);
+        Parent root =null;
+        try{
+            root=(Parent) fxmlLoader.load() ;
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        View vue =fxmlLoader.getController();
+        vue.setStage(stage);
+        vue.setControleur(controleur);
+        return vue;
+
+    }
 
     public void show(String title){
         stage.setTitle(title);

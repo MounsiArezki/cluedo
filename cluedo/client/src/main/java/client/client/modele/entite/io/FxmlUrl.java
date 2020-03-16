@@ -1,18 +1,18 @@
 package client.client.modele.entite.io;
 
-import client.client.vue.Login;
+import client.client.vue.*;
 
 import java.net.URL;
 
 public enum FxmlUrl {
 
     LOGIN(Login.class.getResource("/vue/login.fxml")),
-    PLATEAU(Object.class.getResource("/vue/plateau.fxml")),
-    MENU(Object.class.getResource("/vue/menu.fxml")),
-    CREER_PARTIE(Object.class.getResource("/vue/creerPartie.fxml")),
-    RESTAURER_PARTIE(Object.class.getResource("/vue/restaurerPartie.fxml")),
-    ACCUSATION(Object.class.getResource("/vue/accusation.fxml")),
-    HYPOTHESE(Object.class.getResource("/vue/hypothese.fxml"));
+    PLATEAU(Plateau.class.getResource("/vue/plateau.fxml")),
+    MENU(Menu.class.getResource("/vue/menu.fxml")),
+    CREER_PARTIE(CreerPartie.class.getResource("/vue/creerPartie.fxml")),
+    RESTAURER_PARTIE(RestaurerPartie.class.getResource("/vue/restaurerPartie.fxml")),
+    ACCUSATION(Accusation.class.getResource("/vue/accusation.fxml")),
+    HYPOTHESE(Hypothese.class.getResource("/vue/hypothese.fxml"));
 
     private URL url;
 

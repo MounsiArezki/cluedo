@@ -14,7 +14,7 @@ public class ConnexionControleur {
     public ConnexionControleur(Stage primaryStage) {
         this.connexionStage=primaryStage;
         login=Login.creerInstance(this,connexionStage);
-        login.show("d");
+        login.show("Login");
        // addObserver(principal);
      //   login.show("connexion");
     }

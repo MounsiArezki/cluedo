@@ -28,7 +28,7 @@ public class View {
 
     public void show(String title){
         stage.setTitle(title);
-        stage.setScene(new Scene(root,600,500));
+        stage.setScene(new Scene(root));
         stage.show();
 
     }

@@ -46,11 +46,11 @@
                         </GridPane>
                         <StackPane prefHeight="-1.0" prefWidth="-1.0">
                             <children>
-                                <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="quitter" StackPane.alignment="CENTER_RIGHT">
+                                <Button fx:id="loginBtn" alignment="CENTER" onAction="loginAction" defaultButton="true" mnemonicParsing="false"  prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="quitter" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font size="15.0" />
                            </font></Button>
-                        <Button fx:id="loginButton1" alignment="CENTER" defaultButton="true" layoutX="293.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="71.0" style="-fx-background-color: #5cb85c;" text="Login">
+                        <Button fx:id="quitterBtn" alignment="CENTER" onAction="quitterAction" defaultButton="true" layoutX="293.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="71.0" style="-fx-background-color: #5cb85c;" text="Login">
                            <font>
                               <Font size="15.0" />
                            </font>

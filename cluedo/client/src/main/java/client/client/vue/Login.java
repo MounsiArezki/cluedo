@@ -2,14 +2,25 @@ package client.client.vue;
 
 import client.client.controleur.ConnexionControleur;
 import client.client.modele.entite.io.FxmlUrl;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 
 public class Login extends View   {
+
+
+
+    @FXML
+    private TextField user ;
+
+    @FXML
+    private TextField password;
 
 
     public Login(ConnexionControleur controleur) {
@@ -46,9 +57,13 @@ public class Login extends View   {
 
     }
 
+    public void loginAction(ActionEvent actionEvent){
 
+    }
 
+    public void quitterAction(ActionEvent actionEvent){
 
+    }
 
 
 }

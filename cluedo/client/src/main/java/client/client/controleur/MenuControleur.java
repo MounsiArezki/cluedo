@@ -1,5 +1,6 @@
 package client.client.controleur;
 
+import client.client.modele.entite.io.FxmlUrl;
 import client.client.vue.Login;
 import client.client.vue.Menu;
 import javafx.stage.Stage;
@@ -12,11 +13,9 @@ public class MenuControleur  {
     Menu menu;
 
     public MenuControleur(Stage menuStage) {
-        this.menuStage=menuStage;
-        menu=Menu.creerInstance(this,menuStage);
-       // menu.show("Menu");
-        // addObserver(principal);
-        //   login.show("connexion");
+        menu = (Menu)Menu.creerInstance(menuStage , FxmlUrl.MENU.getUrl());
+        menu.setControleur(this);
+        menu.show("menu");
     }
 
 

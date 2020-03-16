@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.net.URL;
 
@@ -38,9 +39,18 @@ public class Login extends View<ConnexionControleur>   {
 
     @FXML
     public void loginAction(ActionEvent event){
-        this.getControleur().loginCntrl(user.getText(),password.getText());
+
+        try {
+            this.getControleur().loginCntrl(user.getText(),password.getText());
+
+        } catch (LoginException e) {
+            showMessage("ERROR Connexion");
+        }
 
     }
+
+
+
     @FXML
     public void inscrireAction(ActionEvent event){
 

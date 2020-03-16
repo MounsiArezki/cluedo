@@ -44,7 +44,7 @@ public class View<T> {
         this.stage = stage;
     }
 
-    public static View creerInstance(ConnexionControleur controleur, Stage stage,URL url){
+    public static View creerInstance(Stage stage,URL url){
         URL location = url ;
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Parent root =null;
@@ -56,7 +56,6 @@ public class View<T> {
         }
         View vue =fxmlLoader.getController();
         vue.setStage(stage);
-        vue.setControleur(controleur);
         return vue;
 
     }

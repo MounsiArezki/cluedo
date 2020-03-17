@@ -1,5 +1,7 @@
 package client.client.modele.entite;
 
+import java.net.URL;
+
 public enum Lieu implements ICarte{
 
     SALLE_RECEPTION("Salle de réception"),
@@ -13,6 +15,12 @@ public enum Lieu implements ICarte{
 
     private String nom;
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    private String imageUrl;
+
     Lieu(String nom) {
         this.nom = nom;
     }
@@ -20,4 +28,11 @@ public enum Lieu implements ICarte{
     public String getNom() {
         return nom;
     }
+
+    @Override
+    public void ImageUrl(String url) {
+        this.imageUrl=url;
+    }
+
+
 }

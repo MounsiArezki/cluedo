@@ -20,7 +20,10 @@ public class CreerPartie extends View<CreerPartieControleur> {
 
 
     public void lancerPartieAction(ActionEvent actionEvent) {
+        getControleur().goToPlateau();
+
     }
+
 
 
     public void retourAction(ActionEvent actionEvent) {

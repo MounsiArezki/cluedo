@@ -22,4 +22,8 @@ public class CreerPartieControleur {
     public void goToMenu() {
         new MenuControleur(creerPartieStage);
     }
+
+    public void goToPlateau() {
+        new PlateauControleur(creerPartieStage);
+    }
 }

@@ -17,7 +17,7 @@ public class Facade implements IUserService {
 
    @Override
     public ResponseEntity<User[]> getAllUsers(String login) {
-        ResponseEntity<User[]> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER, User[].class);
+        ResponseEntity<User[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER, User[].class);
         return res;
     }
 }

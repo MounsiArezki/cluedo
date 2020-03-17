@@ -7,7 +7,7 @@ public class ServiceConfig {
     //
     // USER
     //
-    public static String URL_USER="/user";
+    public static String URL_USER=BASE_URL+"/user";
     public static String URL_USER_CONNEXION=URL_USER+"/connexion";
     public static String URL_USER_ID=URL_USER+"/{id}";
     public static String URL_USER_ID_INVITATION_RECU=URL_USER_ID+"/invitation/recue";
@@ -16,7 +16,7 @@ public class ServiceConfig {
     //
     // PARTIE
     //
-    public static String URL_PARTIE="/partie";
+    public static String URL_PARTIE=BASE_URL+"/partie";
     public static String URL_PARTIE_ID=URL_PARTIE+"/{id}";
     public static String URL_PARTIE_ID_JOUEUR=URL_PARTIE_ID+"/joueur";
     public static String URL_PARTIE_ID_HYPOTHESE=URL_PARTIE_ID+"/hypothese";
@@ -25,7 +25,7 @@ public class ServiceConfig {
     //
     // INVITATION
     //
-    public static String URL_INVITATION="/invitation";
+    public static String URL_INVITATION=BASE_URL+"/invitation";
     public static String URL_INVITATION_ID=URL_INVITATION+"/{id}";
 
 }

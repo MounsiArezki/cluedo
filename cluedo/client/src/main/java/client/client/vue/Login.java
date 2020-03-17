@@ -53,7 +53,7 @@ public class Login extends View<ConnexionControleur>   {
 
     @FXML
     public void inscrireAction(ActionEvent event){
-
+        getControleur().inscrireCntrl(user.getText(),password.getText());
 
     }
 

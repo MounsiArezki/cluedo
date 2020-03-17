@@ -14,7 +14,7 @@ import java.util.*;
 
 public class ConnexionControleur {
     //simulation API
-    Collection<User> UsersBD = new ArrayList();
+    Collection<User> usersBD = new ArrayList();
 
 
     Stage connexionStage;
@@ -24,7 +24,7 @@ public class ConnexionControleur {
     Menu menu;
 
     public ConnexionControleur(Stage primaryStage) {
-        UsersBD.add(new User("user@gmail.com","user"));
+        usersBD.add(new User("user@gmail.com","user"));
         this.connexionStage=primaryStage;
         login= (Login) View.creerInstance(connexionStage, FxmlUrl.LOGIN.getUrl());
         login.setControleur(this);
@@ -35,23 +35,25 @@ public class ConnexionControleur {
 
     public void loginCntrl(String email,String password) throws LoginException {
 
-        Optional<User> user = UsersBD.stream().
+        Optional<User> user = usersBD.stream().
                 filter(p -> p.getPseudo().equals(email) && p.getPassword().equals(password)).
                 findFirst();
        if (!user.isPresent()){
            throw new LoginException();
        }
 
-        GoToMenu(connexionStage);
+        goToMenu(connexionStage);
     }
 
-    public void InscrireCntrl(String email,String password){
-
-
+    public void inscrireCntrl(String email,String password){
+        User u=new User(email,password);
+        if(!usersBD.contains(u)){
+            usersBD.add(u);
+        }
     }
 
 
-    private void GoToMenu(Stage menuStage) {
+    private void goToMenu(Stage menuStage) {
 
         new MenuControleur(menuStage);
     }

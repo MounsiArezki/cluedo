@@ -72,11 +72,8 @@ public class View<T> {
 
     }
     public void showMessage(String message){
-
         Alert a=new Alert(Alert.AlertType.ERROR,message, ButtonType.OK);
         a.show();
-
-
     }
 
 

@@ -6,21 +6,19 @@ public class User {
 
     private String password;
 
+    public User() {
+    }
+
+    public User(String pseudo, String password) {
+        this.pseudo = pseudo;
+        this.password = password;
+    }
+
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public String toString() {
-        return pseudo;
-    }
-
     public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public User(String pseudo,String password) {
-        this.pseudo = pseudo;
         this.password = password;
     }
 
@@ -32,5 +30,8 @@ public class User {
         this.pseudo = pseudo;
     }
 
-
+    @Override
+    public String toString() {
+        return pseudo;
+    }
 }

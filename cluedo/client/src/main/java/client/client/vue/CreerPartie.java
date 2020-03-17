@@ -23,4 +23,9 @@ public class CreerPartie extends View<CreerPartieControleur> {
     }
 
 
+    public void retourAction(ActionEvent actionEvent) {
+
+       getControleur().goToMenu();
+
+    }
 }

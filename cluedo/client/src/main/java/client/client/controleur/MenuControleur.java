@@ -30,20 +30,15 @@ public class MenuControleur  {
         menu.show("menu");
     }
 
-    public void creerPartie(){
 
-
-
-    }
-
-
-    public void rejoindrePartie (){
-
-    }
 
 
     public void goToCreerPartie(){
         new CreerPartieControleur(menuStage);
+    }
+
+    public void goToRestaurerPartie() {
+        new RestaurerPartieControleur(menuStage);
     }
 
 }

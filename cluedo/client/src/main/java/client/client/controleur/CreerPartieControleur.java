@@ -9,13 +9,17 @@ import javafx.stage.Stage;
 public class CreerPartieControleur {
 
     CreerPartie creerPartie;
-    Stage CreerPartieStage;
+    Stage creerPartieStage;
 
 
     public CreerPartieControleur(Stage creerPartieStage) {
-        this.CreerPartieStage = creerPartieStage;
+        this.creerPartieStage = creerPartieStage;
         creerPartie = (CreerPartie)CreerPartie.creerInstance(creerPartieStage , FxmlUrl.CREER_PARTIE.getUrl());
         creerPartie.setControleur(this);
         creerPartie.show("Creation Partie");
+    }
+
+    public void goToMenu() {
+        new MenuControleur(creerPartieStage);
     }
 }

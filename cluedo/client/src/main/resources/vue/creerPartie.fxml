@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="root" prefHeight="587.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.CreerPartie">
+<BorderPane id="background" fx:id="root" prefHeight="587.0" prefWidth="744.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.CreerPartie">
    <top>
       <Pane prefHeight="47.0" prefWidth="700.0" BorderPane.alignment="CENTER" />
    </top>
@@ -44,20 +44,14 @@
                </children>
             </HBox>
             <TableView fx:id="joueurTable" prefHeight="139.0" prefWidth="447.0" GridPane.rowIndex="3">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
+
             </TableView>
             <TableView fx:id="joueurInviteTable" prefHeight="130.0" prefWidth="700.0" GridPane.rowIndex="5">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
+
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="14.0" prefWidth="700.0" GridPane.rowIndex="2">
                <children>
-                  <Label prefHeight="27.0" prefWidth="128.0" text="Liste Joueur :" textFill="#bf7e39">
+                  <Label prefHeight="27.0" prefWidth="128.0" text="Liste Joueur :" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
@@ -66,7 +60,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                <children>
-                  <Label text="liste joueurs invités:" textFill="#bf7e39">
+                  <Label text="liste joueurs invités:" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
@@ -79,11 +73,11 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="42.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" onAction="#lancerPartieAction" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Lancer">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#lancerPartieAction" prefHeight="25.0" prefWidth="103.0" text="Lancer">
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <Button alignment="CENTER" onAction="#deconnectionAction" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="112.0" text="Deconnection">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deconnectionAction" prefHeight="27.0" prefWidth="112.0" text="Deconnection">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -91,7 +85,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#fermerAction" prefHeight="25.0" prefWidth="78.0" text="fermer">
+            <Button mnemonicParsing="false" onAction="#retourAction" prefHeight="25.0" prefWidth="78.0" text="Retour">
                <font>
                   <Font size="15.0" />
                </font>

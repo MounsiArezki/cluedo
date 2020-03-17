@@ -141,6 +141,8 @@ public class Menu extends View<MenuControleur> {
     }
     @FXML
     public void restaurerPartieAction(ActionEvent actionEvent) {
+        getControleur().goToRestaurerPartie();
+
     }
 
 

@@ -5,72 +5,25 @@ public class ServiceConfig {
     //
     // USER
     //
-    private static String URL_USER="/user";
-    private static String URL_USER_CONNEXION="/connexion";
-    private static String URL_USER_ID="";
-    private static String URL_USER_ID_INVITATION_RECU="/invitation/recue";
-    private static String URL_USER_ID_INVITATION_EMISE="/invitation/emise";
-
-    private static String getUrlUser() {
-        return URL_USER;
-    }
-
-    private static String getUrlUserConnexion() {
-        return URL_USER+URL_USER_CONNEXION;
-    }
-
-    public static String getUrlUserId(String idUser) {
-        return URL_USER+"/"+idUser;
-    }
-
-    private static String getUrlUserIdInvitationRecu(String idUser) {
-        return URL_USER+"/"+idUser+URL_USER_ID_INVITATION_RECU;
-    }
-
-    private static String getUrlUserIdInvitationEmise(String idUser) {
-        return URL_USER+"/"+idUser+URL_USER_ID_INVITATION_EMISE;
-    }
+    public static String URL_USER="/user";
+    public static String URL_USER_CONNEXION="/connexion";
+    public static String URL_USER_ID=URL_USER+"/{id}";
+    public static String URL_USER_ID_INVITATION_RECU=URL_USER_ID+"/invitation/recue";
+    public static String URL_USER_ID_INVITATION_EMISE=URL_USER_ID+"/invitation/emise";
 
     //
     // PARTIE
     //
-    private static String URL_PARTIE="/partie";
-    private static String URL_PARTIE_ID="";
-    private static String URL_PARTIE_ID_JOUEUR="/joueur";
-    private static String URL_PARTIE_ID_HYPOTHESE="/hypothese";
-    private static String  URL_PARTIE_ID_SAUVEGARDE="/sauvegarde";
-
-    private static String getUrlPartie() {
-        return URL_PARTIE;
-    }
-
-    public static String getUrlPartieId(String idPartie) {
-        return URL_PARTIE+"/"+idPartie;
-    }
-
-    private static String getUrlPartieJoueur(String idPartie) {
-        return URL_PARTIE+"/"+idPartie+URL_PARTIE_ID_JOUEUR;
-    }
-
-    public static String getUrlPartieIdHypothese(String idPartie) {
-        return URL_PARTIE+"/"+idPartie+URL_PARTIE_ID_HYPOTHESE;
-    }
-
-    public static String getUrlPartieIdSauvegarde(String idPartie) {
-        return URL_PARTIE+"/"+idPartie+URL_PARTIE_ID_SAUVEGARDE;
-    }
+    public static String URL_PARTIE="/partie";
+    public static String URL_PARTIE_ID=URL_PARTIE+"/{id}";
+    public static String URL_PARTIE_ID_JOUEUR=URL_PARTIE_ID+"/joueur";
+    public static String URL_PARTIE_ID_HYPOTHESE=URL_PARTIE_ID+"/hypothese";
+    public static String  URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
 
     //
     // Invitation
     //
-    private static String URL_INVITATION="/invitation";
-    private static String URL_INVITATION_ID="/invitation";
+    public static String URL_INVITATION="/invitation";
+    public static String URL_INVITATION_ID=URL_INVITATION+"/{id}";
 
-    public static String getUrlInvitation() {
-        return URL_INVITATION;
-    }
-
-    public static String getUrlInvitationId(String idInvitation) {
-        return URL_INVITATION+"/"+idInvitation;
-    }
 }

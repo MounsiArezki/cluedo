@@ -18,7 +18,7 @@ import javafx.util.Callback;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Menu extends View {
+public class Menu extends View<MenuControleur> {
 
 
     //--------------------------------
@@ -133,7 +133,15 @@ public class Menu extends View {
 
     }
 
+    @FXML
+    public void creerPartieAction(ActionEvent actionEvent) {
+        // pour le momment juste la navigation
 
+        getControleur().goToCreerPartie();
+    }
+    @FXML
+    public void restaurerPartieAction(ActionEvent actionEvent) {
+    }
 
 
 }

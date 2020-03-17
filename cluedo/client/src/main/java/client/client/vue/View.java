@@ -2,6 +2,7 @@ package client.client.vue;
 
 import client.client.controleur.ConnexionControleur;
 import client.client.modele.entite.io.FxmlUrl;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -76,7 +77,11 @@ public class View<T> {
         a.show();
     }
 
+    public void deconnectionAction(ActionEvent actionEvent) {
+    }
 
+    public void fermerAction(ActionEvent actionEvent) {
+    }
 
 
 

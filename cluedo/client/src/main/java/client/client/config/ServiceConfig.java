@@ -21,7 +21,7 @@ public class ServiceConfig {
     public static String  URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
 
     //
-    // Invitation
+    // INVITATION
     //
     public static String URL_INVITATION="/invitation";
     public static String URL_INVITATION_ID=URL_INVITATION+"/{id}";

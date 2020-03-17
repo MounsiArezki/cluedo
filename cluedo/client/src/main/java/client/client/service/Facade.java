@@ -2,6 +2,7 @@ package client.client.service;
 
 import client.client.config.ServiceConfig;
 import client.client.modele.entite.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class Facade implements IUserService {
@@ -13,8 +14,8 @@ public class Facade implements IUserService {
     }
 
     @Override
-    public User getUserByLogin(String login) {
-        //User res=restTemplate.getForEntity(ServiceConfig.URL_USER)
-        return null;
+    public ResponseEntity<User> getUserByLogin(String login) {
+        ResponseEntity<User> res=restTemplate.getForEntity(ServiceConfig.URL_USER, User.class);
+        return res;
     }
 }

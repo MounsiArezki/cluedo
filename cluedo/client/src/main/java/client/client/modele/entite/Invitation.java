@@ -16,8 +16,7 @@ public class Invitation {
     private User hote;
     private List<User> personnesInvitees;
 
-    public Invitation(String idPartie, User hote, List<User> personnesInvitees) {
-        this.idPartie = idPartie;
+    public Invitation(User hote, List<User> personnesInvitees) {
         this.hote = hote;
         this.personnesInvitees = personnesInvitees;
     }

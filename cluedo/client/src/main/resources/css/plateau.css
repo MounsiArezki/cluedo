@@ -1,0 +1,12 @@
+#plateauP{
+    -fx-background-image: url(/image/Plateau.jpeg);
+    -fx-background-size: stretch;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+#desBtn{
+    -fx-background-image: url(/image/Des/Face6.jpeg);
+    -fx-background-size: stretch;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+
+}

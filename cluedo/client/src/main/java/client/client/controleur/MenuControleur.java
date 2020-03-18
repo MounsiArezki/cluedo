@@ -21,6 +21,7 @@ public class MenuControleur  {
     Menu menu;
 
     public MenuControleur(Stage menuStage) {
+        this.menuStage =menuStage;
             invitationsList.add(  new Invitation("1",new User("user1","userPsw"))   );
             invitationsList.add(  new Invitation("2",new User("user2","userPsw2"))   );
         menu = (Menu)Menu.creerInstance(menuStage , FxmlUrl.MENU.getUrl());
@@ -29,5 +30,15 @@ public class MenuControleur  {
         menu.show("menu");
     }
 
+
+
+
+    public void goToCreerPartie(){
+        new CreerPartieControleur(menuStage);
+    }
+
+    public void goToRestaurerPartie() {
+        new RestaurerPartieControleur(menuStage);
+    }
 
 }

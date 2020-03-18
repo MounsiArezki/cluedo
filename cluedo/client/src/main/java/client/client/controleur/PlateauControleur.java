@@ -1,0 +1,44 @@
+package client.client.controleur;
+
+import client.client.modele.entite.*;
+import client.client.modele.entite.io.FxmlUrl;
+import client.client.vue.Menu;
+import client.client.vue.Plateau;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class PlateauControleur {
+
+    Stage plateauStage;
+
+    Plateau plateau;
+
+    //simulation facade api
+    Collection<ICarte> cartesJ ;
+
+
+
+    public PlateauControleur(Stage plateauStage) {
+        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE,Arme.CORDE,Arme.CLE,Arme.COUTEAU);
+        this.plateauStage =plateauStage;
+
+        plateau = (Plateau)Plateau.creerInstance(plateauStage , FxmlUrl.PLATEAU.getUrl());
+        plateau.setControleur(this);
+        plateau.distribuerCartes();
+        plateau.show("plateau");
+    }
+
+
+    public Collection<ICarte> getCarteJoueur() {
+        return cartesJ;
+    }
+
+
+    public void afficherListeJoueurs(){
+
+    }
+
+}

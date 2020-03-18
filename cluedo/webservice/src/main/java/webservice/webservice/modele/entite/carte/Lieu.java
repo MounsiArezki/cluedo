@@ -1,7 +1,5 @@
 package webservice.webservice.modele.entite.carte;
 
-import webservice.webservice.modele.entite.carte.ICarte;
-
 public enum Lieu implements ICarte {
 
     SALLE_RECEPTION("Salle de réception"),
@@ -11,6 +9,7 @@ public enum Lieu implements ICarte {
     ENTREE("Entrée"),
     BIBLIOTHEQUE("Bibliothèque"),
     SALON("Salon"),
+    CUISINE("Cuisine"),
     BUREAU("Bureau");
 
     private String nom;

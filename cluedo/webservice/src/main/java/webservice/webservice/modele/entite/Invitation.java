@@ -4,37 +4,25 @@ import java.util.List;
 
 public class Invitation {
 
-    String idPartie;
-    User hote;
-    List<User> personnesInvitees;
+    private long id;
+    private long idPartie;
+    private long idHote;
+    private List<Long> invites;
 
-    public Invitation(String idPartie, User hote, List<User> personnesInvitees) {
+    private static long lastId = 0L;
+
+    public Invitation(long idPartie, long idHote, List<Long> invites) {
+        this.id = ++lastId;
         this.idPartie = idPartie;
-        this.hote = hote;
-        this.personnesInvitees = personnesInvitees;
+        this.idHote = idHote;
+        this.invites = invites;
     }
 
-    public String getIdPartie() {
-        return idPartie;
-    }
+    public long getId() { return id; }
 
-    public void setIdPartie(String idPartie) {
-        this.idPartie = idPartie;
-    }
+    public long getIdPartie() { return idPartie; }
 
-    public User getHote() {
-        return hote;
-    }
+    public long getIdHote() { return idHote; }
 
-    public void setHote(User hote) {
-        this.hote = hote;
-    }
-
-    public List<User> getPersonnesInvitees() {
-        return personnesInvitees;
-    }
-
-    public void setPersonnesInvitees(List<User> personnesInvitees) {
-        this.personnesInvitees = personnesInvitees;
-    }
+    public List<Long> getInvites() { return invites; }
 }

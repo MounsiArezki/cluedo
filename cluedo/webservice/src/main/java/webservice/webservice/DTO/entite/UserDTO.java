@@ -1,0 +1,35 @@
+package webservice.webservice.DTO.entite;
+
+import webservice.webservice.modele.entite.User;
+
+public class UserDTO {
+
+    private long id;
+    private String pseudo;
+    private String pwd;
+
+    public UserDTO(){}
+
+    public static UserDTO creer(User user){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setPseudo(user.getPseudo());
+        userDTO.setPwd(user.getPwd());
+        return userDTO;
+    }
+
+    public long getId() { return id; }
+
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getPseudo() { return pseudo; }
+
+    public void setPseudo(String pseudo) { this.pseudo = pseudo; }
+
+    public String getPwd() { return pwd; }
+
+    public void setPwd(String pwd) { this.pwd = pwd; }
+}

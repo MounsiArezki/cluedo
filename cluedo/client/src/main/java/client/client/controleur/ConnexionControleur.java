@@ -1,60 +1,61 @@
 package client.client.controleur;
 
+import client.client.exception.ConnexionException;
+import client.client.exception.InscriptionException;
+import client.client.global.VariablesGlobales;
 import client.client.modele.entite.User;
-import client.client.modele.entite.io.FxmlUrl;
+import client.client.modele.entite.io.FxmlPath;
+import client.client.service.Facade;
+import client.client.service.IUserService;
 import client.client.vue.Login;
 import client.client.vue.Menu;
 import client.client.vue.View;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.security.auth.login.LoginException;
-import java.awt.*;
-import java.util.*;
 
 public class ConnexionControleur {
-    //simulation API
-    Collection<User> usersBD = new ArrayList();
-
 
     Stage connexionStage;
 
+    IUserService userService;
 
     Login login;
     Menu menu;
 
     public ConnexionControleur(Stage primaryStage) {
-        usersBD.add(new User("user@gmail.com","user"));
+        userService=new Facade();
+
         this.connexionStage=primaryStage;
-        login= (Login) View.creerInstance(connexionStage, FxmlUrl.LOGIN.getUrl());
+        login= (Login) View.creerInstance(connexionStage, FxmlPath.LOGIN.getUrl());
         login.setControleur(this);
         login.show("Login");
        // addObserver(principal);
      //   login.show("connexion");
     }
 
-    public void loginCntrl(String email,String password) throws LoginException {
-
-        Optional<User> user = usersBD.stream().
-                filter(p -> p.getPseudo().equals(email) && p.getPassword().equals(password)).
-                findFirst();
-       if (!user.isPresent()){
-           throw new LoginException();
+    public void loginCntrl(String login,String pwd) throws ConnexionException {
+       ResponseEntity<User> responseEntity= userService.connexion(login,pwd);
+       HttpStatus status=responseEntity.getStatusCode();
+       if (!HttpStatus.CREATED.equals(status)){
+           throw new ConnexionException();
        }
-
-        goToMenu(connexionStage);
+       User user=responseEntity.getBody();
+       VariablesGlobales.setUser(user);
+       goToMenu(connexionStage);
     }
 
-    public void inscrireCntrl(String email,String password){
-        User u=new User(email,password);
-        if(!usersBD.contains(u)){
-            usersBD.add(u);
+    public void inscrireCntrl(String login,String password) throws InscriptionException {
+        ResponseEntity<User> responseEntity=userService.insciption(login,password);
+        HttpStatus status=responseEntity.getStatusCode();
+        if (!HttpStatus.CREATED.equals(status)){
+            throw new InscriptionException();
         }
     }
 
-
     private void goToMenu(Stage menuStage) {
-
         new MenuControleur(menuStage);
     }
 }

@@ -2,7 +2,9 @@ package client.client.modele.entite;
 
 public class User {
 
-    public String pseudo;
+    private String id;
+
+    private String pseudo;
 
     private String password;
 
@@ -12,6 +14,14 @@ public class User {
     public User(String pseudo, String password) {
         this.pseudo = pseudo;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPassword() {

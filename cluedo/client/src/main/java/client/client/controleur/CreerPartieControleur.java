@@ -1,9 +1,7 @@
 package client.client.controleur;
 
-import client.client.modele.entite.io.FxmlUrl;
+import client.client.modele.entite.io.FxmlPath;
 import client.client.vue.CreerPartie;
-import client.client.vue.Menu;
-import client.client.vue.View;
 import javafx.stage.Stage;
 
 public class CreerPartieControleur {
@@ -14,7 +12,7 @@ public class CreerPartieControleur {
 
     public CreerPartieControleur(Stage creerPartieStage) {
         this.creerPartieStage = creerPartieStage;
-        creerPartie = (CreerPartie)CreerPartie.creerInstance(creerPartieStage , FxmlUrl.CREER_PARTIE.getUrl());
+        creerPartie = (CreerPartie)CreerPartie.creerInstance(creerPartieStage , FxmlPath.CREER_PARTIE.getUrl());
         creerPartie.setControleur(this);
         creerPartie.show("Creation Partie");
     }

@@ -2,8 +2,6 @@ package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
 import client.client.modele.entite.ICarte;
-import client.client.modele.entite.Invitation;
-import client.client.modele.entite.io.ImageUrl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

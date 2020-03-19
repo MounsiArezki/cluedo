@@ -3,16 +3,8 @@ package client.client.modele.entite;
 import java.util.List;
 
 public class Invitation {
+
     private String idPartie;
-
-    public User getHote() {
-        return hote;
-    }
-
-    public void setHote(User hote) {
-        this.hote = hote;
-    }
-
     private User hote;
     private List<User> personnesInvitees;
 
@@ -23,7 +15,14 @@ public class Invitation {
     public Invitation(String idPartie, User hote) {
         this.idPartie = idPartie;
         this.hote = hote;
+    }
 
+    public User getHote() {
+        return hote;
+    }
+
+    public void setHote(User hote) {
+        this.hote = hote;
     }
 
     public String getIdPartie() {
@@ -33,8 +32,6 @@ public class Invitation {
     public void setIdPartie(String idPartie) {
         this.idPartie = idPartie;
     }
-
-
 
     public List<User> getPersonnesInvitees() {
         return personnesInvitees;

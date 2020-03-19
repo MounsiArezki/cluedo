@@ -4,7 +4,7 @@ import client.client.vue.*;
 
 import java.net.URL;
 
-public enum FxmlUrl {
+public enum FxmlPath {
 
     LOGIN(Login.class.getResource("/vue/login.fxml")),
     PLATEAU(Plateau.class.getResource("/vue/plateau.fxml")),
@@ -16,7 +16,7 @@ public enum FxmlUrl {
 
     private URL url;
 
-    FxmlUrl(URL url) {
+    FxmlPath(URL url) {
         this.url = url;
     }
 

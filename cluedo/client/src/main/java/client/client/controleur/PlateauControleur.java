@@ -1,12 +1,10 @@
 package client.client.controleur;
 
 import client.client.modele.entite.*;
-import client.client.modele.entite.io.FxmlUrl;
-import client.client.vue.Menu;
+import client.client.modele.entite.io.FxmlPath;
 import client.client.vue.Plateau;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class PlateauControleur {
         this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE,Arme.CORDE,Arme.CLE,Arme.COUTEAU);
         this.plateauStage =plateauStage;
 
-        plateau = (Plateau)Plateau.creerInstance(plateauStage , FxmlUrl.PLATEAU.getUrl());
+        plateau = (Plateau)Plateau.creerInstance(plateauStage , FxmlPath.PLATEAU.getUrl());
         plateau.setControleur(this);
         plateau.distribuerCartes();
         plateau.show("plateau");

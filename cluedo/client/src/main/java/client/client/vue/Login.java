@@ -1,20 +1,14 @@
 package client.client.vue;
 
 import client.client.controleur.ConnexionControleur;
-import client.client.modele.entite.io.FxmlUrl;
+import client.client.exception.ConnexionException;
+import client.client.exception.InscriptionException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
-import java.net.URL;
 
 
 public class Login extends View<ConnexionControleur>   {
@@ -43,8 +37,8 @@ public class Login extends View<ConnexionControleur>   {
         try {
             this.getControleur().loginCntrl(user.getText(),password.getText());
 
-        } catch (LoginException e) {
-            showMessage("ERROR Connexion");
+        } catch (ConnexionException e) {
+            showMessage(e.getMessage());
         }
 
     }
@@ -53,7 +47,12 @@ public class Login extends View<ConnexionControleur>   {
 
     @FXML
     public void inscrireAction(ActionEvent event){
-        getControleur().inscrireCntrl(user.getText(),password.getText());
+        try {
+            getControleur().inscrireCntrl(user.getText(),password.getText());
+            showMessage("Inscription réussie, vous pouvez vous coneecter");
+        } catch (InscriptionException e) {
+            showMessage(e.getMessage());
+        }
 
     }
 

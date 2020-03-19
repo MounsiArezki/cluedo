@@ -1,17 +1,15 @@
 package client.client.modele.entite;
 
-import client.client.modele.entite.io.ImageUrl;
-
-import java.net.URL;
+import client.client.modele.entite.io.ImagePath;
 
 public enum  Arme implements ICarte {
 
-    COUTEAU("couteau", ImageUrl.COUTEAU_IMG.getUrl()),
-    CHANDELIER("CHANDELIER", ImageUrl.CHANDELIER_IMG.getUrl()),
-    REVOLVER("revolver", ImageUrl.REVOLVER_IMG.getUrl()),
-    CORDE("CORDE", ImageUrl.CORDE_IMG.getUrl()),
-    TUYAU_EN_PLOMB("TUYAU_EN_PLOMB", ImageUrl.TUYAU_EN_PLOMP_IMG.getUrl()),
-    CLE("cle", ImageUrl.CLE_IMG.getUrl()) ;
+    COUTEAU("couteau", ImagePath.COUTEAU_IMG.getUrl()),
+    CHANDELIER("CHANDELIER", ImagePath.CHANDELIER_IMG.getUrl()),
+    REVOLVER("revolver", ImagePath.REVOLVER_IMG.getUrl()),
+    CORDE("CORDE", ImagePath.CORDE_IMG.getUrl()),
+    TUYAU_EN_PLOMB("TUYAU_EN_PLOMB", ImagePath.TUYAU_EN_PLOMP_IMG.getUrl()),
+    CLE("cle", ImagePath.CLE_IMG.getUrl()) ;
 
     Arme(String nom, String imageUrl) {
         this.nom = nom;

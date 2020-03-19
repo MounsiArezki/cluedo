@@ -1,8 +1,6 @@
 package client.client.modele.entite.io;
 
-import java.net.URL;
-
-public enum  ImageUrl {
+public enum ImagePath {
 
 
 
@@ -27,7 +25,7 @@ public enum  ImageUrl {
 
     private String url;
 
-    ImageUrl(String  url) {
+    ImagePath(String  url) {
         this.url = url;
     }
 

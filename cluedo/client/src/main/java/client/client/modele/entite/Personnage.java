@@ -1,17 +1,14 @@
 package client.client.modele.entite;
 
-import client.client.modele.entite.io.ImageUrl;
-
-
-import java.net.URL;
+import client.client.modele.entite.io.ImagePath;
 
 public enum Personnage implements ICarte{
-    MOUTARDE("Moutarde", ImageUrl.MOUTARDE_IMG.getUrl()),
-    ROSE("Rose",ImageUrl.ROSE_IMG.getUrl()),
-    PERVENCHE("Pervenche",ImageUrl.PERVENCHE_IMG.getUrl()),
-    OLIVE("Olive",ImageUrl.OLIVE_IMG.getUrl()),
-    VIOLET("Violet",ImageUrl.VIOLET_IMG.getUrl()),
-    ORCHIDEE("Orchidée",ImageUrl.ORCHIDE_IMG.getUrl());
+    MOUTARDE("Moutarde", ImagePath.MOUTARDE_IMG.getUrl()),
+    ROSE("Rose", ImagePath.ROSE_IMG.getUrl()),
+    PERVENCHE("Pervenche", ImagePath.PERVENCHE_IMG.getUrl()),
+    OLIVE("Olive", ImagePath.OLIVE_IMG.getUrl()),
+    VIOLET("Violet", ImagePath.VIOLET_IMG.getUrl()),
+    ORCHIDEE("Orchidée", ImagePath.ORCHIDE_IMG.getUrl());
 
     private String nom;
 

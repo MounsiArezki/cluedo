@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="client" />
         <module name="webservice" />
+        <module name="groupe5" />
         <module name="cluedo" />
       </profile>
     </annotationProcessing>

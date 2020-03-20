@@ -10,7 +10,6 @@ import webservice.webservice.modele.Facade;
 import webservice.webservice.modele.entite.User;
 
 import java.net.URI;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,5 +53,11 @@ public class ServControl {
     public ResponseEntity<Long> removeUser(@PathVariable long id){
         facade.removeUser(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    //connexion
+    @PostMapping(value = "/user/connexion")
+    public ResponseEntity<UserDTO> connexion(@RequestBody UserDTO user){
+        return new ResponseEntity<>(user,HttpStatus.CREATED);
     }
 }

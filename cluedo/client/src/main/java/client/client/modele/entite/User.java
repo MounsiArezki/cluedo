@@ -6,14 +6,14 @@ public class User {
 
     private String pseudo;
 
-    private String password;
+    private String pwd;
 
     public User() {
     }
 
     public User(String pseudo, String password) {
         this.pseudo = pseudo;
-        this.password = password;
+        this.pwd = password;
     }
 
     public String getId() {
@@ -25,11 +25,11 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return pwd;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.pwd = password;
     }
 
     public String getPseudo() {

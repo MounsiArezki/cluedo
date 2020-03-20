@@ -2,7 +2,7 @@ package client.client.config;
 
 public class ServiceConfig {
 
-    public static String BASE_URL="http://localhost:8080";
+    public static String BASE_URL="http://localhost:8080/serv";
 
     //
     // USER
@@ -23,6 +23,7 @@ public class ServiceConfig {
     public static String URL_PARTIE_ID_JOUEUR=URL_PARTIE_ID+"/joueur";
     public static String URL_PARTIE_ID_HYPOTHESE=URL_PARTIE_ID+"/hypothese";
     public static String  URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
+    public static String  URL_PARTIE_ID_RESTAURATION=URL_PARTIE_ID+"/restauration";
 
     //
     // INVITATION
@@ -30,5 +31,7 @@ public class ServiceConfig {
     public static String INVITATION_ID_PARAM="id";
     public static String URL_INVITATION=BASE_URL+"/invitation";
     public static String URL_INVITATION_ID=URL_INVITATION+"/{id}";
+    public static String URL_INVITATION_ID_ACCEPTATION=URL_INVITATION_ID+"/acceptation";
+    public static String URL_INVITATION_ID_REFUS=URL_INVITATION_ID+"/refus";
 
 }

@@ -5,10 +5,10 @@ import java.util.List;
 
 public class InvitationDTO {
 
-    private long id;
-    private long idPartie;
-    private long idHote;
-    private List<Long> invites;
+    private String id;
+    private String idPartie;
+    private String idHote;
+    private List<String> invites;
 
     public InvitationDTO(){}
 
@@ -21,27 +21,27 @@ public class InvitationDTO {
         return invitationDTO;
     }
 
-    public long getId() { return id; }
+    public String getId() { return id; }
 
-    public long getIdPartie() { return idPartie; }
+    public String getIdPartie() { return idPartie; }
 
-    public long getIdHote() { return idHote; }
+    public String getIdHote() { return idHote; }
 
-    public List<Long> getInvites() { return invites; }
+    public List<String> getInvites() { return invites; }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setIdPartie(long idPartie) {
+    public void setIdPartie(String idPartie) {
         this.idPartie = idPartie;
     }
 
-    public void setIdHote(long idHote) {
+    public void setIdHote(String idHote) {
         this.idHote = idHote;
     }
 
-    public void setInvites(List<Long> invites) {
+    public void setInvites(List<String> invites) {
         this.invites = invites;
     }
 }

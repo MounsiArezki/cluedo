@@ -10,17 +10,17 @@ import java.util.Random;
 
 public class Partie {
 
-    private long id;
+    private String id;
 
-    private long idHote;
-    private List<Long> idJoueurs;
+    private String idHote;
+    private List<String> idJoueurs;
 
     private Map<String, ICarte> combinaisonGagante;
 
     private static long lastId = 0L;
 
-    public Partie(long idHote) {
-        this.id = ++lastId;
+    public Partie(String idHote) {
+        this.id = String.valueOf(++lastId);
         this.idHote = idHote;
         this.idJoueurs = new ArrayList<>();
         tirageCombinaison();
@@ -39,11 +39,11 @@ public class Partie {
         combinaisonGagante.put("Lieu", lieux.get(randL));
     }
 
-    public long getId() { return id; }
+    public String getId() { return id; }
 
-    public long getIdHote() { return idHote; }
+    public String getIdHote() { return idHote; }
 
-    public List<Long> getIdJoueurs() { return idJoueurs; }
+    public List<String> getIdJoueurs() { return idJoueurs; }
 
     public Map<String, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
 }

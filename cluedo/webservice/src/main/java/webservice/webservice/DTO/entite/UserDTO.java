@@ -4,7 +4,7 @@ import webservice.webservice.modele.entite.User;
 
 public class UserDTO {
 
-    private long id;
+    private String id;
     private String pseudo;
     private String pwd;
 
@@ -18,10 +18,10 @@ public class UserDTO {
         return userDTO;
     }
 
-    public long getId() { return id; }
+    public String getId() { return id; }
 
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

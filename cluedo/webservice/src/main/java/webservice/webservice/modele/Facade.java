@@ -3,6 +3,8 @@ package webservice.webservice.modele;
 import webservice.webservice.modele.entite.Invitation;
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
+import webservice.webservice.modele.exception.DejaCoException;
+import webservice.webservice.modele.exception.MdpIncorrectException;
 import webservice.webservice.modele.fabrique.FactoryInvitation;
 import webservice.webservice.modele.fabrique.FactoryPartie;
 import webservice.webservice.modele.fabrique.FactoryUser;
@@ -26,6 +28,7 @@ public class Facade {
     private Collection<User> listeUC = new ArrayList<>(); //liste d'utilisateurs connectés (?)
     private Collection<Invitation> listeI = new ArrayList<>(); //liste d'invitations
     private Collection<Partie> listeP = new ArrayList<>(); //liste de partie
+    private Collection<Partie> listePSauv = new ArrayList<>(); //liste de partie sauvegardées pour "simuler mongo"
 
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les utilisateurs
@@ -42,8 +45,8 @@ public class Facade {
     }
 
     // trouver un utilisateur par son id
-    public User findUser(long id) {
-        List<User> lu = listeU.stream().filter(u -> u.getId() == id).collect(Collectors.toList()); // filtrage
+    public User findUser(String id) {
+        List<User> lu = listeU.stream().filter(u -> u.getId().equals(id)).collect(Collectors.toList()); // filtrage
 
         if (!lu.isEmpty()) return lu.get(0); // si la liste n'est pas vide, on récupère l'utilisateur
         else return null; // sinon on retourne null
@@ -58,18 +61,18 @@ public class Facade {
     }
 
     // supprimer un utilisateur
-    public void removeUser(long id) {
-        listeU = listeU.stream().filter(u -> u.getId() != id).collect(Collectors.toList()); // filtrage
+    public void removeUser(String id) {
+        listeU = listeU.stream().filter(u -> !u.getId().equals(id)).collect(Collectors.toList()); // filtrage
     }
 
     // connexion (vérification pwd saisi = pwd utilisateur)
-    public User connexion(String ps, String pwd) throws Exception {
+    public User connexion(String ps, String pwd) throws DejaCoException, MdpIncorrectException {
         User u = findUserByLogin(ps);
 
         if (u != null) {
             if (u.getPwd().equals(pwd)) listeUC.add(u); //ajout à la liste des connectés
-            else if (listeUC.contains(u)) throw new Exception(); //déjà connecté [à faire]
-            else throw new Exception(); //mdp incorrect [à faire]
+            else if (listeUC.contains(u)) throw new DejaCoException(); //déjà connecté
+            else throw new MdpIncorrectException(); //mdp incorrect
         }
 
         return u;
@@ -92,38 +95,38 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeI; }
 
     // ajout une invitation
-    public Invitation addInvitation(long idP, long idH, List<Long> lj) {
+    public Invitation addInvitation(String idP, String idH, List<String> lj) {
         Invitation i = facI.createInvitation(idP, idH, lj);
         listeI.add(i);
         return i;
     }
 
     // trouver une invitation par son id
-    public Invitation findInvitation(long id) {
-        List<Invitation> li = listeI.stream().filter(i -> i.getId() == id).collect(Collectors.toList());
+    public Invitation findInvitation(String id) {
+        List<Invitation> li = listeI.stream().filter(i -> i.getId().equals(id)).collect(Collectors.toList());
 
         if (!li.isEmpty()) return li.get(0);
         else return null;
     }
 
     // trouver une invitation par son id Partie
-    public Invitation findInvitationByPartie(long idP) {
-        List<Invitation> li = listeI.stream().filter(i -> i.getIdPartie() == idP).collect(Collectors.toList());
+    public Invitation findInvitationByPartie(String idP) {
+        List<Invitation> li = listeI.stream().filter(i -> i.getIdPartie().equals(idP)).collect(Collectors.toList());
 
         if (!li.isEmpty()) return li.get(0);
         else return null;
     }
 
     // trouver une invitation par l'id de son Hôte (utilisateur créateur)
-    public Invitation findInvitationByHost(long idU) {
-        List<Invitation> li = listeI.stream().filter(i -> i.getIdHote() == idU).collect(Collectors.toList());
+    public Invitation findInvitationByHost(String idU) {
+        List<Invitation> li = listeI.stream().filter(i -> i.getIdHote().equals(idU)).collect(Collectors.toList());
 
         if (!li.isEmpty()) return li.get(0);
         else return null;
     }
 
     // l'utilisateur avec idU accepte l'invitation idI
-    public boolean accepterInvitation(long idI, long idU) {
+    public boolean accepterInvitation(String idI, String idU) {
         Invitation i = findInvitation(idI);
 
         if (i != null) {
@@ -138,7 +141,7 @@ public class Facade {
     }
 
     // l'utilisateur avec idU refuse l'invitation idI
-    public boolean refuserInvitation(long idI, long idU) {
+    public boolean refuserInvitation(String idI, String idU) {
         Invitation i = findInvitation(idI);
 
         if (i != null) {
@@ -150,8 +153,8 @@ public class Facade {
     }
 
     // suppression d'une invitation par son id
-    public void removeInvitation(long id) {
-        listeI = listeI.stream().filter(i -> i.getId() != id).collect(Collectors.toList());
+    public void removeInvitation(String id) {
+        listeI = listeI.stream().filter(i -> !i.getId().equals(id)).collect(Collectors.toList());
     }
 
     // ----------------------------------------------------------------------------------------
@@ -162,31 +165,38 @@ public class Facade {
     public Collection<Partie> getParties() { return listeP; }
 
     // ajout d'une partie
-    public Partie addPartie(long idH) {
+    public Partie addPartie(String idH) {
         Partie p = facP.createPartie(idH);
         listeP.add(p);
         return p;
     }
 
+    // sauvegarde d'une partie
+    public Partie savePartie(String idH) {
+        Partie partie = findPartieByHost(idH);
+        listePSauv.add(partie);
+        return partie;
+    }
+
     // trouver une partie par son id
-    public Partie findPartie(long id) {
-        List<Partie> lp = listeP.stream().filter(p -> p.getId() == id).collect(Collectors.toList());
+    public Partie findPartie(String id) {
+        List<Partie> lp = listeP.stream().filter(p -> p.getId().equals(id)).collect(Collectors.toList());
 
         if (!lp.isEmpty()) return lp.get(0);
         else return null;
     }
 
     // trouver une partie par l'id de son Hôte
-    public Partie findPartieByHost(long idH) {
-        List<Partie> lp = listeP.stream().filter(p -> p.getIdHote() == idH).collect(Collectors.toList());
+    public Partie findPartieByHost(String idH) {
+        List<Partie> lp = listeP.stream().filter(p -> p.getIdHote().equals(idH)).collect(Collectors.toList());
 
         if (!lp.isEmpty()) return lp.get(0);
         else return null;
     }
 
     // supprimer une partie par son id
-    public void removePartie(long id) {
-        listeP = listeP.stream().filter(p -> p.getId() != id).collect(Collectors.toList());
+    public void removePartie(String id) {
+        listeP = listeP.stream().filter(p -> !p.getId().equals(id)).collect(Collectors.toList());
     }
 
     // ----------------------------------------------------------------------------------------

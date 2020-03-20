@@ -8,7 +8,7 @@ public class FactoryPartie {
 
     private FactoryPartie() { }
 
-    public Partie createPartie(long idH) { return new Partie(idH); }
+    public Partie createPartie(String idH) { return new Partie(idH); }
 
     public static FactoryPartie getFacP() { return facP; }
 }

@@ -4,25 +4,25 @@ import java.util.List;
 
 public class Invitation {
 
-    private long id;
-    private long idPartie;
-    private long idHote;
-    private List<Long> invites;
+    private String id;
+    private String idPartie;
+    private String idHote;
+    private List<String> invites;
 
     private static long lastId = 0L;
 
-    public Invitation(long idPartie, long idHote, List<Long> invites) {
-        this.id = ++lastId;
+    public Invitation(String idPartie, String idHote, List<String> invites) {
+        this.id = String.valueOf(++lastId);
         this.idPartie = idPartie;
         this.idHote = idHote;
         this.invites = invites;
     }
 
-    public long getId() { return id; }
+    public String getId() { return id; }
 
-    public long getIdPartie() { return idPartie; }
+    public String getIdPartie() { return idPartie; }
 
-    public long getIdHote() { return idHote; }
+    public String getIdHote() { return idHote; }
 
-    public List<Long> getInvites() { return invites; }
+    public List<String> getInvites() { return invites; }
 }

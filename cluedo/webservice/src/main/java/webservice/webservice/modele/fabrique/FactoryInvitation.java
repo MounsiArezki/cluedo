@@ -10,7 +10,7 @@ public class FactoryInvitation {
 
     private FactoryInvitation() { }
 
-    public Invitation createInvitation(long idP, long idH, List<Long> joueurs) { return new Invitation(idP, idH, joueurs); }
+    public Invitation createInvitation(String idP, String idH, List<String> joueurs) { return new Invitation(idP, idH, joueurs); }
 
     public static FactoryInvitation getFacI() { return facI; }
 }

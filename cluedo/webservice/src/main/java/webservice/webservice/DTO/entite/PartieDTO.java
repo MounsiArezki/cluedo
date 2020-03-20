@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class PartieDTO {
 
-    private long id;
-    private long idHote;
-    private List<Long> idJoueurs;
+    private String id;
+    private String idHote;
+    private List<String> idJoueurs;
     private Map<String, ICarte> combinaisonGagante;
 
     public PartieDTO(){}
@@ -23,23 +23,23 @@ public class PartieDTO {
         return partieDTO;
     }
 
-    public long getId() { return id; }
+    public String getId() { return id; }
 
-    public long getIdHote() { return idHote; }
+    public String getIdHote() { return idHote; }
 
-    public List<Long> getIdJoueurs() { return idJoueurs; }
+    public List<String> getIdJoueurs() { return idJoueurs; }
 
     public Map<String, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setIdHote(long idHote) {
+    public void setIdHote(String idHote) {
         this.idHote = idHote;
     }
 
-    public void setIdJoueurs(List<Long> idJoueurs) {
+    public void setIdJoueurs(List<String> idJoueurs) {
         this.idJoueurs = idJoueurs;
     }
 

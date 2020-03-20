@@ -7,8 +7,6 @@ import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -28,13 +26,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     // IUSERSERVICE
     //
    @Override
-    public ResponseEntity<User[]> getAllUsers()throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<User[]> getAllUsers() {
         ResponseEntity<User[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER, User[].class);
         return res;
     }
 
     @Override
-    public ResponseEntity<User[]> getAllUsersWithFiltre(String filtre)throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<User[]> getAllUsersWithFiltre(String filtre) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("filtre", filtre);
         ResponseEntity<User[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER, User[].class, params);
@@ -42,27 +40,27 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     }
 
     @Override
-    public ResponseEntity<User> connexion(String login, String pwd)throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<User> connexion(String login, String pwd) {
         User user=new User(login, pwd);
         ResponseEntity<User> res=restTemplate.postForEntity(ServiceConfig.URL_USER_CONNEXION,user,User.class);
         return res;
     }
 
     @Override
-    public void deconnexion()throws HttpClientErrorException, HttpServerErrorException {
+    public void deconnexion() {
         User user=VariablesGlobales.getUser();
         restTemplate.delete(ServiceConfig.URL_USER_CONNEXION,user);
     }
 
     @Override
-    public ResponseEntity<User> insciption(String login, String pwd)throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<User> insciption(String login, String pwd) {
         User user=new User(login, pwd);
         ResponseEntity<User> res=restTemplate.postForEntity(ServiceConfig.URL_USER,user,User.class);
         return res;
     }
 
     @Override
-    public void desinscrition()throws HttpClientErrorException, HttpServerErrorException {
+    public void desinscrition() {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
@@ -70,7 +68,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     }
 
     @Override
-    public ResponseEntity<Invitation[]> getAllInvitationsRecues()throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<Invitation[]> getAllInvitationsRecues() {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
@@ -79,7 +77,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     }
 
     @Override
-    public ResponseEntity<Invitation[]> getAllInvitationsEmises()throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<Invitation[]> getAllInvitationsEmises() {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
@@ -92,14 +90,14 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     // IINVITATIONSERVICE
     //
     @Override
-    public ResponseEntity<Invitation> creerInvitation(User hote, List<User> listeInvites)throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<Invitation> creerInvitation(User hote, List<User> listeInvites) {
         Invitation invitation=new Invitation(hote, listeInvites);
         ResponseEntity<Invitation> res=restTemplate.postForEntity(ServiceConfig.URL_INVITATION, invitation, Invitation.class);
         return res;
     }
 
     @Override
-    public void supprimerInvitation(String idInvitation)throws HttpClientErrorException, HttpServerErrorException {
+    public void supprimerInvitation(String idInvitation) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
@@ -107,7 +105,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     }
 
     @Override
-    public void accepterInvitation(String idInvitation)throws HttpClientErrorException, HttpServerErrorException {
+    public void accepterInvitation(String idInvitation) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
@@ -115,7 +113,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     }
 
     @Override
-    public void refuserInvitation(String idInvitation)throws HttpClientErrorException, HttpServerErrorException {
+    public void refuserInvitation(String idInvitation) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
@@ -129,7 +127,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
 
 
     @Override
-    public void sauvegarderPartie(String idPartie)throws HttpClientErrorException, HttpServerErrorException {
+    public void sauvegarderPartie(String idPartie) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
@@ -137,7 +135,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     }
 
     @Override
-    public ResponseEntity<Partie> restaurerPartie(String idPartie)throws HttpClientErrorException, HttpServerErrorException {
+    public ResponseEntity<Partie> restaurerPartie(String idPartie) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);

@@ -9,5 +9,5 @@ public interface IPartieService {
 
     public void sauvegarderPartie(String idPartie) throws HttpClientErrorException, HttpServerErrorException;
 
-    public ResponseEntity<Partie> restaurerPartie(String idPartie) throws HttpClientErrorException, HttpServerErrorException;
+    public ResponseEntity<Partie> restaurerPartie(String idPartie);
 }

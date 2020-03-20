@@ -14,4 +14,9 @@ public class RestaurerPartie extends View<RestaurerPartieControleur>{
     public void retourAction(ActionEvent actionEvent) {
         getControleur().goToMenu();
     }
+
+    @Override
+    public void refresh() {
+
+    }
 }

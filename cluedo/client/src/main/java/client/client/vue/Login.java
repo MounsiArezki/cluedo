@@ -25,11 +25,7 @@ public class Login extends View<ConnexionControleur>   {
     public Login() {
     }
 
-
    // ConnexionControleur controleur;
-
-
-
 
     @FXML
     public void loginAction(ActionEvent event){
@@ -57,4 +53,8 @@ public class Login extends View<ConnexionControleur>   {
     }
 
 
+    @Override
+    public void refresh() {
+
+    }
 }

@@ -39,9 +39,7 @@ public class Menu extends View<MenuControleur> {
 
     // pour test ... charger avec le webservices ...
     private void fillTableObservableListWithSampleData(ArrayList<Invitation> dt) {
-
         dataObservable.addAll(dt);
-
     }
 
     public void drawTable(ArrayList<Invitation> dt){
@@ -63,7 +61,7 @@ public class Menu extends View<MenuControleur> {
 
 
     private void addButtonToTable() {
-               TableColumn<Invitation, Void> colBtnRejoindre = new TableColumn(" ");
+        TableColumn<Invitation, Void> colBtnRejoindre = new TableColumn(" ");
 
         Callback<TableColumn<Invitation, Void>, TableCell<Invitation, Void>> cellFactoryRejoindre = new Callback<>() {
             @Override
@@ -127,16 +125,12 @@ public class Menu extends View<MenuControleur> {
         colBtnRejoindre.setCellFactory(cellFactoryRejoindre);
         colBtnRefuser.setCellFactory(cellFactoryRefuser);
 
-
-
         table.getColumns().addAll(colBtnRejoindre,colBtnRefuser);
-
     }
 
     @FXML
     public void creerPartieAction(ActionEvent actionEvent) {
         // pour le momment juste la navigation
-
         getControleur().goToCreerPartie();
     }
     @FXML
@@ -146,4 +140,8 @@ public class Menu extends View<MenuControleur> {
     }
 
 
+    @Override
+    public void refresh() {
+
+    }
 }

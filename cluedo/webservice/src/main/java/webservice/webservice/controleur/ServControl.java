@@ -52,7 +52,8 @@ public class ServControl {
         return ResponseEntity.ok(UserDTO.creer(facade.findUser(id)));
     }
 
-
+    // trouver un utilisateur par son pseudo/login
+    // Probleme URI ????
 
     // supprimer un utilisateur
     @DeleteMapping(value = "/user/{id}")

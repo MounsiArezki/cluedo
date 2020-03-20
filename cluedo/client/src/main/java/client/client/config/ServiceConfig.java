@@ -2,7 +2,7 @@ package client.client.config;
 
 public class ServiceConfig {
 
-    public static String BASE_URL="http://localhost:8080/serv";
+    public static String BASE_URL="http://localhost:8081";
 
     //
     // USER

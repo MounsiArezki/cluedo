@@ -24,11 +24,11 @@ public class User {
         this.id = id;
     }
 
-    public String getPassword() {
+    public String getPwd() {
         return pwd;
     }
 
-    public void setPassword(String password) {
+    public void setPwd(String password) {
         this.pwd = password;
     }
 

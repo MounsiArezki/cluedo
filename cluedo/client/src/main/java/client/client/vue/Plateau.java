@@ -2,6 +2,7 @@ package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
 import client.client.modele.entite.ICarte;
+import client.client.vue.cluedoPlateau.CluedoBoard;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ public class Plateau extends View<PlateauControleur> {
     public ImageView IconejoueurJ;
     public Label nomJoueurJ;
     public TextField desResultat;
+    public CluedoBoard board;
 
     ObservableList<Button> observableListCard=FXCollections.observableArrayList();
 

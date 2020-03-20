@@ -53,4 +53,9 @@ public class Plateau extends View<PlateauControleur> {
 
     public void passerAction(ActionEvent actionEvent) {
     }
+
+    @Override
+    public void refresh() {
+
+    }
 }

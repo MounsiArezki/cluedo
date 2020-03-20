@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class View<T> {
-
-
+public abstract class View<T> {
 
     private Stage stage;
 
@@ -80,9 +80,17 @@ public class View<T> {
     public void fermerAction(ActionEvent actionEvent) {
     }
 
+    public abstract void refresh();
 
-
-
-
+    public void setTimer(int period){
+        new Timer().schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            refresh();
+                        }
+                },0,period
+        );
+    }
 
 }

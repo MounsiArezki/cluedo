@@ -14,7 +14,6 @@ public class UserDTO {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setPseudo(user.getPseudo());
-        userDTO.setPwd(user.getPwd());
         return userDTO;
     }
 

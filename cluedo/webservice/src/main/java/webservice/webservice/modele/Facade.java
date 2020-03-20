@@ -125,6 +125,15 @@ public class Facade {
         else return null;
     }
 
+    // trouve si l'id user est invite
+    public boolean findIfInvite(Invitation invitation, String idU) {
+        boolean trouve = false;
+        if(invitation.getInvites().stream().anyMatch(i -> i.equals(idU))){
+            trouve = true;
+        }
+        return trouve;
+    }
+
     // l'utilisateur avec idU accepte l'invitation idI
     public boolean accepterInvitation(String idI, String idU) {
         Invitation i = findInvitation(idI);

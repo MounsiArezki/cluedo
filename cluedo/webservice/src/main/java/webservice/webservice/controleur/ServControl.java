@@ -37,12 +37,13 @@ public class ServControl {
     }
 
     // ajouter un utilisateur
-    @PostMapping(value = "/user")
-    public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
+    @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         User user = facade.addUser(userDTO.getPseudo(), userDTO.getPwd());
+        UserDTO newUserDTO = UserDTO.creer(user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(user.getId()).toUri();
+                .buildAndExpand(newUserDTO.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -63,12 +64,13 @@ public class ServControl {
     }
 
     // connecter un utilisateur
-    @PostMapping(value = "/user/connexion")
-    public ResponseEntity<String> connectUser(@RequestBody UserDTO userDTO) throws DejaCoException, MdpIncorrectException {
+    @PostMapping(value = "/user/connexion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> connectUser(@RequestBody UserDTO userDTO) throws DejaCoException, MdpIncorrectException {
         User user = facade.connexion(userDTO.getPseudo(), userDTO.getPwd());
+        UserDTO newUserDTO = UserDTO.creer(user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(user.getId()).toUri();
+                .buildAndExpand(newUserDTO.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -85,6 +87,18 @@ public class ServControl {
         return ResponseEntity.ok(facade.getParties().stream().filter(u -> u.getIdHote().equals(id)).map(e -> PartieDTO.creer(e)).collect(Collectors.toList()));
     }
 
+    // recupere les invitations emises d'un user
+    @GetMapping(value = "/user/{id}/invitation/emise", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InvitationDTO>> getInvEmises(@PathVariable String id) {
+        return ResponseEntity.ok(facade.getInvitations().stream().filter(u -> u.getIdHote().equals(id)).map(e -> InvitationDTO.creer(e)).collect(Collectors.toList()));
+    }
+
+    // recupere les invitations recues d'un user
+    @GetMapping(value = "/user/{id}/invitation/recue", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InvitationDTO>> getInvRecues(@PathVariable String id) {
+        return ResponseEntity.ok(facade.getInvitations().stream().filter(u -> facade.findIfInvite(u,id)).map(e -> InvitationDTO.creer(e)).collect(Collectors.toList()));
+    }
+
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les invitations
     // ----------------------------------------------------------------------------------------
@@ -96,14 +110,15 @@ public class ServControl {
     }
 
     // ajouter une invitation ET une partie
-    @PostMapping(value = "/invitation")
-    public ResponseEntity<String> createInv(@RequestBody InvitationDTO invitationDTO) {
+    @PostMapping(value = "/invitation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InvitationDTO> createInv(@RequestBody InvitationDTO invitationDTO) {
         Partie partie = facade.addPartie(invitationDTO.getIdHote());
         ServletUriComponentsBuilder.fromUriString("/partie").path("/{id}").buildAndExpand(partie.getId()).toUri();//URI Partie
         Invitation invitation = facade.addInvitation(partie.getId(), invitationDTO.getIdHote(), invitationDTO.getInvites());
+        InvitationDTO newInvitationDTO = InvitationDTO.creer(invitation);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(invitation.getId()).toUri();
+                .buildAndExpand(newInvitationDTO.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -121,7 +136,7 @@ public class ServControl {
     }
 
     //accepter une invitation
-    @PutMapping(value = "/invitation/{id}/acceptation")
+    @PutMapping(value = "/invitation/{id}/acceptation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> acceptInv(@PathVariable String id, @RequestBody UserDTO userDTO) {
         facade.accepterInvitation(id, userDTO.getId());
         URI location = ServletUriComponentsBuilder
@@ -131,7 +146,7 @@ public class ServControl {
     }
 
     //accepter une invitation
-    @PutMapping(value = "/invitation/{id}/refus")
+    @PutMapping(value = "/invitation/{id}/refus", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> refuseInv(@PathVariable String id, @RequestBody UserDTO userDTO) {
         facade.refuserInvitation(id, userDTO.getId());
         URI location = ServletUriComponentsBuilder
@@ -144,7 +159,7 @@ public class ServControl {
     // Méthodes sur les parties
     // ----------------------------------------------------------------------------------------
 
-    @PutMapping(value = "/partie/{id}/sauvegarde")
+    @PutMapping(value = "/partie/{id}/sauvegarde", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> savePartie(@PathVariable String id, @RequestBody UserDTO userDTO) {
         facade.savePartie(userDTO.getId());
         URI location = ServletUriComponentsBuilder

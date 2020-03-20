@@ -14,6 +14,7 @@ public class Board<T extends Rectangle> extends Pane {
 
 
     public void draw() {
+
         if(grid == null)
             return;
         for(int y = 0; y < grid.length; y++) {

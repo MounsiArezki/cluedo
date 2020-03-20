@@ -33,13 +33,13 @@ public class ConnexionControleur {
     }
 
     public void loginCntrl(String login,String pwd) throws ConnexionException {
-        ResponseEntity<User> responseEntity= userService.connexion(login,pwd);
+  /*      ResponseEntity<User> responseEntity= userService.connexion(login,pwd);
         HttpStatus status=responseEntity.getStatusCode();
         if (!HttpStatus.CREATED.equals(status)){
             throw new ConnexionException();
         }
         User user=responseEntity.getBody();
-        VariablesGlobales.setUser(user);
+        VariablesGlobales.setUser(user);*/
         goToMenu(connexionStage);
     }
 

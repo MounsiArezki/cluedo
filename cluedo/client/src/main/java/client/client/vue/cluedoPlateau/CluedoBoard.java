@@ -3,6 +3,7 @@ package client.client.vue.cluedoPlateau;
 
 import client.client.modele.entite.io.TextStream;
 import client.client.vue.place.Place;
+import javafx.geometry.Insets;
 
 
 public class CluedoBoard extends Board<Place> {
@@ -13,7 +14,9 @@ public class CluedoBoard extends Board<Place> {
 
         super();
         this.setWidth(750);
-        this.setHeight(470);
+        this.setHeight(620);
+
+
         initializeGrid();
         draw();
 

@@ -1,8 +1,11 @@
 package client.client.config;
 
+import client.client.service.Facade;
+
+
 public class ServiceConfig {
 
-    public static String BASE_URL="http://localhost:8081";
+    public static String BASE_URL="http://localhost:808O";
 
     //
     // USER
@@ -33,5 +36,9 @@ public class ServiceConfig {
     public static String URL_INVITATION_ID=URL_INVITATION+"/{id}";
     public static String URL_INVITATION_ID_ACCEPTATION=URL_INVITATION_ID+"/acceptation";
     public static String URL_INVITATION_ID_REFUS=URL_INVITATION_ID+"/refus";
+
+
+
+
 
 }

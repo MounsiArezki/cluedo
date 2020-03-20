@@ -3,6 +3,7 @@ package client.client.service;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

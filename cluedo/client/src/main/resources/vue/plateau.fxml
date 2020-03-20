@@ -85,9 +85,9 @@
       </VBox>
    </right>
    <center>
-      <AnchorPane id="plateauP" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+  <AnchorPane  BorderPane.alignment="CENTER">
          <children>
-            <CluedoBoard fx:id="board" prefHeight="200.0" prefWidth="200.0" />
+            <CluedoBoard  id="plateauP"   fx:id="board" />
          </children>
       </AnchorPane>
 

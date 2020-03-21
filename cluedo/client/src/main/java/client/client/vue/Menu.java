@@ -1,6 +1,7 @@
 package client.client.vue;
 
 import client.client.controleur.MenuControleur;
+import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
 import javafx.collections.FXCollections;
@@ -16,7 +17,9 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class Menu extends View<MenuControleur> {
 
@@ -24,7 +27,6 @@ public class Menu extends View<MenuControleur> {
     //--------------------------------
     @FXML
     public TableView<Invitation> table ;
-
 
      ObservableList<Invitation> dataObservable = FXCollections.observableArrayList();
 
@@ -34,18 +36,10 @@ public class Menu extends View<MenuControleur> {
         table.setPrefHeight(300);
     }
 
-
-
-
-    // pour test ... charger avec le webservices ...
-    private void fillTableObservableListWithSampleData(ArrayList<Invitation> dt) {
-        dataObservable.addAll(dt);
-    }
-
-    public void drawTable(ArrayList<Invitation> dt){
-
-        fillTableObservableListWithSampleData( dt);
+    public void drawTable(List<Invitation> dt){
+        dataObservable.setAll(dt);
         table.setItems(dataObservable);
+        System.out.println(dataObservable.get(0));
 
         TableColumn<Invitation, String > partieId = new TableColumn<>("ID");
         partieId.setCellValueFactory(new PropertyValueFactory<>("idPartie"));
@@ -53,7 +47,7 @@ public class Menu extends View<MenuControleur> {
         TableColumn<Invitation, User> colHost = new TableColumn<>("host");
         colHost.setCellValueFactory(new PropertyValueFactory<>("hote"));
 
-        table.getColumns().addAll(partieId, colHost);
+        table.getColumns().setAll(partieId, colHost);
 
         addButtonToTable();
 
@@ -142,6 +136,7 @@ public class Menu extends View<MenuControleur> {
 
     @Override
     public void refresh() {
-
+        List<Invitation> invitationsRecues = this.getControleur().getAllInvitationsRecues();
+        drawTable(invitationsRecues);
     }
 }

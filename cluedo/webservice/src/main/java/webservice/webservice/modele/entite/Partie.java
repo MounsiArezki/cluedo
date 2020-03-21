@@ -3,10 +3,7 @@ package webservice.webservice.modele.entite;
 import webservice.webservice.modele.entite.carte.ICarte;
 import webservice.webservice.modele.fabrique.CarteFabrique;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Partie {
 
@@ -23,6 +20,7 @@ public class Partie {
         this.id = String.valueOf(++lastId);
         this.idHote = idHote;
         this.idJoueurs = new ArrayList<>();
+        combinaisonGagante=new HashMap<>();
         tirageCombinaison();
     }
 

@@ -128,7 +128,7 @@ public class ServControl {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newInvitationDTO.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(invitationDTO);
     }
 
     // trouver une invitation par son id

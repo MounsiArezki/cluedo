@@ -172,6 +172,13 @@ public class ServControl {
     // Méthodes sur les parties
     // ----------------------------------------------------------------------------------------
 
+    @GetMapping(value = "/partie/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Partie> getPartieById(@PathVariable String id){
+        Partie partie=facade.findPartie(id);
+        return ResponseEntity.ok(partie);
+    }
+
+
     @PutMapping(value = "/partie/{id}/sauvegarde", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> savePartie(@PathVariable String id, @RequestBody UserDTO userDTO) {
         facade.savePartie(id, userDTO.getId());
@@ -182,7 +189,7 @@ public class ServControl {
     }
 
     @GetMapping(value = "/partie/{id}/restauration", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PartieDTO> restorePartie(@PathVariable String id, @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(PartieDTO.creer(facade.restorePartie(id, userDTO.getId())));
+    public ResponseEntity<Partie> restorePartie(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(facade.restorePartie(id, userDTO.getId()));
     }
 }

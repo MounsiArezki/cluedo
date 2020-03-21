@@ -26,6 +26,9 @@ public class Plateau extends View<PlateauControleur> {
     public Label nomJoueurJ;
     public TextField desResultat;
     public CluedoBoard board;
+    public Label etatPartie;
+
+
 
     ObservableList<Button> observableListCard=FXCollections.observableArrayList();
 

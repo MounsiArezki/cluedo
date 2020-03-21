@@ -1,6 +1,8 @@
 package webservice.webservice.modele.entite;
 
 import webservice.webservice.modele.entite.carte.ICarte;
+import webservice.webservice.modele.entite.etat_partie.IEtatPartie;
+import webservice.webservice.modele.entite.etat_partie.PasCommencee;
 import webservice.webservice.modele.fabrique.CarteFabrique;
 
 import java.util.*;
@@ -16,12 +18,15 @@ public class Partie {
 
     private static long lastId = 0L;
 
+    private IEtatPartie etatPartie;
+
     public Partie(User hote) {
         this.id = String.valueOf(++lastId);
         this.hote = hote;
         this.joueurs = new HashMap<>();
         combinaisonGagante = new HashMap<>();
         tirageCombinaison();
+        etatPartie=new PasCommencee();
     }
 
     private void tirageCombinaison() {
@@ -44,4 +49,36 @@ public class Partie {
     public HashMap<String, Joueur> getJoueurs() { return joueurs; }
 
     public Map<String, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setHote(User hote) {
+        this.hote = hote;
+    }
+
+    public void setJoueurs(HashMap<String, Joueur> joueurs) {
+        this.joueurs = joueurs;
+    }
+
+    public void setCombinaisonGagante(Map<String, ICarte> combinaisonGagante) {
+        this.combinaisonGagante = combinaisonGagante;
+    }
+
+    public static long getLastId() {
+        return lastId;
+    }
+
+    public static void setLastId(long lastId) {
+        Partie.lastId = lastId;
+    }
+
+    public IEtatPartie getEtatPartie() {
+        return etatPartie;
+    }
+
+    public void setEtatPartie(IEtatPartie etatPartie) {
+        this.etatPartie = etatPartie;
+    }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import client.client.vue.cluedoPlateau.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import client.client.vue.cluedoPlateau.CluedoBoard?>
 <BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.Plateau">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
@@ -85,11 +85,14 @@
       </VBox>
    </right>
    <center>
-  <AnchorPane  BorderPane.alignment="CENTER">
+  <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <CluedoBoard  id="plateauP"   fx:id="board" />
+            <CluedoBoard id="plateauP" fx:id="board" />
          </children>
       </AnchorPane>
 
    </center>
+   <top>
+      <Label fx:id="etatPartie" prefHeight="32.0" prefWidth="441.0" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>

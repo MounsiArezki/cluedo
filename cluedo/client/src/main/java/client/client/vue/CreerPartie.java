@@ -78,7 +78,7 @@ public class CreerPartie extends View<CreerPartieControleur> {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             User user = getTableView().getItems().get(getIndex());
-                            if(joueursInvitesList.size()<6){
+                            if(joueursInvitesList.size()<5){
                                 joueursInvitesList.add(user);
                             }
                             refresh();

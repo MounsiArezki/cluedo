@@ -14,6 +14,8 @@ public class PlateauControleur {
 
     Plateau plateau;
 
+    Partie partie;
+
     //simulation facade api
     Collection<ICarte> cartesJ ;
 

@@ -1,14 +1,14 @@
 package client.client.controleur;
 
-        import client.client.global.VariablesGlobales;
-        import client.client.modele.entite.Invitation;
-        import client.client.modele.entite.io.FxmlPath;
-        import client.client.service.Facade;
-        import client.client.service.IUserService;
-        import client.client.vue.Menu;
-        import javafx.stage.Stage;
-        import java.util.Arrays;
-        import java.util.List;
+import client.client.global.VariablesGlobales;
+import client.client.modele.entite.Invitation;
+import client.client.modele.entite.io.FxmlPath;
+import client.client.service.Facade;
+import client.client.service.IUserService;
+import client.client.vue.Menu;
+import javafx.stage.Stage;
+import java.util.Arrays;
+import java.util.List;
 
 public class MenuControleur  {
 

@@ -1,13 +1,12 @@
 package client.client.controleur;
 
+        import client.client.global.VariablesGlobales;
         import client.client.modele.entite.Invitation;
         import client.client.modele.entite.io.FxmlPath;
         import client.client.service.Facade;
         import client.client.service.IUserService;
         import client.client.vue.Menu;
         import javafx.stage.Stage;
-
-        import java.util.ArrayList;
         import java.util.Arrays;
         import java.util.List;
 
@@ -32,14 +31,21 @@ public class MenuControleur  {
     }
 
 
-
-
     public void goToCreerPartie(){
+        menu.stopTimer();
         new CreerPartieControleur(menuStage);
     }
 
     public void goToRestaurerPartie() {
+        menu.stopTimer();
         new RestaurerPartieControleur(menuStage);
+    }
+
+    public void deconnexion(){
+        menu.stopTimer();
+        userService.deconnexion();
+        VariablesGlobales.setUser(null);
+        new ConnexionControleur(menuStage);
     }
 
 }

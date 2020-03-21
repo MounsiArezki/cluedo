@@ -51,7 +51,7 @@
                   <Insets left="50.0" />
                </HBox.margin>
             </Button>
-               <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#deconnectionAction" prefHeight="21.0" prefWidth="117.0" style="-fx-background-color: #5cb85c;" text="Deconnection">
+               <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#deconnexionAction" prefHeight="21.0" prefWidth="117.0" style="-fx-background-color: #5cb85c;" text="Déconnexion">
                    <font>
                        <Font size="15.0" />
                    </font>

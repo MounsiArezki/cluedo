@@ -13,6 +13,7 @@ public class ServiceConfig {
     public static String USER_ID_PARAM="id";
     public static String URL_USER=BASE_URL+"/user";
     public static String URL_USER_CONNEXION=URL_USER+"/connexion";
+    public static String URL_USER_DECONNEXION=URL_USER_CONNEXION+"/{id}";
     public static String URL_USER_ID=URL_USER+"/{id}";
     public static String URL_USER_ID_INVITATION_RECU=URL_USER_ID+"/invitation/recue";
     public static String URL_USER_ID_INVITATION_EMISE=URL_USER_ID+"/invitation/emise";

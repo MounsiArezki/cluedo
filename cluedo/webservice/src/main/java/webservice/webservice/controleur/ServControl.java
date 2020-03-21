@@ -84,7 +84,7 @@ public class ServControl {
     }
 
     // deconnecter un utilisateur
-    @DeleteMapping(value = "/user/connexion")
+    @DeleteMapping(value = "/user/connexion/{id}")
     public ResponseEntity<String> deconnectUser(@PathVariable String id) {
         facade.deconnexion(id);
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);

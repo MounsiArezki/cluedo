@@ -132,6 +132,9 @@ public class Menu extends View<MenuControleur> {
 
     }
 
+    public void deconnexionAction(){
+        this.getControleur().deconnexion();
+    }
 
     @Override
     public void refresh() {

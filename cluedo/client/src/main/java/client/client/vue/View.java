@@ -22,6 +22,7 @@ import java.util.TimerTask;
 public abstract class View<T> {
 
     private Stage stage;
+    private Timeline timeline;
 
     @FXML
     private Pane root;
@@ -87,14 +88,19 @@ public abstract class View<T> {
     public abstract void refresh();
 
     public void setTimer(int seconds){
-        Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 refresh();
             }
         }));
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    public void stopTimer(){
+        timeline.stop();
+        timeline = null;
     }
 
 }

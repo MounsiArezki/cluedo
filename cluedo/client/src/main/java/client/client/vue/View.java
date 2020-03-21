@@ -26,6 +26,7 @@ public abstract class View<T> {
     @FXML
     private Pane root;
 
+    private  Timeline fiveSecondsWonder;
 
     private T controleur;
 
@@ -87,7 +88,7 @@ public abstract class View<T> {
     public abstract void refresh();
 
     public void setTimer(int seconds){
-        Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
+        fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 refresh();
@@ -95,6 +96,11 @@ public abstract class View<T> {
         }));
         fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
         fiveSecondsWonder.play();
+    }
+
+    public void stopTimer(){
+        fiveSecondsWonder.stop();
+        fiveSecondsWonder=null;
     }
 
 }

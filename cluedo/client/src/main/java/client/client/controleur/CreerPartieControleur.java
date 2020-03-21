@@ -1,5 +1,7 @@
 package client.client.controleur;
 
+import client.client.global.VariablesGlobales;
+import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
@@ -32,16 +34,19 @@ public class CreerPartieControleur {
         creerPartie.show("Creation Partie");
     }
 
-    public User[] getAllUsers(){
-        User[] users= userService.getAllUsers();
+    public User[] getAllUsers(String recherche){
+        User[] users;
+        if("".equals(recherche)){
+            users= userService.getAllUsers();
+        }
+        else{
+            users= userService.getAllUsersWithFiltre(recherche);
+        }
         return users;
     }
 
-    public List<User> getAllUsersWithFiltre(String filtre){
-        /*User[] users= userService.getAllUsersWithFiltre(filtre).getBody();
-        List<User> res= Arrays.asList(users);
-        */
-        return null;
+    public void lancerInvitation(List<User> invites){
+        invitationService.creerInvitation(VariablesGlobales.getUser(),invites);
     }
 
     public void goToMenu() {

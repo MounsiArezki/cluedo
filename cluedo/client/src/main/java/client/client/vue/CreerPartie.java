@@ -18,16 +18,17 @@ import java.util.List;
 
 public class CreerPartie extends View<CreerPartieControleur> {
     @FXML
-    public TextField invite;
-    @FXML
-    public TextField nomPartie;
-    
+    public TextField recherche;
+
     @FXML
     public TableView joueurInviteTable;
     @FXML
     public TableView joueurTable;
 
     private List<User> joueursInvitesList=new ArrayList<>();
+
+    ObservableList<User> observableListJoueurs=FXCollections.observableArrayList();
+    ObservableList<User> observableListJoueursInvites=FXCollections.observableArrayList();
 
     private void setTableappearance() {
         joueurInviteTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -39,31 +40,30 @@ public class CreerPartie extends View<CreerPartieControleur> {
         joueurTable.setPrefHeight(150);
     }
 
-    private ObservableList<User> arrayToObserbableList(List<User> array) {
-        ObservableList<User> data = FXCollections.observableArrayList();
-        data.addAll(array);
-        return data;
-    }
-
     public void drawTableJoueur(List<User> dt){
-        joueurTable.setItems(arrayToObserbableList(dt));
+        observableListJoueurs.removeAll(observableListJoueurs);
+        observableListJoueurs.addAll(dt);
+        joueurTable.setItems(observableListJoueurs);
 
-        TableColumn<User, String> colPseudo = new TableColumn<>("Pseudo");
+        TableColumn<User, String> colPseudo = new TableColumn<>("pseudo");
         colPseudo.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
-
-        joueurTable.getColumns().addAll(colPseudo);
+        joueurTable.getColumns().setAll(colPseudo);
 
         addButtonToTableJoueur();
     }
 
     public void drawTableJoueurInvite(List<User> dt){
-        joueurInviteTable.setItems(arrayToObserbableList(dt));
+        observableListJoueursInvites.removeAll(observableListJoueursInvites);
+        observableListJoueursInvites.addAll(dt);
+        joueurInviteTable.setItems(observableListJoueursInvites);
 
         TableColumn<User, String> colPseudo = new TableColumn<>("Pseudo");
         colPseudo.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
 
-        joueurInviteTable.getColumns().addAll(colPseudo);
+        joueurInviteTable.getColumns().setAll(colPseudo);
+        addButtonToTableJoueurInvite();
     }
+
 
     private void addButtonToTableJoueur() {
         TableColumn<User, Void> colBtnInviter = new TableColumn(" ");
@@ -71,14 +71,16 @@ public class CreerPartie extends View<CreerPartieControleur> {
         Callback<TableColumn<User, Void>, TableCell<User, Void>> cellFactoryRejoindre = new Callback<>() {
             @Override
             public TableCell<User, Void> call(final TableColumn<User, Void> param) {
-                        final TableCell<User, Void> cell = new TableCell<>() {
+                final TableCell<User, Void> cell = new TableCell<>() {
 
-                            private final Button btn = new Button("inviter");
+                    private final Button btn = new Button("inviter");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             User user = getTableView().getItems().get(getIndex());
-                            joueursInvitesList.add(user);
+                            if(joueursInvitesList.size()<6){
+                                joueursInvitesList.add(user);
+                            }
                             refresh();
                         });
                     }
@@ -96,10 +98,48 @@ public class CreerPartie extends View<CreerPartieControleur> {
                 return cell;
             }
         };
+
+        colBtnInviter.setCellFactory(cellFactoryRejoindre);
         joueurTable.getColumns().addAll(colBtnInviter);
     }
 
+    private void addButtonToTableJoueurInvite() {
+        TableColumn<User, Void> colBtnInviter = new TableColumn(" ");
+
+        Callback<TableColumn<User, Void>, TableCell<User, Void>> cellFactoryRejoindre = new Callback<>() {
+            @Override
+            public TableCell<User, Void> call(final TableColumn<User, Void> param) {
+                final TableCell<User, Void> cell = new TableCell<>() {
+
+                    private final Button btn = new Button("annuler");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            User user = getTableView().getItems().get(getIndex());
+                            joueursInvitesList.remove(user);
+                            refresh();
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        colBtnInviter.setCellFactory(cellFactoryRejoindre);
+        joueurInviteTable.getColumns().addAll(colBtnInviter);
+    }
+
     public void lancerPartieAction(ActionEvent actionEvent) {
+        getControleur().lancerInvitation(joueursInvitesList);
         getControleur().goToPlateau();
     }
 
@@ -109,9 +149,8 @@ public class CreerPartie extends View<CreerPartieControleur> {
 
     @Override
     public void refresh() {
-        List<User> listUsers= Arrays.asList(getControleur().getAllUsers());
-        System.out.println(listUsers);
+        List<User> listUsers= Arrays.asList(getControleur().getAllUsers(recherche.getText()));
         drawTableJoueur(listUsers);
-        drawTableJoueur(joueursInvitesList);
+        drawTableJoueurInvite(joueursInvitesList);
     }
 }

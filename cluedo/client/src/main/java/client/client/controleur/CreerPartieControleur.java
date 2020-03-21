@@ -27,14 +27,14 @@ public class CreerPartieControleur {
         this.creerPartieStage = creerPartieStage;
         creerPartie = (CreerPartie)CreerPartie.creerInstance(creerPartieStage , FxmlPath.CREER_PARTIE.getUrl());
         creerPartie.setControleur(this);
+        creerPartie.refresh();
+        creerPartie.setTimer(1);
         creerPartie.show("Creation Partie");
     }
 
-    public List<User> getAllUsers(){
-        /*User[] users= userService.getAllUsers().getBody();
-        List<User> res= Arrays.asList(users);
-        return res;*/
-        return null;
+    public User[] getAllUsers(){
+        User[] users= userService.getAllUsers();
+        return users;
     }
 
     public List<User> getAllUsersWithFiltre(String filtre){

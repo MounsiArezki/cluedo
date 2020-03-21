@@ -14,6 +14,7 @@ import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CreerPartie extends View<CreerPartieControleur> {
     @FXML
@@ -26,7 +27,7 @@ public class CreerPartie extends View<CreerPartieControleur> {
     @FXML
     public TableView joueurTable;
 
-    private ArrayList<User> joueursInvitesList=new ArrayList<>();
+    private List<User> joueursInvitesList=new ArrayList<>();
 
     private void setTableappearance() {
         joueurInviteTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -38,13 +39,13 @@ public class CreerPartie extends View<CreerPartieControleur> {
         joueurTable.setPrefHeight(150);
     }
 
-    private ObservableList<User> arrayToObserbableList(ArrayList<User> array) {
+    private ObservableList<User> arrayToObserbableList(List<User> array) {
         ObservableList<User> data = FXCollections.observableArrayList();
         data.addAll(array);
         return data;
     }
 
-    public void drawTableJoueur(ArrayList<User> dt){
+    public void drawTableJoueur(List<User> dt){
         joueurTable.setItems(arrayToObserbableList(dt));
 
         TableColumn<User, String> colPseudo = new TableColumn<>("Pseudo");
@@ -55,7 +56,7 @@ public class CreerPartie extends View<CreerPartieControleur> {
         addButtonToTableJoueur();
     }
 
-    public void drawTableJoueurInvite(ArrayList<User> dt){
+    public void drawTableJoueurInvite(List<User> dt){
         joueurInviteTable.setItems(arrayToObserbableList(dt));
 
         TableColumn<User, String> colPseudo = new TableColumn<>("Pseudo");
@@ -108,7 +109,8 @@ public class CreerPartie extends View<CreerPartieControleur> {
 
     @Override
     public void refresh() {
-        ArrayList<User> listUsers= (ArrayList)Arrays.asList(getControleur().getAllUsers());
+        List<User> listUsers= Arrays.asList(getControleur().getAllUsers());
+        System.out.println(listUsers);
         drawTableJoueur(listUsers);
         drawTableJoueur(joueursInvitesList);
     }

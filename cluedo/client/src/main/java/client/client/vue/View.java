@@ -1,6 +1,9 @@
 package client.client.vue;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,15 +86,15 @@ public abstract class View<T> {
 
     public abstract void refresh();
 
-    public void setTimer(int period){
-        new Timer().schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            refresh();
-                        }
-                },0,period
-        );
+    public void setTimer(int seconds){
+        Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                refresh();
+            }
+        }));
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
     }
 
 }

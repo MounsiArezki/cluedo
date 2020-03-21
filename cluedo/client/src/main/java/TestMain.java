@@ -10,7 +10,6 @@ public class TestMain {
     public static void main(String[] args) {
         Gson g=new Gson();
         Facade f=new Facade();
-        f.insciption("la","la");
-        f.connexion("la","la");
+        System.out.println(g.toJson(f.getAllUsers()));
     }
 }

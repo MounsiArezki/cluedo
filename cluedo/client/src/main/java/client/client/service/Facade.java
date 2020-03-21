@@ -5,10 +5,9 @@ import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
+import com.google.gson.Gson;
 import jdk.jfr.ContentType;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -18,73 +17,86 @@ import java.util.Map;
 public class Facade implements IUserService, IInvitationService, IPartieService {
 
     RestTemplate restTemplate;
+    Gson gson;
 
     public Facade() {
         restTemplate=new RestTemplate();
+        gson=new Gson();
     }
 
-
+    private HttpEntity<String> buildHttpEntity(Object o){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity=new HttpEntity<>(gson.toJson(o), headers);
+        return httpEntity;
+    }
     //
     // IUSERSERVICE
     //
    @Override
-    public ResponseEntity<User[]> getAllUsers() {
-        ResponseEntity<User[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER, User[].class);
-        return res;
+    public User[] getAllUsers() {
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class);
+        return gson.fromJson(res.getBody(), User[].class);
     }
 
     @Override
-    public ResponseEntity<User[]> getAllUsersWithFiltre(String filtre) {
+    public User[] getAllUsersWithFiltre(String filtre) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("filtre", filtre);
-        ResponseEntity<User[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER, User[].class, params);
-        return res;
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class, params);
+        return gson.fromJson(res.getBody(), User[].class);
     }
 
     @Override
-    public ResponseEntity<User> connexion(String login, String pwd) {
+    public User connexion(String login, String pwd) {
         User user=new User(login, pwd);
-        ResponseEntity<User> res=restTemplate.postForEntity(ServiceConfig.URL_USER_CONNEXION,user,User.class);
-        return res;
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
+        System.out.println(gson.toJson(httpEntity));
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_USER_CONNEXION,httpEntity,String.class);
+        return gson.fromJson(res.getBody(), User.class);
     }
 
     @Override
     public void deconnexion() {
         User user=VariablesGlobales.getUser();
-        restTemplate.delete(ServiceConfig.URL_USER_CONNEXION,user);
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
+        restTemplate.delete(ServiceConfig.URL_USER_CONNEXION,httpEntity);
     }
 
     @Override
-    public ResponseEntity<User> insciption(String login, String pwd) {
+    public User insciption(String login, String pwd) {
         User user=new User(login, pwd);
-        ResponseEntity<User> res=restTemplate.postForEntity(ServiceConfig.URL_USER,user,User.class);
-        return res;
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
+        System.out.println(gson.toJson(httpEntity));
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_USER,httpEntity,String.class);
+        return gson.fromJson(res.getBody(),User.class);
     }
 
     @Override
     public void desinscrition() {
         User user=VariablesGlobales.getUser();
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
-        restTemplate.delete(ServiceConfig.URL_USER_ID, user, params);
+        restTemplate.delete(ServiceConfig.URL_USER_ID, httpEntity, params);
     }
 
     @Override
-    public ResponseEntity<Invitation[]> getAllInvitationsRecues() {
+    public Invitation[] getAllInvitationsRecues() {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
-        ResponseEntity<Invitation[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER_ID_INVITATION_RECU, Invitation[].class, params);
-        return res;
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER_ID_INVITATION_RECU, String.class, params);
+        return gson.fromJson(res.getBody(),Invitation[].class);
     }
 
     @Override
-    public ResponseEntity<Invitation[]> getAllInvitationsEmises() {
+    public Invitation[] getAllInvitationsEmises() {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
-        ResponseEntity<Invitation[]> res=restTemplate.getForEntity(ServiceConfig.URL_USER_ID_INVITATION_EMISE, Invitation[].class,params);
-        return res;
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER_ID_INVITATION_EMISE, String.class,params);
+        return gson.fromJson(res.getBody(),Invitation[].class);
     }
 
 
@@ -92,34 +104,38 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     // IINVITATIONSERVICE
     //
     @Override
-    public ResponseEntity<Invitation> creerInvitation(User hote, List<User> listeInvites) {
+    public Invitation creerInvitation(User hote, List<User> listeInvites) {
         Invitation invitation=new Invitation(hote, listeInvites);
-        ResponseEntity<Invitation> res=restTemplate.postForEntity(ServiceConfig.URL_INVITATION, invitation, Invitation.class);
-        return res;
+        HttpEntity<String> httpEntity=buildHttpEntity(invitation);
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_INVITATION, invitation, String.class);
+        return gson.fromJson(res.getBody(),Invitation.class);
     }
 
     @Override
     public void supprimerInvitation(String idInvitation) {
         User user=VariablesGlobales.getUser();
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
-        restTemplate.delete(ServiceConfig.URL_INVITATION_ID, user, String.class,params);
+        restTemplate.delete(ServiceConfig.URL_INVITATION_ID, httpEntity, String.class,params);
     }
 
     @Override
     public void accepterInvitation(String idInvitation) {
         User user=VariablesGlobales.getUser();
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
-        restTemplate.put(ServiceConfig.URL_INVITATION_ID_ACCEPTATION, user, Partie.class, params);
+        restTemplate.put(ServiceConfig.URL_INVITATION_ID_ACCEPTATION, httpEntity, Partie.class, params);
     }
 
     @Override
     public void refuserInvitation(String idInvitation) {
         User user=VariablesGlobales.getUser();
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
-        restTemplate.put(ServiceConfig.URL_INVITATION_ID_REFUS, user, Partie.class, params);
+        restTemplate.put(ServiceConfig.URL_INVITATION_ID_REFUS, httpEntity, Partie.class, params);
     }
 
 
@@ -131,18 +147,19 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     @Override
     public void sauvegarderPartie(String idPartie) {
         User user=VariablesGlobales.getUser();
+        HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
-        restTemplate.put(ServiceConfig.URL_PARTIE_ID_SAUVEGARDE, user, params);
+        restTemplate.put(ServiceConfig.URL_PARTIE_ID_SAUVEGARDE, httpEntity, params);
     }
 
     @Override
-    public ResponseEntity<Partie> restaurerPartie(String idPartie) {
+    public Partie restaurerPartie(String idPartie) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put("idHote",user.getId());
-        ResponseEntity<Partie> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_RESTAURATION, Partie.class, params);
-        return res;
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_RESTAURATION, String.class, params);
+        return gson.fromJson(res.getBody(),Partie.class);
     }
 }

@@ -1,5 +1,6 @@
 package webservice.webservice.controleur;
 
+import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/serv")
+@CrossOrigin("*")
 public class ServControl {
 
     Facade facade = Facade.getFac();
@@ -33,18 +35,23 @@ public class ServControl {
     // récupérer tous les utilisateurs
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getUsers() {
+        System.out.println("/user get");
         return ResponseEntity.ok(facade.getUsers().stream().map(e -> UserDTO.creer(e)).collect(Collectors.toList()));
     }
 
     // ajouter un utilisateur
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
+        System.out.println("/user post");
         User user = facade.addUser(userDTO.getPseudo(), userDTO.getPwd());
         UserDTO newUserDTO = UserDTO.creer(user);
-        URI location = ServletUriComponentsBuilder
+        /*URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newUserDTO.getId()).toUri();
-        return ResponseEntity.created(location).build();
+                .buildAndExpand(newUserDTO.getId()).toUri();*/
+        ResponseEntity<User> responseEntity=new ResponseEntity<>(user, HttpStatus.CREATED);
+        Gson gson=new Gson();
+        System.out.println(gson.toJson(responseEntity));
+        return responseEntity;
     }
 
     // trouver un utilisateur par son id
@@ -65,13 +72,15 @@ public class ServControl {
 
     // connecter un utilisateur
     @PostMapping(value = "/user/connexion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> connectUser(@RequestBody UserDTO userDTO) throws DejaCoException, MdpIncorrectException {
+    public ResponseEntity<User> connectUser(@RequestBody UserDTO userDTO) throws DejaCoException, MdpIncorrectException {
         User user = facade.connexion(userDTO.getPseudo(), userDTO.getPwd());
-        UserDTO newUserDTO = UserDTO.creer(user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newUserDTO.getId()).toUri();
-        return ResponseEntity.created(location).build();
+                .buildAndExpand(user.getId()).toUri();
+        ResponseEntity<User> responseEnty=ResponseEntity.created(location).body(user);
+        Gson g=new Gson();
+        System.out.println(g.toJson(responseEnty));
+        return responseEnty;
     }
 
     // deconnecter un utilisateur

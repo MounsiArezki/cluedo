@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IInvitationService {
 
-    public ResponseEntity<Invitation> creerInvitation(User hote, List<User> listeInvites);
+    public Invitation creerInvitation(User hote, List<User> listeInvites);
 
     public void supprimerInvitation(String idInvitation);
 

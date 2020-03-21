@@ -33,22 +33,13 @@ public class ConnexionControleur {
     }
 
     public void loginCntrl(String login,String pwd) throws ConnexionException {
-  /*      ResponseEntity<User> responseEntity= userService.connexion(login,pwd);
-        HttpStatus status=responseEntity.getStatusCode();
-        if (!HttpStatus.CREATED.equals(status)){
-            throw new ConnexionException();
-        }
-        User user=responseEntity.getBody();
-        VariablesGlobales.setUser(user);*/
+        User user=userService.connexion(login, pwd);
+        VariablesGlobales.setUser(user);
         goToMenu(connexionStage);
     }
 
     public void inscrireCntrl(String login,String password) throws InscriptionException {
-        ResponseEntity<User> responseEntity=userService.insciption(login,password);
-        HttpStatus status=responseEntity.getStatusCode();
-        if (!HttpStatus.CREATED.equals(status)){
-            throw new InscriptionException();
-        }
+        userService.insciption(login, password);
     }
 
     private void goToMenu(Stage menuStage) {

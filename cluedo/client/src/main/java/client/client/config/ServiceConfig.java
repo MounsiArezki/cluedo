@@ -5,7 +5,7 @@ import client.client.service.Facade;
 
 public class ServiceConfig {
 
-    public static String BASE_URL="http://localhost:808O";
+    public static String BASE_URL="http://localhost:8080/serv";
 
     //
     // USER

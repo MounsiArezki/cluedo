@@ -31,15 +31,17 @@ public class CreerPartieControleur {
     }
 
     public List<User> getAllUsers(){
-        User[] users= userService.getAllUsers().getBody();
+        /*User[] users= userService.getAllUsers().getBody();
         List<User> res= Arrays.asList(users);
-        return res;
+        return res;*/
+        return null;
     }
 
     public List<User> getAllUsersWithFiltre(String filtre){
-        User[] users= userService.getAllUsersWithFiltre(filtre).getBody();
+        /*User[] users= userService.getAllUsersWithFiltre(filtre).getBody();
         List<User> res= Arrays.asList(users);
-        return res;
+        */
+        return null;
     }
 
     public void goToMenu() {

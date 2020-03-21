@@ -1,16 +1,16 @@
+import client.client.config.ServiceConfig;
 import client.client.modele.entite.User;
+import client.client.service.Facade;
 import com.google.gson.Gson;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
 public class TestMain {
 
     public static void main(String[] args) {
-        User u=new User();
-        u.setId("la");
-        u.setPseudo("la");
-        ResponseEntity<User> r=new ResponseEntity<>(u, HttpStatus.CREATED);
         Gson g=new Gson();
-        System.out.println(g.toJson(r));
+        Facade f=new Facade();
+        f.insciption("la","la");
+        f.connexion("la","la");
     }
 }

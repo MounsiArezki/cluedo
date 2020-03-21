@@ -8,20 +8,20 @@ import java.util.List;
 
 public interface IUserService {
 
-    public ResponseEntity<User[]> getAllUsers();
+    public User[] getAllUsers();
 
-    public ResponseEntity<User[]> getAllUsersWithFiltre(String filtre);
+    public User[] getAllUsersWithFiltre(String filtre);
 
-    public ResponseEntity<User> connexion(String login, String pwd);
+    public User connexion(String login, String pwd);
 
     public void deconnexion();
 
-    public ResponseEntity<User> insciption(String login, String pwd);
+    public User insciption(String login, String pwd);
 
     public void desinscrition();
 
-    public ResponseEntity<Invitation[]> getAllInvitationsRecues();
+    public Invitation[] getAllInvitationsRecues();
 
-    public ResponseEntity<Invitation[]> getAllInvitationsEmises();
+    public Invitation[] getAllInvitationsEmises();
 
 }

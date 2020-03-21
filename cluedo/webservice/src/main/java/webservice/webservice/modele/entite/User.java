@@ -1,5 +1,7 @@
 package webservice.webservice.modele.entite;
 
+import java.util.Objects;
+
 public class User {
 
     private String id;
@@ -23,4 +25,18 @@ public class User {
     public String getPwd() { return pwd; }
 
     public void setPwd(String pwd) { this.pwd = pwd; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(pseudo, user.pseudo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, pseudo);
+    }
 }

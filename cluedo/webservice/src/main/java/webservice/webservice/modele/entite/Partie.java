@@ -9,18 +9,18 @@ public class Partie {
 
     private String id;
 
-    private String idHote;
-    private List<String> idJoueurs;
+    private User hote;
+    private HashMap<String, Joueur> joueurs;
 
     private Map<String, ICarte> combinaisonGagante;
 
     private static long lastId = 0L;
 
-    public Partie(String idHote) {
+    public Partie(User hote) {
         this.id = String.valueOf(++lastId);
-        this.idHote = idHote;
-        this.idJoueurs = new ArrayList<>();
-        combinaisonGagante=new HashMap<>();
+        this.hote = hote;
+        this.joueurs = new HashMap<>();
+        combinaisonGagante = new HashMap<>();
         tirageCombinaison();
     }
 
@@ -39,9 +39,9 @@ public class Partie {
 
     public String getId() { return id; }
 
-    public String getIdHote() { return idHote; }
+    public User getHote() { return hote; }
 
-    public List<String> getIdJoueurs() { return idJoueurs; }
+    public HashMap<String, Joueur> getJoueurs() { return joueurs; }
 
     public Map<String, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
 }

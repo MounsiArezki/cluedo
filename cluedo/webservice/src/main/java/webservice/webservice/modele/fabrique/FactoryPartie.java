@@ -1,6 +1,7 @@
 package webservice.webservice.modele.fabrique;
 
 import webservice.webservice.modele.entite.Partie;
+import webservice.webservice.modele.entite.User;
 
 public class FactoryPartie {
 
@@ -8,7 +9,7 @@ public class FactoryPartie {
 
     private FactoryPartie() { }
 
-    public Partie createPartie(String idH) { return new Partie(idH); }
+    public Partie createPartie(User u) { return new Partie(u); }
 
     public static FactoryPartie getFacP() { return facP; }
 }

@@ -26,7 +26,7 @@ public class Menu extends View<MenuControleur> {
 
     //--------------------------------
     @FXML
-    public TableView<Invitation> table ;
+    public TableView<Invitation> table;
 
      ObservableList<Invitation> dataObservable = FXCollections.observableArrayList();
 

@@ -13,6 +13,7 @@ public class FXApp extends Application {
         launch(args);
     }
 
+    //start
     @Override
     public void start(Stage primaryStage) throws Exception {
 

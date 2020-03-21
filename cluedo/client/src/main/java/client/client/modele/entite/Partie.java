@@ -1,11 +1,6 @@
 package client.client.modele.entite;
 
-import client.client.modele.entite.etat_partie.IEtatPartie;
-
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class Partie {
     private String id;

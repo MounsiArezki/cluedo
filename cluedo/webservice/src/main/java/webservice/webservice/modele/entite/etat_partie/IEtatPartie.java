@@ -7,8 +7,6 @@ public abstract class IEtatPartie {
     protected Joueur joueurCourant;
     protected String texte;
 
-    public abstract IEtatPartie next();
-
     public Joueur getJoueurCourant() {
         return joueurCourant;
     }
@@ -24,4 +22,8 @@ public abstract class IEtatPartie {
     public void setTexte(String texte) {
         this.texte = texte;
     }
+
+    public abstract IEtatPartie finir();
+
+    public abstract IEtatPartie init();
 }

@@ -2,6 +2,8 @@ package webservice.webservice.DTO.entite;
 
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.carte.ICarte;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +14,13 @@ public class PartieDTO {
     private List<String> idJoueurs;
     private Map<String, ICarte> combinaisonGagante;
 
-    public PartieDTO(){}
+    public PartieDTO() {}
 
-    public static PartieDTO creer(Partie partie){
+    public static PartieDTO creer(Partie partie) {
         PartieDTO partieDTO = new PartieDTO();
         partieDTO.setId(partie.getId());
-        partieDTO.setIdHote(partie.getIdHote());
-        partieDTO.setIdJoueurs(partie.getIdJoueurs());
+        partieDTO.setIdHote(partie.getHote().getId());
+        partieDTO.setIdJoueurs(new ArrayList<>(partie.getJoueurs().keySet()));
         partieDTO.setCombinaisonGagante(partie.getCombinaisonGagante());
         return partieDTO;
     }
@@ -43,7 +45,5 @@ public class PartieDTO {
         this.idJoueurs = idJoueurs;
     }
 
-    public void setCombinaisonGagante(Map<String, ICarte> combinaisonGagante) {
-        this.combinaisonGagante = combinaisonGagante;
-    }
+    public void setCombinaisonGagante(Map<String, ICarte> combinaisonGagante) { this.combinaisonGagante = combinaisonGagante; }
 }

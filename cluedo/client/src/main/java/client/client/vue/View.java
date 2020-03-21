@@ -27,7 +27,6 @@ public abstract class View<T> {
     @FXML
     private Pane root;
 
-
     private T controleur;
 
     public T getControleur() {
@@ -88,6 +87,7 @@ public abstract class View<T> {
     public abstract void refresh();
 
     public void setTimer(int seconds){
+
         timeline = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

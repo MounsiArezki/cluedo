@@ -16,8 +16,8 @@ import webservice.webservice.modele.entite.User;
 import webservice.webservice.modele.exception.DejaCoException;
 import webservice.webservice.modele.exception.MdpIncorrectException;
 
-import javax.servlet.http.Part;
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 public class ServControl {
 
-    Facade facade = Facade.getFac();
+    private Facade facade = Facade.getFac();
 
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les utilisateurs
@@ -36,7 +36,7 @@ public class ServControl {
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getUsers() {
         System.out.println("/user get");
-        return ResponseEntity.ok(facade.getUsers().stream().map(e -> UserDTO.creer(e)).collect(Collectors.toList()));
+        return ResponseEntity.ok(facade.getUsers().stream().map(UserDTO::creer).collect(Collectors.toList()));
     }
 
     // ajouter un utilisateur
@@ -48,20 +48,24 @@ public class ServControl {
         /*URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newUserDTO.getId()).toUri();*/
-        ResponseEntity<User> responseEntity=new ResponseEntity<>(user, HttpStatus.CREATED);
-        Gson gson=new Gson();
+        ResponseEntity<User> responseEntity = new ResponseEntity<>(user, HttpStatus.CREATED);
+        Gson gson = new Gson();
         System.out.println(gson.toJson(responseEntity));
         return responseEntity;
     }
 
     // trouver un utilisateur par son id
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
+    public ResponseEntity<UserDTO> findUser(@PathVariable String id) {
         return ResponseEntity.ok(UserDTO.creer(facade.findUser(id)));
     }
 
-    // trouver un utilisateur par son pseudo/login
-    // Probleme URI ????
+    // trouver un/des user(s) par le début du pseudo
+    @GetMapping(value = "/user/filtre/{filter}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserDTO>> filterUserByLogin(@PathVariable String filter) {
+        System.out.println("/user filter");
+        return ResponseEntity.ok(facade.filterUserByLogin(filter).stream().map(UserDTO::creer).collect(Collectors.toList()));
+    }
 
     // supprimer un utilisateur
     @DeleteMapping(value = "/user/{id}")
@@ -77,35 +81,35 @@ public class ServControl {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
-        ResponseEntity<User> responseEnty=ResponseEntity.created(location).body(user);
-        Gson g=new Gson();
+        ResponseEntity<User> responseEnty = ResponseEntity.created(location).body(user);
+        Gson g = new Gson();
         System.out.println(g.toJson(responseEnty));
         return responseEnty;
     }
 
-    // deconnecter un utilisateur
+    // déconnecter un utilisateur
     @DeleteMapping(value = "/user/connexion/{id}")
     public ResponseEntity<String> deconnectUser(@PathVariable String id) {
         facade.deconnexion(id);
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
-    // recupere les parties d'un hote
+    // récupère les parties d'un hôte
     @GetMapping(value = "/user/{id}/partie", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PartieDTO>> getParties(@PathVariable String id) {
-        return ResponseEntity.ok(facade.getParties().stream().filter(u -> u.getIdHote().equals(id)).map(e -> PartieDTO.creer(e)).collect(Collectors.toList()));
+    public ResponseEntity<Collection<Partie>> getParties(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findPartieByHost(id));
     }
 
-    // recupere les invitations emises d'un user
+    // récupère les invitations émises d'un user
     @GetMapping(value = "/user/{id}/invitation/emise", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InvitationDTO>> getInvEmises(@PathVariable String id) {
-        return ResponseEntity.ok(facade.getInvitations().stream().filter(u -> u.getIdHote().equals(id)).map(e -> InvitationDTO.creer(e)).collect(Collectors.toList()));
+    public ResponseEntity<Collection<Invitation>> getInvEmises(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findInvitationByHost(id));
     }
 
-    // recupere les invitations recues d'un user
+    // récupère les invitations reçues d'un user
     @GetMapping(value = "/user/{id}/invitation/recue", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InvitationDTO>> getInvRecues(@PathVariable String id) {
-        return ResponseEntity.ok(facade.getInvitations().stream().filter(u -> facade.findIfInvite(u,id)).map(e -> InvitationDTO.creer(e)).collect(Collectors.toList()));
+    public ResponseEntity<Collection<Invitation>> getInvRecues(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findInvitationByGuest(id));
     }
 
     // ----------------------------------------------------------------------------------------
@@ -115,26 +119,26 @@ public class ServControl {
     // récupérer toutes les invitations
     @GetMapping(value = "/invitation", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<InvitationDTO>> getInv() {
-        return ResponseEntity.ok(facade.getInvitations().stream().map(e -> InvitationDTO.creer(e)).collect(Collectors.toList()));
+        return ResponseEntity.ok(facade.getInvitations().stream().map(InvitationDTO::creer).collect(Collectors.toList()));
     }
 
     // ajouter une invitation ET une partie
     @PostMapping(value = "/invitation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InvitationDTO> createInv(@RequestBody InvitationDTO invitationDTO) {
+    public ResponseEntity<Invitation> createInv(@RequestBody Invitation invitationDTO) {
         Partie partie = facade.addPartie(invitationDTO.getIdHote());
-        ServletUriComponentsBuilder.fromUriString("/partie").path("/{id}").buildAndExpand(partie.getId()).toUri();//URI Partie
+        ServletUriComponentsBuilder.fromUriString("/partie").path("/{id}").buildAndExpand(partie.getId()).toUri(); //URI Partie
         Invitation invitation = facade.addInvitation(partie.getId(), invitationDTO.getIdHote(), invitationDTO.getInvites());
         InvitationDTO newInvitationDTO = InvitationDTO.creer(invitation);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newInvitationDTO.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(invitationDTO);
     }
 
     // trouver une invitation par son id
     @GetMapping(value = "/invitation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InvitationDTO> getInvById(@PathVariable String id) {
-        return ResponseEntity.ok(InvitationDTO.creer(facade.findInvitation(id)));
+    public ResponseEntity<Invitation> getInvById(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findInvitation(id));
     }
 
     // supprimer une invitation
@@ -170,7 +174,7 @@ public class ServControl {
 
     @PutMapping(value = "/partie/{id}/sauvegarde", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> savePartie(@PathVariable String id, @RequestBody UserDTO userDTO) {
-        facade.savePartie(userDTO.getId());
+        facade.savePartie(id, userDTO.getId());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(userDTO.getId()).toUri();
@@ -178,7 +182,7 @@ public class ServControl {
     }
 
     @GetMapping(value = "/partie/{id}/restauration", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PartieDTO> getPartieById(@PathVariable String id) {
-        return ResponseEntity.ok(PartieDTO.creer(facade.findPartie(id)));
+    public ResponseEntity<PartieDTO> restorePartie(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(PartieDTO.creer(facade.restorePartie(id, userDTO.getId())));
     }
 }

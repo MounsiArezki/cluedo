@@ -108,7 +108,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
     public Invitation creerInvitation(User hote, List<User> listeInvites) {
         Invitation invitation=new Invitation(hote, listeInvites);
         HttpEntity<String> httpEntity=buildHttpEntity(invitation);
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_INVITATION, invitation, String.class);
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_INVITATION, httpEntity, String.class);
         return gson.fromJson(res.getBody(),Invitation.class);
     }
 

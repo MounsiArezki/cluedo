@@ -1,6 +1,7 @@
 package webservice.webservice.modele;
 
 import webservice.webservice.modele.entite.Invitation;
+import webservice.webservice.modele.entite.Joueur;
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
 import webservice.webservice.modele.exception.DejaCoException;
@@ -60,6 +61,11 @@ public class Facade {
         else return null; // sinon on retourne null
     }
 
+    // recherche des utilisateurs avec un début de pseudo
+    public Collection<User> filterUserByLogin(String db) {
+        return listeU.stream().filter(u -> u.getPseudo().startsWith(db)).collect(Collectors.toList()); // filtrage
+    }
+
     // supprimer un utilisateur
     public void removeUser(String id) {
         listeU = listeU.stream().filter(u -> !u.getId().equals(id)).collect(Collectors.toList()); // filtrage
@@ -95,7 +101,7 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeI; }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<String> lj) {
+    public Invitation addInvitation(String idP, String idH, List<User> lj) {
         Invitation i = facI.createInvitation(idP, idH, lj);
         listeI.add(i);
         return i;
@@ -117,31 +123,25 @@ public class Facade {
         else return null;
     }
 
-    // trouver une invitation par l'id de son Hôte (utilisateur créateur)
-    public Invitation findInvitationByHost(String idU) {
-        List<Invitation> li = listeI.stream().filter(i -> i.getIdHote().equals(idU)).collect(Collectors.toList());
-
-        if (!li.isEmpty()) return li.get(0);
-        else return null;
+    // trouver des invitations par l'id de son Hôte (utilisateur créateur)
+    public Collection<Invitation> findInvitationByHost(String idU) {
+        return listeI.stream().filter(i -> i.getIdHote().equals(idU)).collect(Collectors.toList());
     }
 
-    // trouve si l'id user est invite
-    public boolean findIfInvite(Invitation invitation, String idU) {
-        boolean trouve = false;
-        if(invitation.getInvites().stream().anyMatch(i -> i.equals(idU))){
-            trouve = true;
-        }
-        return trouve;
+    // trouver des invitations par l'id d'un invité (utilisateur compris dans l'invitation)
+    public Collection<Invitation> findInvitationByGuest(String idU) {
+        return listeI.stream().filter(i -> i.getInvites().contains(findUser(idU))).collect(Collectors.toList());
     }
 
     // l'utilisateur avec idU accepte l'invitation idI
     public boolean accepterInvitation(String idI, String idU) {
+        User u = findUser(idU);
         Invitation i = findInvitation(idI);
 
         if (i != null) {
-            if (i.getInvites().contains(idU)) { // si l'utilisateur est dans la liste des invités
-                i.getInvites().remove(idU); // on le retire de la liste des invités
-                findPartie(i.getIdPartie()).getIdJoueurs().add(idU); // on l'intègre à la partie
+            if (i.getInvites().contains(u)) { // si l'utilisateur est dans la liste des invités
+                i.getInvites().remove(u); // on le retire de la liste des invités
+                findPartie(i.getIdPartie()).getJoueurs().put(idU, new Joueur()); // on l'intègre à la partie
                 return true;
             }
         }
@@ -151,10 +151,11 @@ public class Facade {
 
     // l'utilisateur avec idU refuse l'invitation idI
     public boolean refuserInvitation(String idI, String idU) {
+        User u = findUser(idU);
         Invitation i = findInvitation(idI);
 
         if (i != null) {
-            i.getInvites().remove(idU); // on le retire simplement de la liste des invités
+            i.getInvites().remove(u); // on le retire simplement de la liste des invités
             return true;
         }
 
@@ -175,16 +176,9 @@ public class Facade {
 
     // ajout d'une partie
     public Partie addPartie(String idH) {
-        Partie p = facP.createPartie(idH);
+        Partie p = facP.createPartie(findUser(idH));
         listeP.add(p);
         return p;
-    }
-
-    // sauvegarde d'une partie
-    public Partie savePartie(String idH) {
-        Partie partie = findPartieByHost(idH);
-        listePSauv.add(partie);
-        return partie;
     }
 
     // trouver une partie par son id
@@ -195,12 +189,29 @@ public class Facade {
         else return null;
     }
 
-    // trouver une partie par l'id de son Hôte
-    public Partie findPartieByHost(String idH) {
-        List<Partie> lp = listeP.stream().filter(p -> p.getIdHote().equals(idH)).collect(Collectors.toList());
+    // trouver les parties par l'id de son Hôte
+    public Collection<Partie> findPartieByHost(String idH) {
+        return listeP.stream().filter(p -> p.getHote().getId().equals(idH)).collect(Collectors.toList());
+    }
 
-        if (!lp.isEmpty()) return lp.get(0);
-        else return null;
+    // sauvegarde d'une partie
+    public Partie savePartie(String idP, String idH) {
+        Partie p = findPartie(idP);
+
+        if (idH.equals(p.getHote().getId())) listePSauv.add(p);
+
+        return p;
+    }
+
+    // sauvegarde d'une partie
+    public Partie restorePartie(String idP, String idH) {
+        Partie ps = null;
+
+        List<Partie> lp = listePSauv.stream().filter(p -> p.getId().equals(idP) && p.getHote().getId().equals(idH)).collect(Collectors.toList());
+
+        if (!lp.isEmpty()) { ps = lp.get(0); listePSauv.remove(ps); }
+
+        return ps;
     }
 
     // supprimer une partie par son id

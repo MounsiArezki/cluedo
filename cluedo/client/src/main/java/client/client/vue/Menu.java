@@ -39,7 +39,6 @@ public class Menu extends View<MenuControleur> {
     public void drawTable(List<Invitation> dt){
         dataObservable.setAll(dt);
         table.setItems(dataObservable);
-        System.out.println(dataObservable.get(0));
 
         TableColumn<Invitation, String > partieId = new TableColumn<>("ID");
         partieId.setCellValueFactory(new PropertyValueFactory<>("idPartie"));

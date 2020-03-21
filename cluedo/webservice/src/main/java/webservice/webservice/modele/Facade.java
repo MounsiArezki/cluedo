@@ -125,7 +125,8 @@ public class Facade {
 
     // trouver des invitations par l'id de son Hôte (utilisateur créateur)
     public Collection<Invitation> findInvitationByHost(String idU) {
-        return listeI.stream().filter(i -> i.getIdHote().equals(idU)).collect(Collectors.toList());
+        User hote=findUser(idU);
+        return listeI.stream().filter(i -> i.getHote().equals(hote)).collect(Collectors.toList());
     }
 
     // trouver des invitations par l'id d'un invité (utilisateur compris dans l'invitation)

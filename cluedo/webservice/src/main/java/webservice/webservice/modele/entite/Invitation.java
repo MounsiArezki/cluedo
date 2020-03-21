@@ -6,15 +6,15 @@ public class Invitation {
 
     private String id;
     private String idPartie;
-    private String idHote;
+    private User hote;
     private List<User> invites;
 
     private static long lastId = 0L;
 
-    public Invitation(String idPartie, String idHote, List<User> invites) {
+    public Invitation(String idPartie, User hote, List<User> invites) {
         this.id = String.valueOf(++lastId);
         this.idPartie = idPartie;
-        this.idHote = idHote;
+        this.hote = hote;
         this.invites = invites;
     }
 
@@ -22,7 +22,25 @@ public class Invitation {
 
     public String getIdPartie() { return idPartie; }
 
-    public String getIdHote() { return idHote; }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIdPartie(String idPartie) {
+        this.idPartie = idPartie;
+    }
+
+    public User getHote() {
+        return hote;
+    }
+
+    public void setHote(User hote) {
+        this.hote = hote;
+    }
+
+    public void setInvites(List<User> invites) {
+        this.invites = invites;
+    }
 
     public List<User> getInvites() { return invites; }
 }

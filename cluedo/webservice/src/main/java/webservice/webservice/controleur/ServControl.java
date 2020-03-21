@@ -125,14 +125,14 @@ public class ServControl {
     // ajouter une invitation ET une partie
     @PostMapping(value = "/invitation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invitation> createInv(@RequestBody Invitation invitationDTO) {
-        Partie partie = facade.addPartie(invitationDTO.getIdHote());
+        Partie partie = facade.addPartie(invitationDTO.getHote().getId());
         ServletUriComponentsBuilder.fromUriString("/partie").path("/{id}").buildAndExpand(partie.getId()).toUri(); //URI Partie
-        Invitation invitation = facade.addInvitation(partie.getId(), invitationDTO.getIdHote(), invitationDTO.getInvites());
+        Invitation invitation = facade.addInvitation(partie.getId(), invitationDTO.getHote().getId(), invitationDTO.getInvites());
         InvitationDTO newInvitationDTO = InvitationDTO.creer(invitation);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newInvitationDTO.getId()).toUri();
-        return ResponseEntity.created(location).body(invitationDTO);
+        return ResponseEntity.created(location).body(invitation);
     }
 
     // trouver une invitation par son id

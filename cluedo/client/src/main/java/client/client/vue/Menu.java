@@ -66,6 +66,7 @@ public class Menu extends View<MenuControleur> {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Invitation invitation = getTableView().getItems().get(getIndex());
+                            getControleur().rejoindrePartie(invitation.getIdPartie());
                             System.out.println("selectedInvitation: " + invitation);
                             System.out.println("fonctionRejoindre()...à impl " );
                         });

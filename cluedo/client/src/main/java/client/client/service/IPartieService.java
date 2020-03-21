@@ -10,4 +10,6 @@ public interface IPartieService {
     public void sauvegarderPartie(String idPartie) throws HttpClientErrorException, HttpServerErrorException;
 
     public Partie restaurerPartie(String idPartie);
+
+    public Partie getPartieById(String idPartie);
 }

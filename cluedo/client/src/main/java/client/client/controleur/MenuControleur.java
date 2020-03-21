@@ -41,6 +41,11 @@ public class MenuControleur  {
         new RestaurerPartieControleur(menuStage);
     }
 
+    public void rejoindrePartie(String idPartie){
+        menu.stopTimer();
+        new PlateauControleur(menuStage, idPartie);
+    }
+
     public void deconnexion(){
         menu.stopTimer();
         userService.deconnexion();

@@ -46,7 +46,9 @@ public class CreerPartieControleur {
     }
 
     public void lancerInvitation(List<User> invites){
-        invitationService.creerInvitation(VariablesGlobales.getUser(),invites);
+        Invitation invitation = invitationService.creerInvitation(VariablesGlobales.getUser(),invites);
+        creerPartie.stopTimer();
+        new PlateauControleur(creerPartieStage, invitation.getIdPartie());
     }
 
     public void goToMenu() {
@@ -54,8 +56,4 @@ public class CreerPartieControleur {
         new MenuControleur(creerPartieStage);
     }
 
-    public void goToPlateau() {
-        creerPartie.stopTimer();
-        new PlateauControleur(creerPartieStage);
-    }
 }

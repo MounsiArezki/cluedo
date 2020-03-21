@@ -19,7 +19,7 @@ public class InvitationDTO {
         InvitationDTO invitationDTO = new InvitationDTO();
         invitationDTO.setId(invitation.getId());
         invitationDTO.setIdPartie(invitation.getIdPartie());
-        invitationDTO.setIdHote(invitation.getIdHote());
+        invitationDTO.setIdHote(invitation.getHote().getId());
         invitationDTO.setInvites(invitation.getInvites().stream().map(User::getId).collect(Collectors.toList()));
         return invitationDTO;
     }

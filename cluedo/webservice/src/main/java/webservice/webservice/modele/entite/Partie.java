@@ -1,8 +1,7 @@
 package webservice.webservice.modele.entite;
 
 import webservice.webservice.modele.entite.carte.ICarte;
-import webservice.webservice.modele.entite.etat_partie.IEtatPartie;
-import webservice.webservice.modele.entite.etat_partie.PasCommencee;
+import webservice.webservice.modele.entite.etat_partie.EtatPartie;
 import webservice.webservice.modele.fabrique.CarteFabrique;
 
 import java.util.*;
@@ -18,7 +17,7 @@ public class Partie {
 
     private static long lastId = 0L;
 
-    private IEtatPartie etatPartie;
+    private EtatPartie etatPartie;
 
     public Partie(User hote) {
         this.id = String.valueOf(++lastId);
@@ -26,7 +25,7 @@ public class Partie {
         this.joueurs = new HashMap<>();
         combinaisonGagante = new HashMap<>();
         tirageCombinaison();
-        etatPartie=new PasCommencee();
+        etatPartie=new EtatPartie();
     }
 
     private void tirageCombinaison() {
@@ -74,11 +73,11 @@ public class Partie {
         Partie.lastId = lastId;
     }
 
-    public IEtatPartie getEtatPartie() {
+    public EtatPartie getEtatPartie() {
         return etatPartie;
     }
 
-    public void setEtatPartie(IEtatPartie etatPartie) {
+    public void setEtatPartie(EtatPartie etatPartie) {
         this.etatPartie = etatPartie;
     }
 }

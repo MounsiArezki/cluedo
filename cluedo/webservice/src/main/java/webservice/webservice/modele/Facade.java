@@ -102,7 +102,8 @@ public class Facade {
 
     // ajout une invitation
     public Invitation addInvitation(String idP, String idH, List<User> lj) {
-        Invitation i = facI.createInvitation(idP, idH, lj);
+        User hote = findUser(idH);
+        Invitation i = facI.createInvitation(idP, hote, lj);
         listeI.add(i);
         return i;
     }

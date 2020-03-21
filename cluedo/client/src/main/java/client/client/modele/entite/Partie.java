@@ -1,6 +1,6 @@
 package client.client.modele.entite;
 
-import client.client.modele.entite.etat_partie.IEtatPartie;
+import client.client.modele.entite.etat_partie.EtatPartie;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ public class Partie {
 
     private HashMap<String, Joueur> joueurs;
 
-    private IEtatPartie etatPartie;
+    private EtatPartie etatPartie;
 
     public Partie() {
     }
@@ -34,11 +34,11 @@ public class Partie {
         this.joueurs = joueurs;
     }
 
-    public IEtatPartie getEtatPartie() {
+    public EtatPartie getEtatPartie() {
         return etatPartie;
     }
 
-    public void setEtatPartie(IEtatPartie etatPartie) {
+    public void setEtatPartie(EtatPartie etatPartie) {
         this.etatPartie = etatPartie;
     }
 }

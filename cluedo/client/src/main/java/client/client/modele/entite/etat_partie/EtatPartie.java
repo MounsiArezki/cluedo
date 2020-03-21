@@ -3,10 +3,14 @@ package client.client.modele.entite.etat_partie;
 
 import client.client.modele.entite.Joueur;
 
-public abstract class IEtatPartie {
+public class EtatPartie {
 
     protected Joueur joueurCourant;
     protected String texte;
+
+    public EtatPartie(){
+        texte = "En attente des autres joueurs";
+    }
 
     public Joueur getJoueurCourant() {
         return joueurCourant;
@@ -24,7 +28,11 @@ public abstract class IEtatPartie {
         this.texte = texte;
     }
 
-    public abstract IEtatPartie finir();
+    public void finir(){
+        texte = "La partie est terminée";
+    }
 
-    public abstract IEtatPartie init();
+    public void init(){
+        texte = "La partie commence";
+    }
 }

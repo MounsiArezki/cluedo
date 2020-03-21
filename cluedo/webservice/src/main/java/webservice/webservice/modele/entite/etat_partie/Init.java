@@ -1,18 +1,18 @@
 package webservice.webservice.modele.entite.etat_partie;
 
-public class PasCommencee extends IEtatPartie{
+public class Init extends IEtatPartie {
 
-    public PasCommencee() {
-        texte="En attente des joueurs";
+    public Init() {
+        texte="La partie commence";
     }
 
     @Override
     public IEtatPartie finir() {
-        return new Finie();
+        return null;
     }
 
     @Override
     public IEtatPartie init() {
-        return new Init();
+        return null;
     }
 }

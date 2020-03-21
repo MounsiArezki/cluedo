@@ -7,7 +7,12 @@ public class PasCommencee extends IEtatPartie{
     }
 
     @Override
-    public IEtatPartie next() {
-        return null;
+    public IEtatPartie finir() {
+        return new Finie();
+    }
+
+    @Override
+    public IEtatPartie init() {
+        return new Init();
     }
 }

@@ -141,7 +141,9 @@ public class Facade {
         if (i != null) {
             if (i.getInvites().contains(u)) { // si l'utilisateur est dans la liste des invités
                 i.getInvites().remove(u); // on le retire de la liste des invités
-                findPartie(i.getIdPartie()).getJoueurs().put(idU, new Joueur()); // on l'intègre à la partie
+                Partie partie=findPartie(i.getIdPartie());
+                partie.getJoueurs().put(idU, new Joueur()); // on l'intègre à la partie
+                checkInvitationPartie(i,partie);
                 return true;
             }
         }
@@ -153,13 +155,25 @@ public class Facade {
     public boolean refuserInvitation(String idI, String idU) {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
-
+        Partie partie=findPartie(i.getIdPartie());
         if (i != null) {
             i.getInvites().remove(u); // on le retire simplement de la liste des invités
+            checkInvitationPartie(i,partie);
             return true;
         }
 
         return false;
+    }
+
+    private void checkInvitationPartie(Invitation invitation, Partie partie) {
+        if (invitation.getInvites().size() < 1) {
+            if (partie.getJoueurs().size() < 2) {
+                partie.getEtatPartie().finir();
+            }
+            else {
+                partie.getEtatPartie().init();
+            }
+        }
     }
 
     // suppression d'une invitation par son id

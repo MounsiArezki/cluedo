@@ -17,6 +17,7 @@ import webservice.webservice.modele.exception.DejaCoException;
 import webservice.webservice.modele.exception.MdpIncorrectException;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,20 +96,20 @@ public class ServControl {
 
     // récupère les parties d'un hôte
     @GetMapping(value = "/user/{id}/partie", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PartieDTO>> getParties(@PathVariable String id) {
-        return ResponseEntity.ok(facade.findPartieByHost(id).stream().map(PartieDTO::creer).collect(Collectors.toList()));
+    public ResponseEntity<Collection<Partie>> getParties(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findPartieByHost(id));
     }
 
     // récupère les invitations émises d'un user
     @GetMapping(value = "/user/{id}/invitation/emise", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InvitationDTO>> getInvEmises(@PathVariable String id) {
-        return ResponseEntity.ok(facade.findInvitationByHost(id).stream().map(InvitationDTO::creer).collect(Collectors.toList()));
+    public ResponseEntity<Collection<Invitation>> getInvEmises(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findInvitationByHost(id));
     }
 
     // récupère les invitations reçues d'un user
     @GetMapping(value = "/user/{id}/invitation/recue", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InvitationDTO>> getInvRecues(@PathVariable String id) {
-        return ResponseEntity.ok(facade.findInvitationByGuest(id).stream().map(InvitationDTO::creer).collect(Collectors.toList()));
+    public ResponseEntity<Collection<Invitation>> getInvRecues(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findInvitationByGuest(id));
     }
 
     // ----------------------------------------------------------------------------------------
@@ -123,7 +124,7 @@ public class ServControl {
 
     // ajouter une invitation ET une partie
     @PostMapping(value = "/invitation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InvitationDTO> createInv(@RequestBody InvitationDTO invitationDTO) {
+    public ResponseEntity<Invitation> createInv(@RequestBody Invitation invitationDTO) {
         Partie partie = facade.addPartie(invitationDTO.getIdHote());
         ServletUriComponentsBuilder.fromUriString("/partie").path("/{id}").buildAndExpand(partie.getId()).toUri(); //URI Partie
         Invitation invitation = facade.addInvitation(partie.getId(), invitationDTO.getIdHote(), invitationDTO.getInvites());
@@ -136,8 +137,8 @@ public class ServControl {
 
     // trouver une invitation par son id
     @GetMapping(value = "/invitation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InvitationDTO> getInvById(@PathVariable String id) {
-        return ResponseEntity.ok(InvitationDTO.creer(facade.findInvitation(id)));
+    public ResponseEntity<Invitation> getInvById(@PathVariable String id) {
+        return ResponseEntity.ok(facade.findInvitation(id));
     }
 
     // supprimer une invitation

@@ -101,8 +101,8 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeI; }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<String> lj) {
-        Invitation i = facI.createInvitation(idP, idH, lj.stream().map(this::findUser).collect(Collectors.toList()));
+    public Invitation addInvitation(String idP, String idH, List<User> lj) {
+        Invitation i = facI.createInvitation(idP, idH, lj);
         listeI.add(i);
         return i;
     }

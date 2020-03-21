@@ -83,11 +83,11 @@ public class ServControl {
         return responseEnty;
     }
 
-    // deconnecter un utilisateur
-    @DeleteMapping(value = "/user/connexion")
-    public ResponseEntity<String> deconnectUser(@RequestBody User user) {
-        facade.deconnexion(user.getId());
-        return new ResponseEntity<>(user.getId(), HttpStatus.NO_CONTENT);
+
+    @DeleteMapping(value = "/user/connexion/{id}")
+    public ResponseEntity<String> deconnectUser(@PathVariable String id) {
+        facade.deconnexion(id);
+        return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
     // recupere les parties d'un hote

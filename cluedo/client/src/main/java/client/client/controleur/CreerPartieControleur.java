@@ -50,10 +50,12 @@ public class CreerPartieControleur {
     }
 
     public void goToMenu() {
+        creerPartie.stopTimer();
         new MenuControleur(creerPartieStage);
     }
 
     public void goToPlateau() {
+        creerPartie.stopTimer();
         new PlateauControleur(creerPartieStage);
     }
 }

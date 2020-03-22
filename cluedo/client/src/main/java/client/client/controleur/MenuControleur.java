@@ -4,6 +4,7 @@ import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
+import client.client.service.IInvitationService;
 import client.client.service.IUserService;
 import client.client.vue.Menu;
 import javafx.stage.Stage;
@@ -14,11 +15,13 @@ public class MenuControleur  {
 
     Stage menuStage;
     IUserService userService;
+    IInvitationService invitationService;
     Menu menu;
 
     public MenuControleur(Stage menuStage) {
         this.menuStage =menuStage;
         userService = new Facade();
+        invitationService = new Facade();
         menu = (Menu)Menu.creerInstance(menuStage , FxmlPath.MENU.getUrl());
         menu.setControleur(this);
         menu.setTimer(5);
@@ -41,9 +44,10 @@ public class MenuControleur  {
         new RestaurerPartieControleur(menuStage);
     }
 
-    public void rejoindrePartie(String idPartie){
+    public void rejoindrePartie(Invitation invitation){
         menu.stopTimer();
-        new PlateauControleur(menuStage, idPartie);
+        invitationService.accepterInvitation(invitation.getId());
+        new PlateauControleur(menuStage, invitation.getIdPartie());
     }
 
     public void deconnexion(){

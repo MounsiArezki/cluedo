@@ -57,8 +57,12 @@ public class Plateau extends View<PlateauControleur> {
     public void passerAction(ActionEvent actionEvent) {
     }
 
+    public void fermerAction(ActionEvent actionEvent){
+        getControleur().retourMenu();
+    }
+
     @Override
     public void refresh() {
-
+        etatPartie.setText(getControleur().getPartie().getEtatPartie().getTexte());
     }
 }

@@ -23,8 +23,6 @@ public class PlateauControleur {
     //simulation facade api
     Collection<ICarte> cartesJ ;
 
-
-
     public PlateauControleur(Stage plateauStage, String idPartie) {
         this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE,Arme.CORDE,Arme.CLE,Arme.COUTEAU);
         this.plateauStage = plateauStage;
@@ -32,6 +30,8 @@ public class PlateauControleur {
         this.partie = partieService.getPartieById(idPartie);
         plateau = (Plateau)Plateau.creerInstance(plateauStage, FxmlPath.PLATEAU.getUrl());
         plateau.setControleur(this);
+        plateau.refresh();
+        plateau.setTimer(5);
         plateau.distribuerCartes();
         plateau.show("plateau");
     }
@@ -46,4 +46,49 @@ public class PlateauControleur {
 
     }
 
+    public Stage getPlateauStage() {
+        return plateauStage;
+    }
+
+    public void setPlateauStage(Stage plateauStage) {
+        this.plateauStage = plateauStage;
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public void setPlateau(Plateau plateau) {
+        this.plateau = plateau;
+    }
+
+    public Partie getPartie() {
+        this.partie = partieService.getPartieById(partie.getId());
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
+
+    public IPartieService getPartieService() {
+        return partieService;
+    }
+
+    public void setPartieService(IPartieService partieService) {
+        this.partieService = partieService;
+    }
+
+    public Collection<ICarte> getCartesJ() {
+        return cartesJ;
+    }
+
+    public void setCartesJ(Collection<ICarte> cartesJ) {
+        this.cartesJ = cartesJ;
+    }
+
+    public void retourMenu(){
+        plateau.stopTimer();
+        new MenuControleur(plateauStage);
+    }
 }

@@ -23,6 +23,7 @@ public class Partie {
         this.id = String.valueOf(++lastId);
         this.hote = hote;
         this.joueurs = new HashMap<>();
+        this.joueurs.put(hote.getId(), new Joueur());
         combinaisonGagante = new HashMap<>();
         tirageCombinaison();
         etatPartie=new EtatPartie();

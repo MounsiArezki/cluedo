@@ -73,8 +73,8 @@ public abstract class View<T> {
         stage.close();
 
     }
-    public void showMessage(String message){
-        Alert a=new Alert(Alert.AlertType.ERROR,message, ButtonType.OK);
+    public void showMessage(String message, Alert.AlertType type){
+        Alert a=new Alert(type,message, ButtonType.OK);
         a.show();
     }
 

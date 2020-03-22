@@ -16,7 +16,7 @@
                         <GridPane>
                             <children>
                                 <TextField fx:id="user" prefHeight="36.0" prefWidth="202.0" promptText="Use &quot;user@gmail.com&quot; to login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <TextField fx:id="password" prefHeight="39.0" prefWidth="202.0" promptText="Use &quot;user&quot; to login" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <PasswordField fx:id="password" prefHeight="39.0" prefWidth="202.0" promptText="Use &quot;user&quot; to login" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label text="Email:" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="18.0" />

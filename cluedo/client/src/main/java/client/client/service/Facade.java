@@ -127,7 +127,9 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
         HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
-        restTemplate.put(ServiceConfig.URL_INVITATION_ID_ACCEPTATION, httpEntity, Partie.class, params);
+        System.out.println("http "+gson.toJson(httpEntity));
+        System.out.println("params "+gson.toJson(params));
+        restTemplate.put(ServiceConfig.URL_INVITATION_ID_ACCEPTATION, httpEntity, params);
     }
 
     @Override
@@ -136,7 +138,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
         HttpEntity<String> httpEntity=buildHttpEntity(user);
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
-        restTemplate.put(ServiceConfig.URL_INVITATION_ID_REFUS, httpEntity, Partie.class, params);
+        restTemplate.put(ServiceConfig.URL_INVITATION_ID_REFUS, httpEntity, params);
     }
 
 

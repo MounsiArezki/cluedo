@@ -96,8 +96,8 @@ public class Menu extends View<MenuControleur> {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Invitation invitation = getTableView().getItems().get(getIndex());
-                            System.out.println("selectedInvitation: " + invitation);
-                            System.out.println("fonctionRefuser()...à impl  " );
+                            getControleur().refuserInvitation(invitation);
+                            System.out.println("L'invitation "+invitation.getId()+" a été refusée" );
                         });
                     }
 

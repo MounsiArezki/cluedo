@@ -50,6 +50,10 @@ public class MenuControleur  {
         new PlateauControleur(menuStage, invitation.getIdPartie());
     }
 
+    public void refuserInvitation(Invitation invitation) {
+        invitationService.refuserInvitation(invitation.getId());
+    }
+
     public void deconnexion(){
         menu.stopTimer();
         userService.deconnexion();

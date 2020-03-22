@@ -8,14 +8,8 @@ import client.client.exception.ConnexionException;
         import client.client.service.Facade;
         import client.client.service.IUserService;
         import client.client.vue.Login;
-        import client.client.vue.Menu;
         import client.client.vue.View;
         import javafx.stage.Stage;
-        import org.springframework.http.HttpStatus;
-        import org.springframework.http.ResponseEntity;
-
-        import javax.security.auth.login.LoginException;
-
 public class ConnexionControleur {
 
     Stage connexionStage;

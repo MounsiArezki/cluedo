@@ -13,4 +13,7 @@ public class VariablesGlobales {
     public static void setUser(User user) {
         VariablesGlobales.user = user;
     }
+
+
+
 }

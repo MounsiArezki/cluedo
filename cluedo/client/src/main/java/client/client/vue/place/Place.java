@@ -1,6 +1,7 @@
 package client.client.vue.place;
 
 import client.client.modele.entite.Position;
+import client.client.vue.cluedoPlateau.Key.DirectionKey;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
@@ -10,19 +11,19 @@ import javafx.scene.shape.Rectangle;
 public class Place extends Rectangle {
 
 
-    public Place() {
 
-        // TODORemove
-        this.setOnMouseClicked(event -> {
-            addHighlight(Color.RED);
-            Alert a=new Alert(Alert.AlertType.INFORMATION,this.getCenter().toString(), ButtonType.OK);
-            a.show();});
-        this.setOpacity(0.5);
+    private final boolean isReachable;
 
-        // END
+
+    public Place[] getAdjacent() {
+        return adjacent;
     }
 
+    public void setAdjacent(Place[] adjacent) {
+        this.adjacent = adjacent;
+    }
 
+    private Place[] adjacent;
 
     public void addHighlight(Paint fill) {
         addHighlight(fill, 0.4);
@@ -33,6 +34,22 @@ public class Place extends Rectangle {
         this.setFill(fill);
     }
 
+
+    public Place() {
+        this(DirectionKey.ALL, true, 1);
+    }
+
+
+    public Place(DirectionKey direction, boolean isReachable, int moveCost) {
+        super();
+        // TODORemove
+        this.setOnMouseClicked(event -> {
+            addHighlight(Color.RED);
+            Alert a=new Alert(Alert.AlertType.INFORMATION,this.getCenter().toString(), ButtonType.OK);
+            a.show();});
+        this.isReachable=isReachable;
+        this.setOpacity(0);
+    }
 
 
 

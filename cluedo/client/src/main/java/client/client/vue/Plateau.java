@@ -65,4 +65,15 @@ public class Plateau extends View<PlateauControleur> {
     public void refresh() {
         etatPartie.setText(getControleur().getPartie().getEtatPartie().getTexte());
     }
+
+    public void drawCluedoBoard(){
+
+        board.initializeGrid();
+        board.draw();
+
+    }
+
+
+
+
 }

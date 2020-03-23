@@ -1,4 +1,4 @@
-package client.client.exception;
+package client.client.exception.connexionException;
 
 public class ConnexionException extends Exception{
 

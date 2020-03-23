@@ -6,6 +6,7 @@ import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
 import webservice.webservice.modele.exception.DejaCoException;
 import webservice.webservice.modele.exception.MdpIncorrectException;
+import webservice.webservice.modele.exception.NonInscritException;
 import webservice.webservice.modele.fabrique.FactoryInvitation;
 import webservice.webservice.modele.fabrique.FactoryPartie;
 import webservice.webservice.modele.fabrique.FactoryUser;
@@ -36,7 +37,9 @@ public class Facade {
     // ----------------------------------------------------------------------------------------
 
     // récupérer tous les utilisateurs
-    public Collection<User> getUsers() { return listeU; }
+    public Collection<User> getUsers() {
+        return listeU;
+    }
 
     // ajouter un utilisateur
     public User addUser(String pseudo, String pwd) {
@@ -72,17 +75,21 @@ public class Facade {
     }
 
     // connexion (vérification pwd saisi = pwd utilisateur)
-    public User connexion(String ps, String pwd) throws DejaCoException, MdpIncorrectException {
+    public User connexion(String ps, String pwd) throws DejaCoException, MdpIncorrectException, NonInscritException {
         User u = findUserByLogin(ps);
 
-        if (u != null) {
-            if (u.getPwd().equals(pwd)) listeUC.add(u); //ajout à la liste des connectés
-            else if (listeUC.contains(u)) throw new DejaCoException(); //déjà connecté
-            else throw new MdpIncorrectException(); //mdp incorrect
+        if (u == null) {
+            throw new NonInscritException();
         }
+        if (u.getPwd().equals(pwd)){
+            listeUC.add(u); //ajout à la liste des connectés
+            return u;
+        }
+        else if (listeUC.contains(u)) throw new DejaCoException(); //déjà connecté
+        else throw new MdpIncorrectException(); //mdp incorrect
 
-        return u;
-    }
+
+}
 
     // déconnexion
     public User deconnexion(String ps) {

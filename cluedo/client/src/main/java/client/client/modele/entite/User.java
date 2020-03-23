@@ -16,6 +16,12 @@ public class User {
         this.pwd = password;
     }
 
+    public User(String id, String pseudo, String pwd) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.pwd = pwd;
+    }
+
     public String getId() {
         return id;
     }

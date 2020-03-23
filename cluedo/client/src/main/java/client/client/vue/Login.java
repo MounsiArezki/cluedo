@@ -1,15 +1,13 @@
 package client.client.vue;
 
 import client.client.controleur.ConnexionControleur;
-import client.client.exception.ConnexionException;
-import client.client.exception.InscriptionException;
+import client.client.exception.connexionException.ConnexionException;
+import client.client.exception.connexionException.InscriptionException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
-
-import javax.security.auth.login.LoginException;
 
 
 public class Login extends View<ConnexionControleur>   {

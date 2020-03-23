@@ -33,6 +33,7 @@ public class PlateauControleur {
         plateau.refresh();
         plateau.setTimer(5);
         plateau.distribuerCartes();
+        plateau.drawCluedoBoard();
         plateau.show("plateau");
     }
 

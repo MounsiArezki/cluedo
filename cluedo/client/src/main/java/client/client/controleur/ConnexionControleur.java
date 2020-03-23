@@ -1,14 +1,14 @@
 package client.client.controleur;
 
-import client.client.exception.ConnexionException;
-        import client.client.exception.InscriptionException;
+import client.client.exception.connexionException.ConnexionException;
+        import client.client.exception.connexionException.InscriptionException;
         import client.client.global.VariablesGlobales;
         import client.client.modele.entite.User;
         import client.client.modele.entite.io.FxmlPath;
         import client.client.service.Facade;
         import client.client.service.IUserService;
         import client.client.vue.Login;
-        import client.client.vue.View;
+import client.client.vue.View;
         import javafx.stage.Stage;
 public class ConnexionControleur {
 

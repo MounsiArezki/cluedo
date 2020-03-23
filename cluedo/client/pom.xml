@@ -19,6 +19,10 @@
             <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <java.version>11</java.version>
+
+            <mock-sever-netty-version>5.6.0</mock-sever-netty-version>
+            <apche-http-version>4.4.1</apche-http-version>
+
     </properties>
 
     <dependencies>
@@ -147,9 +151,20 @@
             <version>5.2.4.RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.4</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.mock-server</groupId>
+            <artifactId>mockserver-netty</artifactId>
+            <version>${mock-sever-netty-version}</version>
+        </dependency>
 
     </dependencies>
+
 
     <build>
         <plugins>

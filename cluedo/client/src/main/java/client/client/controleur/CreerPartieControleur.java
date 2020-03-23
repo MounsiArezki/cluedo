@@ -31,6 +31,7 @@ public class CreerPartieControleur {
         creerPartie.setControleur(this);
         creerPartie.refresh();
         creerPartie.setTimer(1);
+
         creerPartie.show("Creation Partie");
     }
 

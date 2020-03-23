@@ -19,9 +19,6 @@ public class CluedoBoard extends Board<Place> {
         super();
         this.setWidth(750);
         this.setHeight(620);
-        initializeGrid();
-        draw();
-
 
     }
 /*
@@ -43,7 +40,7 @@ public class CluedoBoard extends Board<Place> {
     }
     */
 
-    private void initializeGrid() {
+    public void initializeGrid() {
         InputStream mapStream = TextStream.CLUEDOBOARD.getInputStream();
         Scanner s = new Scanner(mapStream).useDelimiter("\\A");
         String rawMap = s.hasNext() ? s.next() : "";

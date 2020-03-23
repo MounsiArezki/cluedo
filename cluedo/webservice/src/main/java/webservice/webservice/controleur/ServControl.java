@@ -15,6 +15,7 @@ import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
 import webservice.webservice.modele.exception.DejaCoException;
 import webservice.webservice.modele.exception.MdpIncorrectException;
+import webservice.webservice.modele.exception.NonInscritException;
 
 import java.net.URI;
 import java.util.Collection;
@@ -35,7 +36,7 @@ public class ServControl {
     // récupérer tous les utilisateurs
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getUsers() {
-        System.out.println("/user get");
+
         return ResponseEntity.ok(facade.getUsers().stream().map(UserDTO::creer).collect(Collectors.toList()));
     }
 
@@ -75,15 +76,23 @@ public class ServControl {
     }
 
     // connecter un utilisateur
-    @PostMapping(value = "/user/connexion", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> connectUser(@RequestBody UserDTO userDTO) throws DejaCoException, MdpIncorrectException {
-        User user = facade.connexion(userDTO.getPseudo(), userDTO.getPwd());
+    @PostMapping(value = "/user/connexion")
+    public ResponseEntity<?> connectUser(@RequestBody UserDTO userDTO)  {
+        User user = null;
+        try {
+            user = facade.connexion(userDTO.getPseudo(), userDTO.getPwd());
+        } catch (DejaCoException e) {
+            System.out.println("I_AM_A_TEAPOT");
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (MdpIncorrectException | NonInscritException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
-        ResponseEntity<User> responseEnty = ResponseEntity.created(location).body(user);
-        Gson g = new Gson();
-        System.out.println(g.toJson(responseEnty));
+
+        ResponseEntity<?> responseEnty = ResponseEntity.created(location).body(user);
+
         return responseEnty;
     }
 

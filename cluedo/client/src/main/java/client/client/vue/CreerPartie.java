@@ -146,6 +146,7 @@ public class CreerPartie extends View<CreerPartieControleur> {
        getControleur().goToMenu();
     }
 
+
     @Override
     public void refresh() {
         List<User> listUsers= Arrays.asList(getControleur().getAllUsers(recherche.getText()));

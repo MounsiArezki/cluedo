@@ -41,18 +41,20 @@ public class ServControl {
     // ajouter un utilisateur
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
-        System.out.println("/user post");
+
         User user = null;
         try {
             user = facade.addUser(userDTO.getPseudo(), userDTO.getPwd());
+            UserDTO newUserDTO = UserDTO.creer(user);
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(newUserDTO.getId()).toUri();
+            return ResponseEntity.created(location).build();
         } catch (DejaInscritException e) {
+            System.out.println("409 ws error");
             return ResponseEntity.status(409).build();
         }
-        UserDTO newUserDTO = UserDTO.creer(user);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newUserDTO.getId()).toUri();
-     return ResponseEntity.created(location).build();
+
     }
 
     // trouver un utilisateur par son id

@@ -45,7 +45,7 @@ public class Facade {
     public User addUser(String pseudo, String pwd) throws DejaInscritException {
 
         User u = facU.createUser(pseudo, pwd); // création de l'utilisateur
-        if(listeU.contains(u)){
+        if(listeU.stream().filter(x->x.getPseudo().equals(pseudo)).count()>0){
             throw new DejaInscritException();
         }else {
             listeU.add(u); // ajout à la liste

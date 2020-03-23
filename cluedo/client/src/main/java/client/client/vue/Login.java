@@ -2,6 +2,7 @@ package client.client.vue;
 
 import client.client.controleur.ConnexionControleur;
 import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.InscriptionException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import javafx.fxml.FXML;
@@ -50,10 +51,12 @@ public class Login extends View<ConnexionControleur>   {
 
     @FXML
     public void inscrireAction(ActionEvent event){
-        try {
+        if (user.getText().isEmpty() || user.getText().isEmpty()){
+            this.showMessage("Veuillez remplire les champs svp", Alert.AlertType.INFORMATION);
+        }try {
             getControleur().inscrireCntrl(user.getText(),password.getText());
             showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
-        } catch (InscriptionException e) {
+        } catch (InscriptionException | DejaInscritException e) {
             showMessage(e.getMessage(), Alert.AlertType.ERROR);
         }
 

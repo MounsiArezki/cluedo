@@ -3,6 +3,7 @@ package client.client.service;
 import client.client.config.CodeStatus;
 import client.client.config.ServiceConfig;
 import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
@@ -80,7 +81,7 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public User insciption(String login, String pwd) {
+    public User insciption(String login, String pwd) throws DejaInscritException {
         try {
             String userDTOJSON = objectMapper.writeValueAsString(new User(login,pwd));
             System.out.println(userDTOJSON);
@@ -92,6 +93,8 @@ public class ProxyV2 implements IProxyV2 {
                 String resourceUri = response.headers().firstValue("Location").get();
                 String[] splitIt = resourceUri.split("/");
                 return new User(splitIt[splitIt.length-1],login,pwd);
+            }else if(response.statusCode()==CodeStatus.CONFLICT.getCode()){
+                throw new DejaInscritException();
             }
 
         } catch (JsonProcessingException e) {

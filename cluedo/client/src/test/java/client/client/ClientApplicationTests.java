@@ -2,6 +2,7 @@ package client.client;
 
 
 import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.modele.entite.User;
 import client.client.service.IProxyV2;
@@ -53,7 +54,7 @@ public class ClientApplicationTests {
 
 
     @Test
-    public void testInscriptionOk()  {
+    public void testInscriptionOk() throws DejaInscritException {
 
        mockServerRule.getClient().when(
                 request()

@@ -1,6 +1,7 @@
 package client.client.service;
 
 import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
@@ -20,7 +21,7 @@ public interface IProxyV2 {
 
     public void deconnexion();
 
-    public User insciption(String login, String pwd);
+    public User insciption(String login, String pwd) throws DejaInscritException;
 
     public void desinscrition();
 

@@ -1,6 +1,7 @@
 package client.client.controleur;
 
 import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.InscriptionException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.global.VariablesGlobales;
@@ -39,7 +40,7 @@ public class ConnexionControleur {
         goToMenu(connexionStage);
     }
 
-    public void inscrireCntrl(String login,String password) throws InscriptionException {
+    public void inscrireCntrl(String login,String password) throws InscriptionException, DejaInscritException {
         proxyV2.insciption(login, password);
     }
 

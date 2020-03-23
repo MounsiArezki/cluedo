@@ -1,21 +1,18 @@
 package webservice.webservice.controleur;
 
-import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import webservice.webservice.DTO.entite.InvitationDTO;
-import webservice.webservice.DTO.entite.PartieDTO;
 import webservice.webservice.DTO.entite.UserDTO;
 import webservice.webservice.modele.Facade;
 import webservice.webservice.modele.entite.Invitation;
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
-import webservice.webservice.modele.exception.DejaCoException;
-import webservice.webservice.modele.exception.MdpIncorrectException;
-import webservice.webservice.modele.exception.NonInscritException;
+import webservice.webservice.modele.exception.connexionException.MdpIncorrectException;
+import webservice.webservice.modele.exception.connexionException.NonInscritException;
 
 import java.net.URI;
 import java.util.Collection;
@@ -46,13 +43,10 @@ public class ServControl {
         System.out.println("/user post");
         User user = facade.addUser(userDTO.getPseudo(), userDTO.getPwd());
         UserDTO newUserDTO = UserDTO.creer(user);
-        /*URI location = ServletUriComponentsBuilder
+        URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newUserDTO.getId()).toUri();*/
-        ResponseEntity<User> responseEntity = new ResponseEntity<>(user, HttpStatus.CREATED);
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(responseEntity));
-        return responseEntity;
+                .buildAndExpand(newUserDTO.getId()).toUri();
+     return ResponseEntity.created(location).build();
     }
 
     // trouver un utilisateur par son id
@@ -81,10 +75,7 @@ public class ServControl {
         User user = null;
         try {
             user = facade.connexion(userDTO.getPseudo(), userDTO.getPwd());
-        } catch (DejaCoException e) {
-            System.out.println("I_AM_A_TEAPOT");
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (MdpIncorrectException | NonInscritException e) {
+        }  catch (MdpIncorrectException | NonInscritException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         URI location = ServletUriComponentsBuilder

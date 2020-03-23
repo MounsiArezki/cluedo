@@ -1,10 +1,12 @@
 package client.client.service;
 
+import client.client.config.CodeStatus;
 import client.client.config.ServiceConfig;
 import client.client.exception.connexionException.DejaConnecteException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
+import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public User connexion(String login, String pwd) throws IOException, InterruptedException, DejaConnecteException, MdpIncorrectOuNonInscritException {
+    public User connexion(String login, String pwd) throws IOException, InterruptedException, MdpIncorrectOuNonInscritException {
         HttpClient client = HttpClient.newHttpClient();
         String usr = objectMapper.writeValueAsString(new User(login,pwd));
         HttpRequest request = HttpRequest.newBuilder()
@@ -57,19 +59,19 @@ public class ProxyV2 implements IProxyV2 {
 
 
         HttpResponse<?> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-        if (response.statusCode()==409 ){
-            throw new DejaConnecteException();
-        }else if (response.statusCode()==401){
+        System.out.println(response.statusCode());
+      if (response.statusCode()==CodeStatus.UNAUTHORIZED.getCode()){
             throw new MdpIncorrectOuNonInscritException();
+        }else if(response.statusCode()==CodeStatus.CREATED.getCode()) {
+
+            // faut retourner l id venant du serveur ... qui est dans location ... le return est faux
+            Optional<String> i = response.headers().firstValue("Location");
+            String[] idd = i.get().split("/");
+            String idServ = idd[idd.length - 1];
+            // idéalement code status 200 aulieu de 201
+            return new User(idServ, login, pwd);
         }
-
-        // faut retourner l id venant du serveur ... qui est dans location ... le return est faux
-        Optional<String> i =response.headers().firstValue("Location");
-        String[] idd=i.get().split("/");
-        String idServ =idd[idd.length-1];
-
-        return new User(idServ,login,pwd);
-
+      throw new RuntimeException();
     }
 
     @Override
@@ -79,7 +81,28 @@ public class ProxyV2 implements IProxyV2 {
 
     @Override
     public User insciption(String login, String pwd) {
-        return null;
+        try {
+            String userDTOJSON = objectMapper.writeValueAsString(new User(login,pwd));
+            System.out.println(userDTOJSON);
+            HttpRequest httpRequest = HttpRequest.newBuilder(URI.create(ServiceConfig.URL_USER))
+                    .header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString(userDTOJSON)).build();
+            HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response);
+            if (response.statusCode() == CodeStatus.CREATED.getCode()) {
+                String resourceUri = response.headers().firstValue("Location").get();
+                String[] splitIt = resourceUri.split("/");
+                return new User(splitIt[splitIt.length-1],login,pwd);
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("Erreur innatendue !");
     }
 
     @Override

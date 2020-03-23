@@ -1,13 +1,16 @@
 package client.client.vue;
 
 import client.client.controleur.ConnexionControleur;
-import client.client.exception.connexionException.ConnexionException;
+import client.client.exception.connexionException.DejaConnecteException;
 import client.client.exception.connexionException.InscriptionException;
+import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
+
+import java.io.IOException;
 
 
 public class Login extends View<ConnexionControleur>   {
@@ -28,13 +31,19 @@ public class Login extends View<ConnexionControleur>   {
 
     @FXML
     public void loginAction(ActionEvent event){
-        try {
-            this.getControleur().loginCntrl(user.getText(),password.getText());
+        if (user.getText().isEmpty() || user.getText().isEmpty()){
+            this.showMessage("Veuillez remplire les champs svp", Alert.AlertType.INFORMATION);
+        }else {
+            try {
+                this.getControleur().loginCntrl(user.getText(), password.getText());
+            } catch (IOException | InterruptedException e) {
 
-        } catch (ConnexionException e) {
-            showMessage(e.getMessage(), Alert.AlertType.ERROR);
+               this.showMessage(e.getMessage(), Alert.AlertType.ERROR);
+            }  catch (MdpIncorrectOuNonInscritException e) {
+
+                this.showMessage(e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
-
     }
 
 

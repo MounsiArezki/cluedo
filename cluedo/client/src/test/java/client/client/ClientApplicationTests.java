@@ -1,6 +1,8 @@
 package client.client;
 
 
+import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.modele.entite.User;
 import client.client.service.IProxyV2;
 import client.client.service.ProxyV2;
@@ -32,10 +34,10 @@ public class ClientApplicationTests {
     @Test
     public void TestGetALLusers() throws IOException, InterruptedException {
 
-        mockServerRule.getClient().when(
+       mockServerRule.getClient().when(
                 request()
                         .withMethod("GET")
-                        .withPath("/serv/user/connexion")
+                        .withPath("/serv/user")
                 , Times.exactly(1))
                 .respond(HttpResponse.response().withStatusCode(200)
                         .withHeader("Content-Type","application/json")
@@ -50,8 +52,34 @@ public class ClientApplicationTests {
     }
 
 
+    @Test
+    public void testInscriptionOk()  {
 
+       mockServerRule.getClient().when(
+                request()
+                        .withMethod("POST")
+                        .withPath("/serv/user")
+                        .withHeader("Content-Type","application/json")
+                        .withBody("{\"id\":null,\"pseudo\":\"moi\",\"pwd\":\"000\"}"), Times.exactly(1))
+                .respond(HttpResponse.response().withStatusCode(201).withHeader("Location","/serv/user/2"));
 
+        User user = proxyV2.insciption("moi","000");
 
+    }
+
+    @Test
+    public void testConnnexionOk() throws InterruptedException, MdpIncorrectOuNonInscritException, DejaConnecteException, IOException {
+
+        mockServerRule.getClient().when(
+                request()
+                        .withMethod("POST")
+                        .withPath("/serv/user/connexion")
+                        .withHeader("Content-Type","application/json")
+                        .withBody("{\"id\":null,\"pseudo\":\"moi\",\"pwd\":\"000\"}"), Times.exactly(1))
+                .respond(HttpResponse.response().withStatusCode(201).withHeader("Location","/serv/user/2"));
+
+        User user = proxyV2.connexion("moi","000");
+
+    }
 
 }

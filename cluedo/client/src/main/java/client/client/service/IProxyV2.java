@@ -16,7 +16,7 @@ public interface IProxyV2 {
 
     public Collection<User>  getAllUsersWithFiltre(String filtre);
 
-    public User connexion(String login, String pwd) throws IOException, InterruptedException, DejaConnecteException, MdpIncorrectOuNonInscritException;
+    public User connexion(String login, String pwd) throws IOException, InterruptedException, MdpIncorrectOuNonInscritException;
 
     public void deconnexion();
 

@@ -11,6 +11,7 @@ import webservice.webservice.modele.Facade;
 import webservice.webservice.modele.entite.Invitation;
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
+import webservice.webservice.modele.exception.connexionException.DejaInscritException;
 import webservice.webservice.modele.exception.connexionException.MdpIncorrectException;
 import webservice.webservice.modele.exception.connexionException.NonInscritException;
 
@@ -39,9 +40,14 @@ public class ServControl {
 
     // ajouter un utilisateur
     @PostMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
         System.out.println("/user post");
-        User user = facade.addUser(userDTO.getPseudo(), userDTO.getPwd());
+        User user = null;
+        try {
+            user = facade.addUser(userDTO.getPseudo(), userDTO.getPwd());
+        } catch (DejaInscritException e) {
+            return ResponseEntity.status(409).build();
+        }
         UserDTO newUserDTO = UserDTO.creer(user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

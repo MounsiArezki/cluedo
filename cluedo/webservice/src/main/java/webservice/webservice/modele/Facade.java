@@ -4,6 +4,7 @@ import webservice.webservice.modele.entite.Invitation;
 import webservice.webservice.modele.entite.Joueur;
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
+import webservice.webservice.modele.exception.connexionException.DejaInscritException;
 import webservice.webservice.modele.exception.connexionException.MdpIncorrectException;
 import webservice.webservice.modele.exception.connexionException.NonInscritException;
 import webservice.webservice.modele.fabrique.FactoryInvitation;
@@ -41,12 +42,15 @@ public class Facade {
     }
 
     // ajouter un utilisateur
-    public User addUser(String pseudo, String pwd) {
+    public User addUser(String pseudo, String pwd) throws DejaInscritException {
 
         User u = facU.createUser(pseudo, pwd); // création de l'utilisateur
-
-        listeU.add(u); // ajout à la liste
-        return u;
+        if(listeU.contains(u)){
+            throw new DejaInscritException();
+        }else {
+            listeU.add(u); // ajout à la liste
+            return u;
+        }
     }
 
     // trouver un utilisateur par son id

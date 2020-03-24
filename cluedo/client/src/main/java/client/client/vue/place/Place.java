@@ -13,6 +13,7 @@ public class Place extends Rectangle {
 
 
     private final boolean isReachable;
+    private Place[] adjacent;
 
 
     public Place[] getAdjacent() {
@@ -23,7 +24,6 @@ public class Place extends Rectangle {
         this.adjacent = adjacent;
     }
 
-    private Place[] adjacent;
 
     public void addHighlight(Paint fill) {
         addHighlight(fill, 0.4);

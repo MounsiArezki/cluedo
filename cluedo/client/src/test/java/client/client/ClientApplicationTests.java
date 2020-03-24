@@ -1,6 +1,7 @@
 package client.client;
 
 
+import client.client.config.ServiceConfig;
 import client.client.exception.connexionException.DejaConnecteException;
 import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
@@ -82,5 +83,13 @@ public class ClientApplicationTests {
         User user = proxyV2.connexion("moi","000");
 
     }
+    @Test
+    public void testGetAllInvitationsRecuesOk() throws InterruptedException, MdpIncorrectOuNonInscritException, IOException {
+
+        proxyV2.getAllInvitationsRecues();
+
+
+    }
+
 
 }

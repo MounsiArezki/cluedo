@@ -10,7 +10,7 @@ public enum TextStream {
 
 
 
-    CLUEDOBOARD(CluedoBoard.class.getResourceAsStream("/txt/board.txt"));
+    CLUEDOBOARD(CluedoBoard.class.getResourceAsStream("/txt/board.csv"));
 
     public final static Function<InputStream, String[]> PARSE = (stream) -> {
         Scanner s = new Scanner(stream).useDelimiter("\\A");

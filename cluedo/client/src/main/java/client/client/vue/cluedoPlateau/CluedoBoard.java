@@ -73,6 +73,15 @@ public class CluedoBoard extends Board<Place> {
                     super.grid[y][x] = new TeleportPlace(DirectionKey.getDirection(line.charAt(i+1)), Lieu.getLieu(line.charAt(i)));
 
                 }
+                // Is lowercase (lieu/porte)
+                else if (line.charAt(i) > 96 && line.charAt(i) < 123) {
+                    // Is porte
+                    if(line.charAt(i+1) != DirectionKey.ALL.getKey())
+                        super.grid[y][x] = new PortePlace(DirectionKey.getDirection(line.charAt(i+1)), Lieu.getLieu(line.charAt(i)));
+                    // Is lieu
+                    else
+                        super.grid[y][x] = new LieuPlace(Lieu.getLieu(line.charAt(i)));
+                }
 
             }
             y+=1;

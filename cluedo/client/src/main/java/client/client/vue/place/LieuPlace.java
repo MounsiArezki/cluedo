@@ -2,10 +2,11 @@ package client.client.vue.place;
 
 import client.client.modele.entite.Lieu;
 import client.client.vue.cluedoPlateau.Key.DirectionKey;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.paint.Color;
 
 public class LieuPlace extends Place {
-
-
 
 
     private final Lieu room;
@@ -17,6 +18,10 @@ public class LieuPlace extends Place {
 
     public LieuPlace(Lieu room, boolean isReachable, int moveCost) {
         this(DirectionKey.ALL, room, isReachable, moveCost);
+        this.setOnMouseClicked(event -> {
+            addHighlight(Color.RED);
+            Alert a=new Alert(Alert.AlertType.INFORMATION,"lieuPlace", ButtonType.OK);
+            a.show();});
     }
 
     public LieuPlace(DirectionKey directionKey, Lieu room, boolean isReachable, int moveCost) {

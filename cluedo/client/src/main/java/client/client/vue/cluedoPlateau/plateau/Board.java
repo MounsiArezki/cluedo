@@ -1,4 +1,4 @@
-package client.client.vue.cluedoPlateau;
+package client.client.vue.cluedoPlateau.plateau;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;

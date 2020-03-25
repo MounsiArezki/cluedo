@@ -1,6 +1,6 @@
 package client.client.modele.entite.io;
 
-import client.client.vue.cluedoPlateau.CluedoBoard;
+import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
 
 import java.io.InputStream;
 import java.util.Scanner;

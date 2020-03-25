@@ -28,25 +28,38 @@ public abstract class Character extends Circle {
             display();
         }
 
+        test();
+        System.out.println("caca ");
 
-
-       // moveTo(departPlace, true);
-
+        moveTo(actPlace, true);
+        System.out.println("caca fin");
     }
 
+
+    public void test(){
+        System.out.println("test");
+        this.setVisible(true);
+     //   this.actPlace = place;
+       // Position position = actPlace.getCenter();
+        System.out.println("i m in");
+        this.setCenterX(443);
+        this.setCenterY(607);
+      //  place.setOccupied(true);
+        this.toFront();
+    }
 
     public void moveTo(Place place) {
         this.moveTo(place, false);
     }
 
     public void moveTo(Place place, boolean forceMove) {
-           if(place instanceof Teleportable)
-            place = (Place) plateau.getControleur().getCluedoBoard().getItemFromCoordinate(((Teleportable) place).teleportTo());
+      //     if(place instanceof Teleportable)
+        //    place = (Place) plateau.getControleur().getCluedoBoard().getItemFromCoordinate(((Teleportable) place).teleportTo());
 
-        this.setVisible(true);
 
         // deplacer to void
         if(place == null) {
+            System.out.println("i m ,not in");
             this.setVisible(false);
             this.setCenterX(Integer.MAX_VALUE);
             this.setCenterY(Integer.MAX_VALUE);
@@ -54,6 +67,7 @@ public abstract class Character extends Circle {
         }
         this.actPlace = place;
         Position position = actPlace.getCenter();
+        System.out.println("i m in");
         this.setCenterX(position.getX());
         this.setCenterY(position.getY());
         place.setOccupied(true);

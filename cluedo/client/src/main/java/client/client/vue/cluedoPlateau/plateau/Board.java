@@ -15,6 +15,7 @@ public class Board<T extends Rectangle> extends Pane {
 
 
     public void draw() {
+        this.getChildren().clear();
 
         if(grid == null)
             return;

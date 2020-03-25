@@ -132,13 +132,13 @@ public class PlateauControleur {
         Collections.shuffle(weapons);
         Collections.shuffle(suspects);
         // TO DO chosen suspect
-
+        System.out.println(  "dd"+ startPlaces.get(0));
 
         // creer joueur
         this.player = new Player(
                 this.plateau,
                 suspects.get(0),
-                startPlaces.get(0)
+                startPlaces.get(5)
         );
 
         this.characters.add(

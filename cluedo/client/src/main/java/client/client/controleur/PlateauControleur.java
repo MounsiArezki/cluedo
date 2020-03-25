@@ -5,10 +5,14 @@ import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IPartieService;
 import client.client.vue.Plateau;
+import client.client.vue.cluedoPlateau.plateau.Board;
+import client.client.vue.cluedoPlateau.player.Character;
+import client.client.vue.cluedoPlateau.player.Player;
+import client.client.vue.place.DepartPlace;
+import client.client.vue.place.Place;
 import javafx.stage.Stage;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class PlateauControleur {
 
@@ -17,11 +21,13 @@ public class PlateauControleur {
     Plateau plateau;
 
     Partie partie;
+    Player player ;
 
     IPartieService partieService;
-
+    List<Character> characters ;
     //simulation facade api
     Collection<ICarte> cartesJ ;
+
 
     public PlateauControleur(Stage plateauStage, String idPartie) {
         this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE,Arme.CORDE,Arme.CLE,Arme.COUTEAU);
@@ -34,6 +40,7 @@ public class PlateauControleur {
         plateau.setTimer(5);
         plateau.distribuerCartes();
         plateau.drawCluedoBoard();
+        createCharacters();
         plateau.show("plateau");
     }
 
@@ -88,8 +95,62 @@ public class PlateauControleur {
         this.cartesJ = cartesJ;
     }
 
+    public Board<Place> getCluedoBoard(){
+        return plateau.getBoard();
+    }
+
     public void retourMenu(){
         plateau.stopTimer();
         new MenuControleur(plateauStage);
     }
+
+    private void createCharacters() {
+        this.characters = new ArrayList<>();
+
+
+        // recuperer les departplaces
+        List<DepartPlace> startPlaces = new ArrayList<>();
+        Place[][] grid = this.getCluedoBoard().getGrid();
+        for(int y = 0; y < grid.length; y++) {
+            for(int x = 0; x < grid[y].length; x++) {
+                if(!(grid[y][x] instanceof DepartPlace))
+                    continue;
+                startPlaces.add((DepartPlace) grid[y][x]);
+            }
+        }
+
+        List<Lieu> rooms = new LinkedList<>(Arrays.asList(Lieu.values()));
+        rooms.remove(Lieu.EXIT);
+        List<Arme> weapons = new LinkedList<>(Arrays.asList(Arme.values()));
+        List<Personnage> suspects = new LinkedList<>(Arrays.asList(Personnage.values()));
+
+        // Generer une liste de joueurs
+        List<Personnage> characters = new ArrayList<>(suspects);
+
+        // Randomize rooms, weapons, and suspects
+        Collections.shuffle(rooms);
+        Collections.shuffle(weapons);
+        Collections.shuffle(suspects);
+        // TO DO chosen suspect
+
+
+        // creer joueur
+        this.player = new Player(
+                this.plateau,
+                suspects.get(0),
+                startPlaces.get(0)
+        );
+
+        this.characters.add(
+                this.player
+        );
+
+        // TO DO ajout autres joueurs
+
+
+    }
+
+
+
+
 }

@@ -20,6 +20,8 @@ public class CluedoBoard extends Board<Place> {
         this.setWidth(750);
         this.setHeight(620);
 
+
+
     }
 /*
     private void initializeGrid() {

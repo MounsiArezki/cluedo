@@ -1,5 +1,6 @@
 package client.client.vue.cluedoPlateau.plateau;
 
+import client.client.modele.entite.Position;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -35,7 +36,12 @@ public class Board<T extends Rectangle> extends Pane {
 
 
 
-
+    public final T getItemFromCoordinate(int x, int y) {
+        return grid[y][x];
+    }
+    public final T getItemFromCoordinate(Position position) {
+        return getItemFromCoordinate(position.getX(), position.getY());
+    }
 
 
 

@@ -1,20 +1,31 @@
 package client.client.modele.entite;
 
 import client.client.modele.entite.io.ImagePath;
+import javafx.scene.paint.Color;
 
 public enum Personnage implements ICarte{
-    MOUTARDE("Moutarde", ImagePath.MOUTARDE_IMG.getUrl()),
-    ROSE("Rose", ImagePath.ROSE_IMG.getUrl()),
-    PERVENCHE("Pervenche", ImagePath.PERVENCHE_IMG.getUrl()),
-    OLIVE("Olive", ImagePath.OLIVE_IMG.getUrl()),
-    VIOLET("Violet", ImagePath.VIOLET_IMG.getUrl()),
-    ORCHIDEE("Orchidée", ImagePath.ORCHIDE_IMG.getUrl());
+    MOUTARDE("Moutarde", ImagePath.MOUTARDE_IMG.getUrl(),Color.ORANGE),
+    ROSE("Rose", ImagePath.ROSE_IMG.getUrl(),Color.PURPLE),
+    PERVENCHE("Pervenche", ImagePath.PERVENCHE_IMG.getUrl(),Color.GREEN),
+    OLIVE("Olive", ImagePath.OLIVE_IMG.getUrl(),Color.BLUE),
+    VIOLET("Violet", ImagePath.VIOLET_IMG.getUrl(),Color.RED),
+    ORCHIDEE("Orchidée", ImagePath.ORCHIDE_IMG.getUrl(),Color.WHITE);
 
     private String nom;
 
-     Personnage(String nom, String imageUrl) {
+
+    private Color color;
+     Personnage(String nom, String imageUrl,Color color) {
         this.nom = nom;
         this.imageUrl = imageUrl;
+        this.color=color;
+    }
+    Personnage(String nom) {
+        this.nom = nom;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public String getImageUrl() {
@@ -23,9 +34,6 @@ public enum Personnage implements ICarte{
 
     private String imageUrl;
 
-     Personnage(String nom) {
-        this.nom = nom;
-    }
 
     public String getNom() {
         return nom;

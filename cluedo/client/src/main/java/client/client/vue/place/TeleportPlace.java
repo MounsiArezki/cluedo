@@ -24,6 +24,6 @@ public class TeleportPlace extends LieuPlace implements Teleportable {
 
     @Override
     public Position teleportTo() {
-        return null;
+        return super.getRoom().getCenter();
     }
 }

@@ -10,10 +10,12 @@ public class DepartPlace extends BasicPlace {
     public DepartPlace() {
 
         // TO DO remove
-        this.setOnMouseClicked(event -> {
+  /*      this.setOnMouseClicked(event -> {
             addHighlight(Color.RED);
             Alert a=new Alert(Alert.AlertType.INFORMATION,"departPlace"+this.getCenter(), ButtonType.OK);
             a.show();});
+
+   */
         //
     }
 }

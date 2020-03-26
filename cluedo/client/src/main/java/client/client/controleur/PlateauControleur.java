@@ -10,6 +10,7 @@ import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.DepartPlace;
 import client.client.vue.place.Place;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -21,6 +22,11 @@ public class PlateauControleur {
     Plateau plateau;
 
     Partie partie;
+
+    public Player getPlayer() {
+        return player;
+    }
+
     Player player ;
 
     IPartieService partieService;
@@ -41,6 +47,7 @@ public class PlateauControleur {
         plateau.distribuerCartes();
         plateau.drawCluedoBoard();
         createCharacters();
+
         plateau.show("plateau");
     }
 
@@ -146,8 +153,13 @@ public class PlateauControleur {
         );
 
         // TO DO ajout autres joueurs
+        //....
 
-
+        for(Place[] places : this.getCluedoBoard().getGrid()) {
+            for(Place place : places) {
+                place.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> this.getPlayer().moveTo((Place) event.getTarget()));
+            }
+        }
     }
 
 

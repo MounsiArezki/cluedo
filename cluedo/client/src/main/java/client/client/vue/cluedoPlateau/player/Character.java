@@ -10,6 +10,9 @@ import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
 import javafx.scene.shape.Circle;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class Character extends Circle {
 
 
@@ -53,9 +56,8 @@ public abstract class Character extends Circle {
     }
 
     public void moveTo(Place place, boolean forceMove) {
-      //     if(place instanceof Teleportable)
-        //    place = (Place) plateau.getControleur().getCluedoBoard().getItemFromCoordinate(((Teleportable) place).teleportTo());
-
+        if(place instanceof Teleportable)
+            place = (Place) plateau.getControleur().getCluedoBoard().getItemFromCoordinate(((Teleportable) place).teleportTo());
 
         // deplacer to void
         if(place == null) {
@@ -74,6 +76,24 @@ public abstract class Character extends Circle {
         this.toFront();
 
     }
+/*
+    public Set<Place> calcPosMoves(Place loc, int distance, int maxSpread) {
+        if(maxSpread < 0)
+            return new HashSet<>();
+        Set<Place> moves = new HashSet<>();
+        for(Place place : loc.getAdjacent()) {
+            if(place == null || place.isOccupied())
+                continue;
+            if(distance - place.getMoveCost() < 0)
+                continue;
+            moves.addAll(calcPosMoves(place, distance - place.getMoveCost(), maxSpread-1));
+            moves.add(place);
+        }
+        return moves;
+    }
+    */
+
+
 
 
     private void display() {

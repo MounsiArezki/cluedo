@@ -12,10 +12,12 @@ public class PortePlace extends LieuPlace implements Teleportable  {
 
     public PortePlace(DirectionKey direction, Lieu room) {
         this(direction, room, true, 1);
-        this.setOnMouseClicked(event -> {
+   /*     this.setOnMouseClicked(event -> {
             addHighlight(Color.RED);
             Alert a=new Alert(Alert.AlertType.INFORMATION,"PortePlace"+direction.getKey(), ButtonType.OK);
             a.show();});
+
+    */
     }
 
     public PortePlace(DirectionKey direction, Lieu room, boolean isReachable, int moveCost) {

@@ -19,10 +19,12 @@ public class LieuPlace extends Place {
     public LieuPlace(Lieu room, boolean isReachable, int moveCost) {
         this(DirectionKey.ALL, room, isReachable, moveCost);
       // TO DO remove
-        this.setOnMouseClicked(event -> {
+   /*     this.setOnMouseClicked(event -> {
             addHighlight(Color.RED);
             Alert a=new Alert(Alert.AlertType.INFORMATION,"lieuPlace"+this.room.getNom(), ButtonType.OK);
             a.show();});
+
+    */
         //
     }
 

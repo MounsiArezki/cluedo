@@ -11,10 +11,12 @@ public class TeleportPlace extends LieuPlace implements Teleportable {
 
     public TeleportPlace(DirectionKey direction, Lieu room) {
         this(direction, room, true, 1);
-        this.setOnMouseClicked(event -> {
+  /*      this.setOnMouseClicked(event -> {
             addHighlight(Color.RED);
             Alert a=new Alert(Alert.AlertType.INFORMATION,"teleportPlace"+direction.toString(), ButtonType.OK);
             a.show();});
+
+   */
     }
 
     public TeleportPlace(DirectionKey direction, Lieu room, boolean isReachable, int moveCost) {

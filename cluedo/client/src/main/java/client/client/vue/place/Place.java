@@ -48,10 +48,12 @@ public class Place extends Rectangle {
     public Place(DirectionKey direction, boolean isReachable, int moveCost) {
         super();
         // TODORemove
-        this.setOnMouseClicked(event -> {
+     /*   this.setOnMouseClicked(event -> {
             addHighlight(Color.RED);
             Alert a=new Alert(Alert.AlertType.INFORMATION,this.getCenter().toString(), ButtonType.OK);
             a.show();});
+
+      */
         this.isReachable=isReachable;
         this.setOpacity(0);
     }

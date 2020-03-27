@@ -8,6 +8,7 @@ import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.HashSet;
@@ -16,11 +17,29 @@ import java.util.Set;
 public abstract class Character extends Circle {
 
 
-    protected final int DES_NUM =6;
+    private static final int  DES_NUM =1;
+
+    public int getLancerNum() {
+        return lancerNum;
+    }
+
     protected int lancerNum;
     protected final Plateau plateau;
     protected final Personnage personnage;
+
+
+    public boolean isMY_TURN() {
+        return MY_TURN;
+    }
+
+    protected  boolean MY_TURN ;
+
+    public Place getActPlace() {
+        return actPlace;
+    }
+
     protected Place actPlace;
+    protected Set<Place> posMoves = new HashSet<>();
 
     protected Character( Plateau plat, Personnage personnage,Place departPlace) {
         this.plateau = plat;
@@ -30,14 +49,22 @@ public abstract class Character extends Circle {
             plateau.getControleur().getCluedoBoard().getChildren().add(this);
             display();
         }
-
-        test();
-        System.out.println("caca ");
-
         moveTo(actPlace, true);
-        System.out.println("caca fin");
-    }
+        this.MY_TURN =true;
 
+    }
+    //  lancer dés
+    public int lancerDes() {
+        int NumTmp = 0;
+        for(int i = 0; i < DES_NUM; i++)
+            NumTmp += Math.random() * 6 + 1;
+        this.lancerNum = NumTmp;
+        this.posMoves = calcPosMoves();
+      //  posMoves.stream().forEach(x-> x.addHighlight(Color.DARKGREEN));
+        delHighlightPosMoves();
+        highlightPosMoves();
+        return lancerNum;
+    }
 
     public void test(){
         System.out.println("test");
@@ -58,8 +85,14 @@ public abstract class Character extends Circle {
     public void moveTo(Place place, boolean forceMove) {
         if(place instanceof Teleportable)
             place = (Place) plateau.getControleur().getCluedoBoard().getItemFromCoordinate(((Teleportable) place).teleportTo());
-
-        // deplacer to void
+        if(actPlace != null) {
+            //Marquer place précédente comme inoccupé
+            actPlace.setOccupied(false);
+            if(!forceMove)
+                //Décrémenter dés resultat
+                this.lancerNum -= actPlace.getDistance(place);
+        }
+            // deplacer to void
         if(place == null) {
             System.out.println("i m ,not in");
             this.setVisible(false);
@@ -75,10 +108,20 @@ public abstract class Character extends Circle {
         place.setOccupied(true);
         this.toFront();
 
+        // Calc new possible moves
+        this.posMoves = calcPosMoves();
+
+
     }
-/*
-    public Set<Place> calcPosMoves(Place loc, int distance, int maxSpread) {
-        if(maxSpread < 0)
+
+    public Set<Place> calcPosMoves() {return this.calcPosMoves(this.getActPlace(), this.getLancerNum());}
+
+    public Set<Place> calcPosMoves(Place loc, int distance) {
+        return this.calcPosMoves(loc, distance, distance+8);
+    }
+
+    public Set<Place> calcPosMoves(Place loc, int distance, int maxSp) {
+        if(maxSp < 0)
             return new HashSet<>();
         Set<Place> moves = new HashSet<>();
         for(Place place : loc.getAdjacent()) {
@@ -86,14 +129,18 @@ public abstract class Character extends Circle {
                 continue;
             if(distance - place.getMoveCost() < 0)
                 continue;
-            moves.addAll(calcPosMoves(place, distance - place.getMoveCost(), maxSpread-1));
+            moves.addAll(calcPosMoves(place, distance - place.getMoveCost(), maxSp-1));
             moves.add(place);
         }
         return moves;
     }
-    */
 
 
+    public Set<Place> getPosMoves() {
+        if(posMoves == null)
+            this.posMoves = calcPosMoves();
+        return posMoves;
+    }
 
 
     private void display() {
@@ -101,6 +148,17 @@ public abstract class Character extends Circle {
         this.setRadius(Math.min(board.getGrid()[0][0].getWidth(), board.getGrid()[0][0].getHeight())/1.66);
         this.setFill(personnage.getColor());
         this.setVisible(true);
+    }
+    protected void highlightPosMoves() {
+        for(Place place : posMoves) {
+            place.addHighlight(Color.GREEN);
+        }
+    }
+
+    protected void delHighlightPosMoves() {
+        for(Place posMove : posMoves) {
+            posMove.delHighlight();
+        }
     }
 
 }

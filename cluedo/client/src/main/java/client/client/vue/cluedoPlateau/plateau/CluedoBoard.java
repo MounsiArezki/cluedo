@@ -1,5 +1,6 @@
 package client.client.vue.cluedoPlateau.plateau;
 import client.client.modele.entite.Lieu;
+import client.client.modele.entite.Position;
 import client.client.modele.entite.io.TextStream;
 import client.client.vue.cluedoPlateau.Key.DirectionKey;
 import client.client.vue.cluedoPlateau.Key.PlaceKey;
@@ -91,7 +92,72 @@ public class CluedoBoard extends Board<Place> {
         }
     }
 
+    public void calcAdjacent() {
+        for(int y = 0; y < super.grid.length; y++) {
+            for(int x = 0; x < super.grid[y].length; x++) {
 
+                // Possible direction
+                Position[] shifts = new Position[] {
+                        new Position(0,-1),
+                        new Position(1, 0),
+                        new Position(0, 1),
+                        new Position(-1, 0)
+                };
+
+                //Emplacements adjacents possibles
+                Place[] adjacents = new Place[5];
+
+                //Ajoute pos téléportation les endroits téléportables
+                if(grid[y][x] instanceof Teleportable) {
+                    adjacents[4] = super.getItemFromCoordinate(((Teleportable) grid[y][x]).teleportTo());
+                }
+
+                int i = -1;
+                for(Position shift : shifts) {
+                    i++;
+
+                    // Check if it is theoretically possible to move to adjacent location
+                    if(!grid[y][x].getDirection().isOpen(i))
+                        continue;
+
+                    // Create adjacent location if it exists
+                    try {
+                        Place adj = super.getItemFromCoordinate(x + shift.getX(), y + shift.getY());
+
+                        if(adj == null)
+                            continue;
+
+                        if(!adj.isReachable())
+                            continue;
+
+
+                        //Continuez si LieuPlace ne se connecte pas avec LieuPlace
+                        if(!(grid[y][x] instanceof PortePlace) && grid[y][x] instanceof LieuPlace && !(adj instanceof LieuPlace))
+                            continue;
+
+                        // Continuez si basicPlace ne se connecte pas avec BasicPlace ou portePlace
+                        if(grid[y][x] instanceof BasicPlace && !(adj instanceof BasicPlace || adj instanceof PortePlace))
+                            continue;
+
+                        // Ajouter place à l'extérieur de la porte au lieu de la porte elle-même
+                        if(grid[y][x] instanceof LieuPlace && adj instanceof PortePlace)
+                            adj = super.getItemFromCoordinate(x + shift.getX()*2, y + shift.getY()*2);
+
+
+                        // Continuez si une porte est adjacente mais pointe dans la mauvaise direction
+                        if(adj instanceof PortePlace && !adj.getDirection().isOpen((i + 2) % 4)) {
+                            continue;
+                        }
+
+                        adjacents[i] = adj;
+                    } catch (IndexOutOfBoundsException e) {}
+                }
+
+                // Add adjacent places or null
+                grid[y][x].setAdjacent(adjacents);
+            }
+        }
+    }
 
 
 

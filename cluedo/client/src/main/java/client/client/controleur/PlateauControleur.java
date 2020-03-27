@@ -46,6 +46,7 @@ public class PlateauControleur {
         plateau.setTimer(5);
         plateau.distribuerCartes();
         plateau.drawCluedoBoard();
+
         createCharacters();
 
         plateau.show("plateau");
@@ -139,7 +140,6 @@ public class PlateauControleur {
         Collections.shuffle(weapons);
         Collections.shuffle(suspects);
         // TO DO chosen suspect
-        System.out.println(  "dd"+ startPlaces.get(0));
 
         // creer joueur
         this.player = new Player(
@@ -163,6 +163,7 @@ public class PlateauControleur {
     }
 
 
-
-
+    public int roll() {
+       return this.player.lancerDes();
+    }
 }

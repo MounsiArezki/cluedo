@@ -7,10 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -54,6 +51,13 @@ public class Plateau extends View<PlateauControleur> {
 
 
     public void lancerDesAction(ActionEvent actionEvent) {
+        if(getControleur().getPlayer().isMY_TURN()){
+            int res =getControleur().roll();
+            this.desResultat.setText(Integer.toString(res));
+        }else {
+            this.showMessage("Not your turn !", Alert.AlertType.WARNING);
+        }
+
     }
 
     public void passerAction(ActionEvent actionEvent) {
@@ -71,6 +75,7 @@ public class Plateau extends View<PlateauControleur> {
     public void drawCluedoBoard(){
 
         board.initializeGrid();
+        board.calcAdjacent();
         board.draw();
 
     }

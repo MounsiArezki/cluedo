@@ -28,4 +28,5 @@ public class TeleportPlace extends LieuPlace implements Teleportable {
     public Position teleportTo() {
         return super.getRoom().getCenter();
     }
+
 }

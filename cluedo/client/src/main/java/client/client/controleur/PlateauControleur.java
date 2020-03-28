@@ -10,6 +10,7 @@ import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.DepartPlace;
 import client.client.vue.place.Place;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -30,13 +31,30 @@ public class PlateauControleur {
     Player player ;
 
     IPartieService partieService;
+
+    /*
+        Simulation WS
+     */
+
     List<Character> characters ;
     //simulation facade api
     Collection<ICarte> cartesJ ;
+    //simulation get autres joueurs partie
+    Collection<Joueur> joueursPartie;
 
-
-    public PlateauControleur(Stage plateauStage, String idPartie) {
+    public void getMyCard(){
+        // a remplacer par les carte recu du WS
         this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE,Arme.CORDE,Arme.CLE,Arme.COUTEAU);
+
+    }
+
+
+
+    /*
+        END
+     */
+    public PlateauControleur(Stage plateauStage, String idPartie) {
+        getMyCard();
         this.plateauStage = plateauStage;
         this.partieService = new Facade();
         this.partie = partieService.getPartieById(idPartie);
@@ -142,11 +160,7 @@ public class PlateauControleur {
         // TO DO chosen suspect
 
         // creer joueur
-        this.player = new Player(
-                this.plateau,
-                suspects.get(0),
-                startPlaces.get(5)
-        );
+        this.player = new Player( this.plateau, suspects.get(0),  startPlaces.get(5)  );
 
         this.characters.add(
                 this.player

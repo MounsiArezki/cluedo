@@ -1,5 +1,6 @@
 package client.client.vue.cluedoPlateau.player;
 
+import client.client.modele.entite.ICarte;
 import client.client.modele.entite.Personnage;
 import client.client.vue.Plateau;
 import client.client.vue.place.Place;
@@ -37,6 +38,18 @@ public class Player extends Character {
         MY_TURN =false;
 
     }
+
+    public void guess(){
+
+        // guess logic
+
+    }
+
+
+    public void passCard(String carte){
+        System.out.println("envoie carte via web serv :"+carte);
+    }
+
 
 
 }

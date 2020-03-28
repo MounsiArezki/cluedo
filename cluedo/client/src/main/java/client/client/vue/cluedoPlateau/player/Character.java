@@ -8,6 +8,7 @@ import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
+import javafx.event.EventTarget;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -160,5 +161,6 @@ public abstract class Character extends Circle {
             posMove.delHighlight();
         }
     }
+
 
 }

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.Collection;
@@ -29,6 +30,10 @@ public class Plateau extends View<PlateauControleur> {
     public Label etatPartie;
 
 
+    public ObservableList<Button> getObservableListCard() {
+        return observableListCard;
+    }
+
     ObservableList<Button> observableListCard=FXCollections.observableArrayList();
 
 
@@ -37,12 +42,22 @@ public class Plateau extends View<PlateauControleur> {
         for(ICarte carte : listeCartes){
 
             Image image = new Image(carte.getImageUrl());
-
             Button buttonImg = new Button();
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(67);
             imageView.setFitWidth(69);
             buttonImg.setGraphic(imageView);
+            buttonImg.setId(carte.getNom());
+
+
+            buttonImg.addEventHandler(
+                    MouseEvent.MOUSE_CLICKED, (event) -> getControleur().getPlayer()
+                            .passCard(
+                                    event.getPickResult().getIntersectedNode().getId()
+                            )
+            );
+
+
             observableListCard.add(buttonImg);
         }
 

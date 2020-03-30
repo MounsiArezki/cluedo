@@ -103,7 +103,7 @@ public class ControlUser {
         try {
             facade.deconnexion(id);
         } catch (PasConnecteException e) {
-            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }

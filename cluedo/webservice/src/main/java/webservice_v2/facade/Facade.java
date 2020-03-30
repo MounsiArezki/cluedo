@@ -1,9 +1,6 @@
 package webservice_v2.facade;
 
-import webservice_v2.connexionException.DejaInscritException;
-import webservice_v2.connexionException.MdpIncorrectException;
-import webservice_v2.connexionException.NonInscritException;
-import webservice_v2.connexionException.PasConnecteException;
+import webservice_v2.connexionException.*;
 import webservice_v2.entite.Invitation;
 import webservice_v2.entite.Joueur;
 import webservice_v2.entite.Partie;
@@ -136,7 +133,10 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeInvitations.values(); }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<User> lj) {
+    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException {
+        if(lj.size()<1){
+            throw new InvitationInvalideException();
+        }
         User hote = findUser(idH);
         Invitation i = facI.createInvitation(idP, hote, lj);
         listeInvitations.put(i.getId(), i);

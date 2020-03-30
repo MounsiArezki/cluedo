@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import webservice_v2.config.ServiceConfig;
+import webservice_v2.connexionException.InvitationInvalideException;
 import webservice_v2.entite.Invitation;
 import webservice_v2.entite.Partie;
 import webservice_v2.entite.User;
@@ -38,11 +39,16 @@ public class ControlInvitation {
                 .path("/{id}")
                 .buildAndExpand(partie.getId())
                 .toUri(); //URI Partie*/
-        Invitation i = facade.addInvitation(
-                partie.getId(),
-                invitation.getHote().getId(),
-                invitation.getInvites()
-        );
+        Invitation i = null;
+        try {
+            i = facade.addInvitation(
+                    partie.getId(),
+                    invitation.getHote().getId(),
+                    invitation.getInvites()
+            );
+        } catch (InvitationInvalideException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

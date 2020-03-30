@@ -22,14 +22,14 @@ public class ControlInvitation {
     private Facade facade = Facade.getFac();
 
     // récupérer toutes les invitations
-    @GetMapping(value = "/invitation", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ServiceConfig.URL_INVITATION, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<Invitation>> getInv() {
         Collection<Invitation> liste= facade.getInvitations();
         return ResponseEntity.ok(liste);
     }
 
     // ajouter une invitation ET une partie
-    @PostMapping(value = "/invitation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = ServiceConfig.URL_INVITATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invitation> createInv(@RequestBody Invitation invitation) {
         User hote= invitation.getHote();
         Partie partie = facade.addPartie(hote.getId());
@@ -54,21 +54,21 @@ public class ControlInvitation {
     }
 
     // trouver une invitation par son id
-    @GetMapping(value = "/invitation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ServiceConfig.URL_INVITATION_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invitation> getInvById(@PathVariable String id) {
         Invitation i= facade.findInvitation(id);
         return ResponseEntity.ok(i);
     }
 
     // supprimer une invitation
-    @DeleteMapping(value = "/invitation/{id}")
+    @DeleteMapping(value = ServiceConfig.URL_INVITATION_ID)
     public ResponseEntity<String> removeInv(@PathVariable String id) {
         facade.removeInvitation(id);
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
     //accepter une invitation
-    @PutMapping(value = "/invitation/{id}/acceptation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = ServiceConfig.URL_INVITATION_ID_ACCEPTATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> acceptInv(@PathVariable String id, @RequestBody User user) {
         facade.accepterInvitation(id, user.getId());
         URI location = ServletUriComponentsBuilder
@@ -82,7 +82,7 @@ public class ControlInvitation {
     }
 
     //accepter une invitation
-    @PutMapping(value = "/invitation/{id}/refus", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = ServiceConfig.URL_INVITATION_ID_REFUS, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> refuseInv(@PathVariable String id, @RequestBody User user) {
         facade.refuserInvitation(id, user.getId());
         URI location = ServletUriComponentsBuilder

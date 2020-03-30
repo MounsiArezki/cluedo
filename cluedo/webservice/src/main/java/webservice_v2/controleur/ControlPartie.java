@@ -18,14 +18,14 @@ public class ControlPartie{
 
     private Facade facade = Facade.getFac();
 
-    @GetMapping(value = "/partie/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ServiceConfig.URL_PARTIE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Partie> getPartieById(@PathVariable String id){
         Partie partie=facade.findPartie(id);
         return ResponseEntity.ok(partie);
     }
 
 
-    @PutMapping(value = "/partie/{id}/sauvegarde", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = ServiceConfig.URL_PARTIE_ID_SAUVEGARDE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> savePartie(@PathVariable String id, @RequestBody User user) {
         facade.savePartie(id, user.getId());
         URI location = ServletUriComponentsBuilder
@@ -38,7 +38,7 @@ public class ControlPartie{
                 .build();
     }
 
-    @GetMapping(value = "/partie/{id}/restauration", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ServiceConfig.URL_PARTIE_ID_RESTAURATION, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Partie> restorePartie(@PathVariable String id, @RequestBody User user) {
         Partie partie=facade.restorePartie(id, user.getId());
         return ResponseEntity.ok(partie);

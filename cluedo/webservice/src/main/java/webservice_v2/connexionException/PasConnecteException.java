@@ -1,4 +1,4 @@
 package webservice_v2.connexionException;
 
-public class PasConnecteException {
+public class PasConnecteException extends Throwable{
 }

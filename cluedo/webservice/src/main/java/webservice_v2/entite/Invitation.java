@@ -1,7 +1,5 @@
 package webservice_v2.entite;
 
-import webservice_v2.entite.User;
-
 import java.util.List;
 
 public class Invitation {
@@ -10,8 +8,6 @@ public class Invitation {
     private String idPartie;
     private User hote;
     private List<User> invites;
-
-
 
     public Invitation(String id, String idPartie, User hote, List<User> invites) {
         this.id = id;

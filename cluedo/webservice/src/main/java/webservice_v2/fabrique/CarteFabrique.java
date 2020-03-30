@@ -1,9 +1,9 @@
-package webservice_v2;
+package webservice_v2.fabrique;
 
-import webservice_v2.carte.Arme;
-import webservice_v2.carte.ICarte;
-import webservice_v2.carte.Lieu;
-import webservice_v2.carte.Personnage;
+import webservice_v2.entite.carte.Arme;
+import webservice_v2.entite.carte.ICarte;
+import webservice_v2.entite.carte.Lieu;
+import webservice_v2.entite.carte.Personnage;
 
 import java.util.Arrays;
 import java.util.List;

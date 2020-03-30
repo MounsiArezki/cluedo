@@ -1,7 +1,9 @@
 package webservice_v2.entite;
 
-import webservice_v2.carte.ICarte;
-import webservice_v2.etat_partie.EtatPartie;
+
+
+import webservice_v2.entite.carte.ICarte;
+import webservice_v2.entite.etat_partie.EtatPartie;
 import webservice_v2.fabrique.CarteFabrique;
 
 import java.util.HashMap;

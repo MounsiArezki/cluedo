@@ -1,4 +1,4 @@
-package webservice_v2;
+package webservice_v2.fabrique;
 
 import webservice_v2.entite.User;
 

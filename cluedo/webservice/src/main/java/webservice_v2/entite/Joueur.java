@@ -1,9 +1,8 @@
 package webservice_v2.entite;
 
-import webservice_v2.Position;
-import webservice_v2.carte.ICarte;
-import webservice_v2.carte.Personnage;
-import webservice_v2.entite.User;
+
+import webservice_v2.entite.carte.ICarte;
+import webservice_v2.entite.carte.Personnage;
 
 import java.util.List;
 

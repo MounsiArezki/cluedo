@@ -1,4 +1,4 @@
-package webservice_v2;
+package webservice_v2.facade;
 
 import webservice_v2.connexionException.DejaInscritException;
 import webservice_v2.connexionException.MdpIncorrectException;
@@ -28,9 +28,12 @@ public class Facade {
     private Map<String, Invitation> listeInvitations; //liste d'invitations
     private Map<String, Partie> listeParties; //liste de partie
     private Map<String,Partie> listePartiesartiesMongo; //liste de partie sauvegardées pour "simuler mongo"
-    
+
+    // récupérer le singleton de la facade
+    public static Facade getFac() { return fac; }
     
     private Facade() {
+        facU = FactoryUser.getFacU();
         facI = FactoryInvitation.getFacI(); //factory à invitation
         facP = FactoryPartie.getFacP(); //factory à partie (est-ce qu'on gère qu'une partie ou plusieurs ?)
 
@@ -115,7 +118,7 @@ public class Facade {
 }
 
     // déconnexion
-    public User deconnexion(String ps) throws PasConnecteException{
+    public User deconnexion(String ps) throws PasConnecteException {
         User u = findUserByLogin(ps);
         if (u == null){
             throw new PasConnecteException();
@@ -123,6 +126,7 @@ public class Facade {
         listeUserssersConnectes.remove(u.getId());
         return u;
     }
+
 
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les invitations
@@ -290,10 +294,4 @@ public class Facade {
         listeParties.remove(id);
     }
 
-    // ----------------------------------------------------------------------------------------
-    // Méthodes statiques
-    // ----------------------------------------------------------------------------------------
-
-    // récupérer le singleton de la facade
-    public static Facade getFac() { return fac; }
 }

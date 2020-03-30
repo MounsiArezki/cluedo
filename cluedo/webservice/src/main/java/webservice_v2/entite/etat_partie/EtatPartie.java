@@ -1,5 +1,4 @@
-package webservice_v2.etat_partie;
-
+package webservice_v2.entite.etat_partie;
 
 import webservice_v2.entite.Joueur;
 

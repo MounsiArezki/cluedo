@@ -1,6 +1,7 @@
-package webservice_v2;
+package webservice_v2.entite;
 
-import webservice_v2.carte.Lieu;
+
+import webservice_v2.entite.carte.Lieu;
 
 public class Position {
 

@@ -1,4 +1,4 @@
-package webservice_v2.carte;
+package webservice_v2.entite.carte;
 
 public interface ICarte {
 

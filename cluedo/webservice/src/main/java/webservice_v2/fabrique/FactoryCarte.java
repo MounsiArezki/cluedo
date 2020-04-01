@@ -1,18 +1,15 @@
 package webservice_v2.fabrique;
 
-import webservice_v2.entite.carte.Arme;
-import webservice_v2.entite.carte.ICarte;
-import webservice_v2.entite.carte.Lieu;
-import webservice_v2.entite.carte.Personnage;
+import webservice_v2.entite.carte.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class CarteFabrique {
+public class FactoryCarte {
 
-    private static CarteFabrique facC = new CarteFabrique();
+    private static FactoryCarte facC = new FactoryCarte();
 
-    private CarteFabrique() { }
+    private FactoryCarte() { }
 
     public static List<ICarte> getAllCartesPersonnage() {
         return Arrays.asList(
@@ -50,6 +47,19 @@ public class CarteFabrique {
         );
     }
 
-    public static CarteFabrique getFacU() { return facC; }
+    public static List<ICarte> getAllCartesSpeciales(){
+        return Arrays.asList(
+                Speciale.DEPLACER_ALL_LIEU,
+                Speciale.MONTRER_CARTE_JOUEUR_GAUCHE,
+                Speciale.NOMER_ARME,
+                Speciale.NOMER_LIEU,
+                Speciale.NOMER_PERSONNAGE,
+                Speciale.PASSAGE_SECRET,
+                Speciale.REVELER_CARTE_ALL,
+                Speciale.REVELER_CARTE_JOUEUR_CHOISIT
+        );
+    }
+
+    public static FactoryCarte getFacU() { return facC; }
 
 }

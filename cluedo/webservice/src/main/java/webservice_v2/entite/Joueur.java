@@ -2,16 +2,25 @@ package webservice_v2.entite;
 
 
 import webservice_v2.entite.carte.ICarte;
-import webservice_v2.entite.carte.Personnage;
+import webservice_v2.entite.carte.ICarte;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Joueur {
 
     User user;
-    Personnage personnage;
+    ICarte personnage;
     Position position;
     List<ICarte> listeCartes;
+
+    public Joueur() {
+    }
+
+    public Joueur(User user) {
+        this.user = user;
+        listeCartes=new ArrayList<>();
+    }
 
     public User getUser() {
         return user;
@@ -21,11 +30,11 @@ public class Joueur {
         this.user = user;
     }
 
-    public Personnage getPersonnage() {
+    public ICarte getPersonnage() {
         return personnage;
     }
 
-    public void setPersonnage(Personnage personnage) {
+    public void setPersonnage(ICarte personnage) {
         this.personnage = personnage;
     }
 
@@ -43,6 +52,10 @@ public class Joueur {
 
     public void setListeCartes(List<ICarte> listeCartes) {
         this.listeCartes = listeCartes;
+    }
+
+    public void ajouterCarte(ICarte carte){
+        listeCartes.add(carte);
     }
 
 }

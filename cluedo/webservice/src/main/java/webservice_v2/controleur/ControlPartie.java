@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import webservice_v2.config.ServiceConfig;
-import webservice_v2.entite.Partie;
-import webservice_v2.entite.User;
+import webservice_v2.modele.entite.Partie;
+import webservice_v2.modele.entite.User;
 import webservice_v2.facade.Facade;
 
 import java.net.URI;

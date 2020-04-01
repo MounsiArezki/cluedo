@@ -1,7 +1,7 @@
-package webservice_v2.fabrique;
+package webservice_v2.modele.fabrique;
 
-import webservice_v2.entite.Invitation;
-import webservice_v2.entite.User;
+import webservice_v2.modele.entite.Invitation;
+import webservice_v2.modele.entite.User;
 
 import java.util.List;
 

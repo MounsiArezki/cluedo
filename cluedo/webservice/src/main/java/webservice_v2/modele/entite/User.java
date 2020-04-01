@@ -1,4 +1,4 @@
-package webservice_v2.entite;
+package webservice_v2.modele.entite;
 
 import java.util.Objects;
 

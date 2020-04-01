@@ -1,4 +1,4 @@
-package webservice_v2.connexionException;
+package webservice_v2.exception;
 
 public class NonInscritException extends Exception {
 

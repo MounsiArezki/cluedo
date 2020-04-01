@@ -1,4 +1,4 @@
-package webservice_v2.entite.carte;
+package webservice_v2.modele.carte;
 
 public enum Lieu implements ICarte {
 

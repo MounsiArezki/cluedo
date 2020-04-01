@@ -1,4 +1,4 @@
-package webservice_v2.entite.carte;
+package webservice_v2.modele.carte;
 
 public enum Personnage implements ICarte {
     MOUTARDE("Moutarde"),
@@ -10,11 +10,12 @@ public enum Personnage implements ICarte {
 
     private String nom;
 
+    public String getNom() {
+        return nom;
+    }
+
     Personnage(String nom) {
         this.nom = nom;
     }
 
-    public String getNom() {
-        return nom;
-    }
 }

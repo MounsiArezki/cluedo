@@ -11,9 +11,9 @@ import webservice.webservice.modele.Facade;
 import webservice.webservice.modele.entite.Invitation;
 import webservice.webservice.modele.entite.Partie;
 import webservice.webservice.modele.entite.User;
-import webservice_v2.connexionException.DejaInscritException;
-import webservice_v2.connexionException.MdpIncorrectException;
-import webservice_v2.connexionException.NonInscritException;
+import webservice_v2.exception.DejaInscritException;
+import webservice_v2.exception.MdpIncorrectException;
+import webservice_v2.exception.NonInscritException;
 
 import java.net.URI;
 import java.util.Collection;

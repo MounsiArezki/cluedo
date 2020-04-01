@@ -1,13 +1,13 @@
 package webservice_v2.facade;
 
-import webservice_v2.connexionException.*;
-import webservice_v2.entite.Invitation;
-import webservice_v2.entite.Joueur;
-import webservice_v2.entite.Partie;
-import webservice_v2.entite.User;
-import webservice_v2.fabrique.FactoryInvitation;
-import webservice_v2.fabrique.FactoryPartie;
-import webservice_v2.fabrique.FactoryUser;
+import webservice_v2.exception.*;
+import webservice_v2.modele.entite.Invitation;
+import webservice_v2.modele.entite.Partie;
+import webservice_v2.modele.entite.User;
+import webservice_v2.modele.fabrique.FactoryInvitation;
+import webservice_v2.modele.fabrique.FactoryPartie;
+import webservice_v2.modele.fabrique.FactoryUser;
+import webservice_v2.modele.gestionnaire.GestionnairePartie;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -196,7 +196,7 @@ public class Facade {
             if (i.getInvites().contains(u)) { // si l'utilisateur est dans la liste des invités
                 i.getInvites().remove(u); // on le retire de la liste des invités
                 Partie partie=findPartie(i.getIdPartie());
-                partie.getJoueurs().put(idU, new Joueur()); // on l'intègre à la partie
+                GestionnairePartie.ajouterJoueur(partie, u); // on l'intègre à la partie
                 checkInvitationPartie(i,partie);
                 res= true;
             }
@@ -222,10 +222,10 @@ public class Facade {
     private void checkInvitationPartie(Invitation invitation, Partie partie) {
         if (invitation.getInvites().size() < 1) {
             if (partie.getJoueurs().size() < 2) {
-                partie.getEtatPartie().finir();
+                partie.getEtatPartie().next();
             }
             else {
-                partie.getEtatPartie().init();
+                partie.getEtatPartie().next();
             }
         }
     }

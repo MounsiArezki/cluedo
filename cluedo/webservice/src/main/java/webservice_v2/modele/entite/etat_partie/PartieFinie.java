@@ -3,21 +3,23 @@ package webservice_v2.modele.entite.etat_partie;
 import webservice_v2.modele.carte.ICarte;
 import webservice_v2.modele.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
-import webservice_v2.modele.entite.Partie;
 
-import javax.servlet.http.Part;
 import java.util.List;
 import java.util.Map;
 
-public class EnAttenteDesJoueurs implements IEtatPartie {
+public class PartieFinie implements IEtatPartie {
 
+    private Joueur gagnant;
+    private Map<TypeCarte, ICarte> combinaisonGagnante;
 
-    public EnAttenteDesJoueurs() {
+    public PartieFinie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagnante) {
+        this.gagnant = gagnant;
+        this.combinaisonGagnante = combinaisonGagnante;
     }
 
     @Override
     public IEtatPartie initialiser() throws UnsupportedOperationException {
-        return new Initialisation();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -62,6 +64,6 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
 
     @Override
     public IEtatPartie finirPartie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagante) throws UnsupportedOperationException {
-        return new PartieFinie(gagnant, combinaisonGagante);
+        throw new UnsupportedOperationException();
     }
 }

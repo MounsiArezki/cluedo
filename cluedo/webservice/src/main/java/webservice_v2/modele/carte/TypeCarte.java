@@ -2,7 +2,10 @@ package webservice_v2.modele.carte;
 
 public enum TypeCarte {
 
-    INDICE,
+    OU,
+    QUI,
+    AVECQUOI,
+    SPECIALE,
     LIEU,
     ARME,
     PERSONNAGE;

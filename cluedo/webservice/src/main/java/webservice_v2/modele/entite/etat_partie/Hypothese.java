@@ -3,21 +3,25 @@ package webservice_v2.modele.entite.etat_partie;
 import webservice_v2.modele.carte.ICarte;
 import webservice_v2.modele.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
-import webservice_v2.modele.entite.Partie;
 
-import javax.servlet.http.Part;
 import java.util.List;
 import java.util.Map;
 
-public class EnAttenteDesJoueurs implements IEtatPartie {
+public class Hypothese implements IEtatPartie {
 
+    private Joueur joueurCourant;
+    private Joueur joueurActif;
+    private Map<TypeCarte, ICarte> hypothese;
 
-    public EnAttenteDesJoueurs() {
+    public Hypothese(Joueur joueurCourant, Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) {
+        this.joueurCourant = joueurCourant;
+        this.joueurActif = joueurActif;
+        this.hypothese = hypothese;
     }
 
     @Override
     public IEtatPartie initialiser() throws UnsupportedOperationException {
-        return new Initialisation();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -37,7 +41,7 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
 
     @Override
     public IEtatPartie revelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new Hypothese(joueurCourant, joueurActif, hypothese);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
 
     @Override
     public IEtatPartie resoudreHypothese(Joueur joueurCourant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new FinTour(joueurCourant);
     }
 
     @Override
@@ -62,6 +66,6 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
 
     @Override
     public IEtatPartie finirPartie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagante) throws UnsupportedOperationException {
-        return new PartieFinie(gagnant, combinaisonGagante);
+        throw new UnsupportedOperationException();
     }
 }

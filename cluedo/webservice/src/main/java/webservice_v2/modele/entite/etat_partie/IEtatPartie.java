@@ -1,33 +1,31 @@
 package webservice_v2.modele.entite.etat_partie;
 
+import webservice_v2.modele.carte.ICarte;
+import webservice_v2.modele.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
 
-public abstract class IEtatPartie {
+import java.util.List;
+import java.util.Map;
 
-    protected Joueur joueurCourant;
+public interface IEtatPartie {
 
-    protected Joueur joueurActif;
+    public IEtatPartie initialiser() throws UnsupportedOperationException;
 
-    public IEtatPartie(Joueur joueurCourant, Joueur joueurActif){
-        this.joueurCourant=joueurCourant;
-        this.joueurActif=joueurActif;
-    }
+    public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException;
 
-    public Joueur getJoueurCourant() {
-        return joueurCourant;
-    }
+    public IEtatPartie piocherIndice(Joueur jouerCourant, List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException;
 
-    public void setJoueurCourant(Joueur joueurCourant) {
-        this.joueurCourant = joueurCourant;
-    }
+    public IEtatPartie deplacer(Joueur joueurCourant) throws UnsupportedOperationException;
 
-    public Joueur getJoueurActif() {
-        return joueurActif;
-    }
+    public IEtatPartie revelerCarte(Joueur joueurActif) throws UnsupportedOperationException;
 
-    public void setJoueurActif(Joueur joueurActif) {
-        this.joueurActif = joueurActif;
-    }
+    public IEtatPartie passerRevelerCarte(Joueur joueurActif) throws UnsupportedOperationException;
 
-    public abstract IEtatPartie next();
+    public IEtatPartie faireHypothese(Joueur joueurCourant, Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException;
+
+    public IEtatPartie resoudreHypothese(Joueur joueurCourant) throws UnsupportedOperationException;
+
+    public IEtatPartie debuterTour(Joueur joueurSuivant) throws UnsupportedOperationException;
+
+    public IEtatPartie finirPartie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagante) throws UnsupportedOperationException;
 }

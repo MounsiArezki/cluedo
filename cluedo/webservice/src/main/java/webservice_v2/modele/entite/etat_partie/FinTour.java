@@ -3,21 +3,21 @@ package webservice_v2.modele.entite.etat_partie;
 import webservice_v2.modele.carte.ICarte;
 import webservice_v2.modele.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
-import webservice_v2.modele.entite.Partie;
 
-import javax.servlet.http.Part;
 import java.util.List;
 import java.util.Map;
 
-public class EnAttenteDesJoueurs implements IEtatPartie {
+public class FinTour implements IEtatPartie {
 
+    private Joueur joueurCourant;
 
-    public EnAttenteDesJoueurs() {
+    public FinTour(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
     }
 
     @Override
     public IEtatPartie initialiser() throws UnsupportedOperationException {
-        return new Initialisation();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
 
     @Override
     public IEtatPartie debuterTour(Joueur joueurSuivant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new DebutTour(joueurSuivant);
     }
 
     @Override

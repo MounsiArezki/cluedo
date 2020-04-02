@@ -3,9 +3,9 @@ package webservice_v2.modele.entite;
 
 
 import webservice_v2.modele.carte.ICarte;
+import webservice_v2.modele.carte.TypeCarte;
 import webservice_v2.modele.entite.etat_partie.EnAttenteDesJoueurs;
 import webservice_v2.modele.entite.etat_partie.IEtatPartie;
-import webservice_v2.modele.fabrique.FactoryCarte;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class Partie {
     //int : ordre du joueur (début 1)
     private Map<Integer, Joueur> joueurs;
 
-    private Map<String, ICarte> combinaisonGagante;
+    private Map<TypeCarte, ICarte> combinaisonGagante;
 
     private IEtatPartie etatPartie;
 
@@ -31,7 +31,7 @@ public class Partie {
         this.joueurs.put(-1, new Joueur(hote));
         combinaisonGagante = new HashMap<>();
         indices=new Stack<>();
-        etatPartie=new EnAttenteDesJoueurs(null, null);
+        etatPartie=new EnAttenteDesJoueurs();
     }
 
 
@@ -42,7 +42,7 @@ public class Partie {
 
     public Map<Integer, Joueur> getJoueurs() { return joueurs; }
 
-    public Map<String, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
+    public Map<TypeCarte, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
 
     public void setId(String id) {
         this.id = id;
@@ -56,7 +56,7 @@ public class Partie {
         this.joueurs = joueurs;
     }
 
-    public void setCombinaisonGagante(Map<String, ICarte> combinaisonGagante) {
+    public void setCombinaisonGagante(Map<TypeCarte, ICarte> combinaisonGagante) {
         this.combinaisonGagante = combinaisonGagante;
     }
 

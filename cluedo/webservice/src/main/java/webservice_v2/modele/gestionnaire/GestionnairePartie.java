@@ -1,6 +1,7 @@
 package webservice_v2.modele.gestionnaire;
 
 import webservice_v2.modele.carte.ICarte;
+import webservice_v2.modele.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
@@ -8,6 +9,8 @@ import webservice_v2.modele.fabrique.FactoryCarte;
 
 import javax.servlet.http.Part;
 import java.util.*;
+
+import static webservice_v2.modele.carte.TypeCarte.PERSONNAGE;
 
 public class GestionnairePartie {
 
@@ -24,7 +27,7 @@ public class GestionnairePartie {
     // Initialisation partie
     //
     public static void init(Partie partie){
-        partie.getEtatPartie().next();
+        partie.getEtatPartie().initialiser();
 
         //répartit aléatoirement les personnages entre les joueurs
         repartirPersonnages(partie);
@@ -83,10 +86,10 @@ public class GestionnairePartie {
         ICarte arme=armes.get(randA);
         ICarte lieu=lieux.get(randL);
 
-        Map<String, ICarte> combinaisonGagante = new HashMap<>();
-        combinaisonGagante.put("Personnage", perso);
-        combinaisonGagante.put("Arme", arme);
-        combinaisonGagante.put("Lieu", lieu);
+        Map<TypeCarte, ICarte> combinaisonGagante = new HashMap<>();
+        combinaisonGagante.put(TypeCarte.PERSONNAGE, perso);
+        combinaisonGagante.put(TypeCarte.ARME, arme);
+        combinaisonGagante.put(TypeCarte.LIEU, lieu);
 
         partie.setCombinaisonGagante(combinaisonGagante);
 

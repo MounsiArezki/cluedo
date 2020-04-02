@@ -27,7 +27,6 @@ public class GestionnairePartie {
     // Initialisation partie
     //
     public static void init(Partie partie){
-        partie.getEtatPartie().initialiser();
 
         //répartit aléatoirement les personnages entre les joueurs
         repartirPersonnages(partie);
@@ -48,6 +47,9 @@ public class GestionnairePartie {
 
         //init la pile indice
         aleatoirePileIndice(partie);
+
+        Joueur p1= partie.getJoueurs().get(1);
+        partie.getEtatPartie().debuterTour(p1);
     }
 
     private static void repartirPersonnages(Partie partie){

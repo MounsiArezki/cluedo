@@ -9,8 +9,6 @@ import java.util.Map;
 
 public interface IEtatPartie {
 
-    public IEtatPartie initialiser() throws UnsupportedOperationException;
-
     public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException;
 
     public IEtatPartie piocherIndice(Joueur jouerCourant, List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException;

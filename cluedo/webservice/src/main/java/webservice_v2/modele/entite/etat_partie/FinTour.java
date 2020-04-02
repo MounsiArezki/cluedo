@@ -15,10 +15,6 @@ public class FinTour implements IEtatPartie {
         this.joueurCourant = joueurCourant;
     }
 
-    @Override
-    public IEtatPartie initialiser() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {

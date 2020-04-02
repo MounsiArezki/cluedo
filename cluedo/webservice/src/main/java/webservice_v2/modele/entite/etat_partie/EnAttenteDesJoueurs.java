@@ -16,11 +16,6 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     }
 
     @Override
-    public IEtatPartie initialiser() throws UnsupportedOperationException {
-        return new Initialisation();
-    }
-
-    @Override
     public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
@@ -57,7 +52,7 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
 
     @Override
     public IEtatPartie debuterTour(Joueur joueurSuivant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new DebutTour(joueurSuivant);
     }
 
     @Override

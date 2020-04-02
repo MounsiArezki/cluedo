@@ -2,8 +2,8 @@ package webservice_v2.modele.entite;
 
 
 
-import webservice_v2.modele.carte.ICarte;
-import webservice_v2.modele.carte.TypeCarte;
+import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.etat_partie.EnAttenteDesJoueurs;
 import webservice_v2.modele.entite.etat_partie.IEtatPartie;
 

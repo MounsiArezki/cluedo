@@ -1,6 +1,6 @@
 package webservice_v2.modele.fabrique;
 
-import webservice_v2.modele.carte.*;
+import webservice_v2.modele.entite.carte.*;
 
 import java.util.Arrays;
 import java.util.List;

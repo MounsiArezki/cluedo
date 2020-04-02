@@ -1,7 +1,7 @@
 package webservice_v2.modele.entite;
 
 
-import webservice_v2.modele.carte.ICarte;
+import webservice_v2.modele.entite.carte.ICarte;
 
 import java.util.ArrayList;
 import java.util.List;

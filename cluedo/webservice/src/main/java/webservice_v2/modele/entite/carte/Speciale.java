@@ -1,4 +1,4 @@
-package webservice_v2.modele.carte;
+package webservice_v2.modele.entite.carte;
 
 public enum Speciale implements ICarte {
     REVELER_CARTE_ALL("Tout les joueurs révelent un carte de sa main."),

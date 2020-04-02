@@ -1,7 +1,7 @@
 package webservice_v2.modele.entite;
 
 
-import webservice_v2.modele.carte.Lieu;
+import webservice_v2.modele.entite.carte.Lieu;
 
 public class Position {
 

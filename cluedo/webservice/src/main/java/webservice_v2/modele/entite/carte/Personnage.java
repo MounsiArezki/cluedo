@@ -1,4 +1,4 @@
-package webservice_v2.modele.carte;
+package webservice_v2.modele.entite.carte;
 
 public enum Personnage implements ICarte {
     MOUTARDE("Moutarde"),

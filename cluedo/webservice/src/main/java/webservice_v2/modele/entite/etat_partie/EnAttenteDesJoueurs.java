@@ -1,11 +1,9 @@
 package webservice_v2.modele.entite.etat_partie;
 
-import webservice_v2.modele.carte.ICarte;
-import webservice_v2.modele.carte.TypeCarte;
+import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
-import webservice_v2.modele.entite.Partie;
 
-import javax.servlet.http.Part;
 import java.util.List;
 import java.util.Map;
 

@@ -1,16 +1,13 @@
 package webservice_v2.modele.gestionnaire;
 
-import webservice_v2.modele.carte.ICarte;
-import webservice_v2.modele.carte.TypeCarte;
+import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
 import webservice_v2.modele.fabrique.FactoryCarte;
 
-import javax.servlet.http.Part;
 import java.util.*;
-
-import static webservice_v2.modele.carte.TypeCarte.PERSONNAGE;
 
 public class GestionnairePartie {
 

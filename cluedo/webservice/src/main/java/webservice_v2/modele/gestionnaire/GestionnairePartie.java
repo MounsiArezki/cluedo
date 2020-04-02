@@ -48,8 +48,11 @@ public class GestionnairePartie {
         //init la pile indice
         aleatoirePileIndice(partie);
 
+        //transitionne vers l'état Debut Tour du P1
         Joueur p1= partie.getJoueurs().get(1);
-        partie.getEtatPartie().debuterTour(p1);
+        partie.setEtatPartie(
+                partie.getEtatPartie().debuterTour(p1)
+        );
     }
 
     private static void repartirPersonnages(Partie partie){

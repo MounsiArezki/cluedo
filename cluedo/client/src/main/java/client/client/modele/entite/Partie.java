@@ -1,7 +1,5 @@
 package client.client.modele.entite;
 
-import client.client.modele.entite.etat_partie.EtatPartie;
-
 import java.util.HashMap;
 
 public class Partie {

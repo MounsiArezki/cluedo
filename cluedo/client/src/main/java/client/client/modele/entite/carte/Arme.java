@@ -1,4 +1,4 @@
-package client.client.modele.entite;
+package client.client.modele.entite.carte;
 
 import client.client.modele.entite.io.ImagePath;
 

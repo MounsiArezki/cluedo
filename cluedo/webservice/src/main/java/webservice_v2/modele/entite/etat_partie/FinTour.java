@@ -17,17 +17,17 @@ public class FinTour implements IEtatPartie {
 
 
     @Override
-    public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
+    public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie piocherIndice(Joueur jouerCourant, List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
+    public IEtatPartie piocherIndice(List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie deplacer(Joueur joueurCourant) throws UnsupportedOperationException {
+    public IEtatPartie deplacer() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
@@ -42,12 +42,12 @@ public class FinTour implements IEtatPartie {
     }
 
     @Override
-    public IEtatPartie faireHypothese(Joueur joueurCourant, Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException {
+    public IEtatPartie faireHypothese(Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie resoudreHypothese(Joueur joueurCourant) throws UnsupportedOperationException {
+    public IEtatPartie resoudreHypothese() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
@@ -59,5 +59,30 @@ public class FinTour implements IEtatPartie {
     @Override
     public IEtatPartie finirPartie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagante) throws UnsupportedOperationException {
         return new PartieFinie(gagnant, combinaisonGagante);
+    }
+
+    @Override
+    public Joueur getJoueurCourant() throws UnsupportedOperationException {
+        return joueurCourant;
+    }
+
+    @Override
+    public Joueur getJoueurAtif() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Map<TypeCarte, ICarte> getHypothese() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Integer> getDes() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<ICarte> getIndices() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 }

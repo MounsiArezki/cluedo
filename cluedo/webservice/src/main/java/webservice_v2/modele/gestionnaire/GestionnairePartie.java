@@ -1,5 +1,9 @@
 package webservice_v2.modele.gestionnaire;
 
+import webservice_v2.exception.partie.DeplacementNonAutoriseException;
+import webservice_v2.exception.partie.PasJoueurCourantException;
+import webservice_v2.exception.partie.PiocherIndiceNonAutoriseException;
+import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
@@ -16,9 +20,43 @@ public class GestionnairePartie {
     //
     public static void ajouterJoueur(Partie partie, User user){
         Joueur joueur=new Joueur(user);
-        partie.getJoueurs().put(-1, joueur);
+        partie.getJoueurs().put(user.getId(), joueur);
     }
 
+    private static boolean checkJoueurCourant(User user, Partie partie){
+        return partie
+                .getEtatPartie()
+                .getJoueurCourant()
+                .getUser()
+                .equals(user);
+    }
+
+    private static boolean isDeplacementOk(Position position, Joueur joueur, List<Integer> des, Partie partie){
+        boolean res=true;
+
+        //check si arrivée sur un autre joueur
+        if(position.getLieu()==null){
+            for(Joueur j : partie.getJoueurs().values()){
+                if(j.getPosition().equals(position)){
+                    res=false;
+                }
+            }
+        }
+        if(res){
+            int xVoulu=position.getX();
+            int yVoulu=position.getY();
+
+            int xJoueur=joueur.getPosition().getX();
+            int yJoueur=joueur.getPosition().getY();
+
+            int distanceDisponible=0;
+            des.stream().filter(i -> i!=1).reduce(distanceDisponible, Integer::sum);
+
+            int distanceVoulue=Math.abs(xJoueur-xVoulu)+Math.abs(yJoueur-yVoulu);
+            res=distanceDisponible>=distanceVoulue;
+        }
+        return res;
+    }
 
     //
     // Initialisation partie
@@ -68,14 +106,14 @@ public class GestionnairePartie {
         List<Joueur> aleatoire= List.copyOf(partie.getJoueurs().values());
         Collections.shuffle(aleatoire);
 
-        Map<Integer, Joueur> joueurs=new HashMap<>();
+        Map<String, Integer> ordres=new HashMap<>();
         int ordre=1;
 
         for(Joueur j : aleatoire){
-            joueurs.put(ordre, j);
+            ordres.put(j.getUser().getId(), ordre);
             ordre++;
         }
-        partie.setJoueurs(joueurs);
+        partie.setOrdres(ordres);
     }
 
     private static void tirageCombinaison(Partie partie, List<ICarte> persos, List<ICarte> armes, List<ICarte> lieux) {
@@ -134,10 +172,64 @@ public class GestionnairePartie {
     //
     // Actions
     //
-    public static ICarte tirerIndice(Partie partie){
-        ICarte indice=partie.getIndices().pop();
-        partie.getIndices().push(indice);
-        return indice;
+    public static List<Integer> lancerDes(User user, Partie partie) throws PasJoueurCourantException {
+        boolean isJoueurCourant=checkJoueurCourant(user, partie);
+        if(!isJoueurCourant){
+            throw new PasJoueurCourantException();
+        }
+        List<Integer> des= new ArrayList<>();
+        Random random = new Random();
+
+        des.add(random.nextInt(6)+1);
+        des.add(random.nextInt(6)+1);
+
+        partie.setEtatPartie(
+                partie.getEtatPartie().lancerDe(des)
+        );
+        return des;
     }
+
+    public static void seDeplacer(User user, Position position, Partie partie) throws PasJoueurCourantException, DeplacementNonAutoriseException {
+        boolean isJoueurCourant=checkJoueurCourant(user, partie);
+        if(!isJoueurCourant){
+            throw new PasJoueurCourantException();
+        }
+
+        Joueur joueur= partie.getJoueurs().get(user.getId());
+        List<Integer> des= partie.getEtatPartie().getDes();
+
+        boolean isDeplacementOk= isDeplacementOk(position, joueur, des, partie);
+        if(!isDeplacementOk){
+            throw new DeplacementNonAutoriseException();
+        }
+
+        joueur.setPosition(position);
+        partie.setEtatPartie(
+                partie.getEtatPartie().deplacer()
+        );
+    }
+
+    public static void tirerIndice(User user, List<Integer> des, Partie partie) throws PasJoueurCourantException, PiocherIndiceNonAutoriseException {
+        boolean isJoueurCourant=checkJoueurCourant(user, partie);
+        if(!isJoueurCourant){
+            throw new PasJoueurCourantException();
+        }
+        if(!des.contains(1)){
+            throw new PiocherIndiceNonAutoriseException();
+        }
+        List<ICarte> indices=new ArrayList<>();
+        for(Integer de : des){
+            if(de==1){
+                ICarte indice=partie.getIndices().pop();
+                partie.getIndices().push(indice);
+            }
+        }
+
+        partie.setEtatPartie(
+                partie.getEtatPartie().piocherIndice(indices, des)
+        );
+    }
+
+
 
 }

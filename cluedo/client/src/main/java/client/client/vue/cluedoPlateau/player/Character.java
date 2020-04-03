@@ -1,14 +1,11 @@
 package client.client.vue.cluedoPlateau.player;
 
-import client.client.controleur.PlateauControleur;
-import client.client.modele.entite.Personnage;
+import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.Position;
 import client.client.vue.Plateau;
 import client.client.vue.cluedoPlateau.plateau.Board;
-import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
-import javafx.event.EventTarget;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

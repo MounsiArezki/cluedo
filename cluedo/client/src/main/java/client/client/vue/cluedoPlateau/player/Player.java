@@ -1,11 +1,9 @@
 package client.client.vue.cluedoPlateau.player;
 
-import client.client.modele.entite.ICarte;
-import client.client.modele.entite.Personnage;
+import client.client.modele.entite.carte.Personnage;
 import client.client.vue.Plateau;
 import client.client.vue.place.Place;
 import javafx.scene.control.Alert;
-import javafx.scene.paint.Color;
 
 public class Player extends Character {
 

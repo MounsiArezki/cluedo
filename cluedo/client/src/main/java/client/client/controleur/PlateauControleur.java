@@ -1,6 +1,10 @@
 package client.client.controleur;
 
 import client.client.modele.entite.*;
+import client.client.modele.entite.carte.Arme;
+import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.Lieu;
+import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IPartieService;
@@ -10,7 +14,6 @@ import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.DepartPlace;
 import client.client.vue.place.Place;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -44,7 +47,7 @@ public class PlateauControleur {
 
     public void getMyCard(){
         // a remplacer par les carte recu du WS
-        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE,Arme.CORDE,Arme.CLE,Arme.COUTEAU);
+        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE,Arme.COUTEAU);
 
     }
 

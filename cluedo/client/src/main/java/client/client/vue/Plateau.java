@@ -1,7 +1,7 @@
 package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
-import client.client.modele.entite.ICarte;
+import client.client.modele.entite.carte.ICarte;
 import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

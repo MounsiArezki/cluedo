@@ -1,11 +1,13 @@
-package webservice_v2.modele.entite.etat_partie;
+package client.client.modele.entite.etat_partie;
 
-import webservice_v2.modele.entite.carte.ICarte;
-import webservice_v2.modele.entite.carte.TypeCarte;
-import webservice_v2.modele.entite.Joueur;
+
+import client.client.modele.entite.Joueur;
+import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.TypeCarte;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PartieFinie implements IEtatPartie {
 
@@ -19,17 +21,17 @@ public class PartieFinie implements IEtatPartie {
 
 
     @Override
-    public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
+    public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie piocherIndice(List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
+    public IEtatPartie piocherIndice(Joueur jouerCourant, List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie deplacer() throws UnsupportedOperationException {
+    public IEtatPartie deplacer(Joueur joueurCourant) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
@@ -44,12 +46,12 @@ public class PartieFinie implements IEtatPartie {
     }
 
     @Override
-    public IEtatPartie faireHypothese(Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException {
+    public IEtatPartie faireHypothese(Joueur joueurCourant, Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie resoudreHypothese() throws UnsupportedOperationException {
+    public IEtatPartie resoudreHypothese(Joueur joueurCourant) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
@@ -63,28 +65,5 @@ public class PartieFinie implements IEtatPartie {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public Joueur getJoueurCourant() throws UnsupportedOperationException {
-        return null;
-    }
 
-    @Override
-    public Joueur getJoueurAtif() throws UnsupportedOperationException {
-        return null;
-    }
-
-    @Override
-    public Map<TypeCarte, ICarte> getHypothese() throws UnsupportedOperationException {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getDes() throws UnsupportedOperationException {
-        return null;
-    }
-
-    @Override
-    public List<ICarte> getIndices() throws UnsupportedOperationException {
-        return null;
-    }
 }

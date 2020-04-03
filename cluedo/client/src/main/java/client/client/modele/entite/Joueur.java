@@ -1,6 +1,7 @@
 package client.client.modele.entite;
 
-import javafx.scene.shape.Circle;
+import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.Personnage;
 
 import java.util.List;
 

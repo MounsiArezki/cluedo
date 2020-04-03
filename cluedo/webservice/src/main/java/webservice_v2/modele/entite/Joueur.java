@@ -5,6 +5,7 @@ import webservice_v2.modele.entite.carte.ICarte;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Joueur {
 
@@ -57,4 +58,16 @@ public class Joueur {
         listeCartes.add(carte);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Joueur joueur = (Joueur) o;
+        return Objects.equals(user, joueur.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, personnage, position, listeCartes);
+    }
 }

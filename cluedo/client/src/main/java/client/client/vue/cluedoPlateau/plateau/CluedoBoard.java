@@ -1,10 +1,9 @@
 package client.client.vue.cluedoPlateau.plateau;
-import client.client.modele.entite.Lieu;
+import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.Position;
 import client.client.modele.entite.io.TextStream;
 import client.client.vue.cluedoPlateau.Key.DirectionKey;
 import client.client.vue.cluedoPlateau.Key.PlaceKey;
-import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.place.*;
 
 import java.io.InputStream;

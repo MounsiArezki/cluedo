@@ -1,4 +1,4 @@
-package client.client.modele.entite;
+package client.client.modele.entite.carte;
 
 import java.net.URL;
 

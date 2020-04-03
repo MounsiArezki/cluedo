@@ -1,11 +1,8 @@
 package client.client.vue.place;
 
-import client.client.modele.entite.Lieu;
+import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.Position;
 import client.client.vue.cluedoPlateau.Key.DirectionKey;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.paint.Color;
 
 public class PortePlace extends LieuPlace implements Teleportable  {
 

@@ -1,4 +1,6 @@
-package client.client.modele.entite;
+package client.client.modele.entite.carte;
+
+import client.client.modele.entite.Position;
 
 public enum Lieu implements ICarte{
 

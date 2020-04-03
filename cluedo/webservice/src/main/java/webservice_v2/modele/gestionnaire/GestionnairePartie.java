@@ -59,6 +59,15 @@ public class GestionnairePartie {
     }
 
     //
+    // Finir partie quand pas assez joueurs
+    //
+    public static void annulerPartie(Partie partie){
+        partie.setEtatPartie(
+                partie.getEtatPartie().finirPartie(null, null)
+        );
+    }
+
+    //
     // Initialisation partie
     //
     public static void init(Partie partie){
@@ -229,6 +238,8 @@ public class GestionnairePartie {
                 partie.getEtatPartie().piocherIndice(indices, des)
         );
     }
+
+
 
 
 

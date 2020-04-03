@@ -222,10 +222,10 @@ public class Facade {
     private void checkInvitationPartie(Invitation invitation, Partie partie) {
         if (invitation.getInvites().size() < 1) {
             if (partie.getJoueurs().size() < 2) {
-                partie.getEtatPartie().next();
+                GestionnairePartie.annulerPartie(partie);
             }
             else {
-                partie.getEtatPartie().next();
+                GestionnairePartie.init(partie);
             }
         }
     }

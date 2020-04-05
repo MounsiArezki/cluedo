@@ -1,11 +1,16 @@
 package webservice_v2.modele.entite;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class User {
 
     private String id;
     private String pseudo;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
 
     public User() {

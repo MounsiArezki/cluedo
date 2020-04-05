@@ -2,6 +2,7 @@ package webservice_v2.modele.entite;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.etat_partie.EnAttenteDesJoueurs;
@@ -23,6 +24,7 @@ public class Partie {
 
     private Map<Integer, String> joueurByOrdre;
 
+    @JsonIgnore
     private Map<TypeCarte, ICarte> combinaisonGagante;
 
     private IEtatPartie etatPartie;

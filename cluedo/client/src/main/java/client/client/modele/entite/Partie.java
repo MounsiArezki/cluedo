@@ -21,8 +21,6 @@ public class Partie {
 
     private Map<Integer, String> joueurByOrdre;
 
-    private Map<TypeCarte, ICarte> combinaisonGagante;
-
     private IEtatPartie etatPartie;
 
     private Stack<ICarte> indices;
@@ -37,7 +35,6 @@ public class Partie {
         this.hote = hote;
         this.joueurs = new HashMap<>();
         this.joueurs.put(hote.getId(), new Joueur(hote));
-        combinaisonGagante = new HashMap<>();
         indices=new Stack<>();
         etatPartie=new EnAttenteDesJoueurs();
         logs=new ArrayList<>();
@@ -57,7 +54,6 @@ public class Partie {
         this.joueurs = joueurs;
     }
 
-    public Map<TypeCarte, ICarte> getCombinaisonGagante() { return combinaisonGagante; }
 
     public void setId(String id) {
         this.id = id;
@@ -67,9 +63,6 @@ public class Partie {
         this.hote = hote;
     }
 
-    public void setCombinaisonGagante(Map<TypeCarte, ICarte> combinaisonGagante) {
-        this.combinaisonGagante = combinaisonGagante;
-    }
 
     public IEtatPartie getEtatPartie() {
         return etatPartie;

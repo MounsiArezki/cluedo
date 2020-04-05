@@ -1,6 +1,7 @@
 package webservice_v2.modele.entite;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import webservice_v2.modele.entite.carte.ICarte;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public class Joueur {
     User user;
     ICarte personnage;
     Position position;
+
+    @JsonIgnore
     List<ICarte> listeCartes;
 
     public Joueur() {

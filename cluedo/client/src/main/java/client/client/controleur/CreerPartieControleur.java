@@ -30,7 +30,7 @@ public class CreerPartieControleur {
         creerPartie = (CreerPartie)CreerPartie.creerInstance(creerPartieStage , FxmlPath.CREER_PARTIE.getUrl());
         creerPartie.setControleur(this);
         creerPartie.refresh();
-        creerPartie.setTimer(1);
+        creerPartie.setTimer(5);
 
         creerPartie.show("Creation Partie");
     }

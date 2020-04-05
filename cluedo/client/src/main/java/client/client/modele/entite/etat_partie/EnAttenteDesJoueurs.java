@@ -38,7 +38,7 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         return "En attente, les joueurs doivent répondre à l'invitation";
     }
 }

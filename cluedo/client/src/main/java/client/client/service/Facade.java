@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.List;
@@ -173,6 +174,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
         Map<String, String> params = new HashMap<>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         ResponseEntity<String> res = restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID, String.class, params);
-        return gson.fromJson(res.getBody(), Partie.class);
+        Partie partie= null;
+        System.out.println(res.getBody());
+        try {
+            partie = objectMapper.readValue(res.getBody(), Partie.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return partie;
     }
 }

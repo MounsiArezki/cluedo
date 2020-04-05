@@ -53,7 +53,7 @@ public class FinTour implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         return "Fin du tour de "+joueurCourant.toString();
     }
 }

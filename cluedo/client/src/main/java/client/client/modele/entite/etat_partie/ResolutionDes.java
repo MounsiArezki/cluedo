@@ -66,7 +66,7 @@ public class ResolutionDes implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         String de1= des.get(0)==1 ? " une loupe " : "un "+des.get(0);
         String de2=des.get(1)==1 ? " une loupe " : "un "+des.get(1);
         return joueurCourant.toString()+" a obtenu "+de1+" et "+de2;

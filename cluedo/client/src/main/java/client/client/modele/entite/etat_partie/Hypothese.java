@@ -72,7 +72,7 @@ public class Hypothese implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         return joueurCourant.toString()+" a fait l'hypothèse : le crimier est "+hypothese.get(TypeCarte.PERSONNAGE).getNom()+" avec "+hypothese.get(TypeCarte.ARME).getNom()+" dans "+hypothese.get(TypeCarte.LIEU).getNom()
                 +". "+joueurActif.toString()+" doit dévoiler une carte." ;
     }

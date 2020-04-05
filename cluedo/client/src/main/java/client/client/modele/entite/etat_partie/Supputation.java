@@ -54,7 +54,7 @@ public class Supputation implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         return "Tour de "+joueurCourant.toString();
     }
 }

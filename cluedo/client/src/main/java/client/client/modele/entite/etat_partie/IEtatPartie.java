@@ -35,7 +35,7 @@ public interface IEtatPartie {
 
     public List<ICarte> obtenirIndices() throws UnsupportedOperationException;
 
-    public String getTexte();
+    public String obtenirTexte();
 
 
 }

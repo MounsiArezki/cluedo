@@ -84,7 +84,7 @@ public class Plateau extends View<PlateauControleur> {
 
     @Override
     public void refresh() {
-        etatPartie.setText(getControleur().getPartie().getEtatPartie().getTexte());
+        etatPartie.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
     }
 
     public void drawCluedoBoard(){

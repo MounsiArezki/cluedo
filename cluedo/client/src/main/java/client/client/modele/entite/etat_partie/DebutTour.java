@@ -51,7 +51,7 @@ public class DebutTour implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         return "Début du tour de "+joueurCourant.toString();
     }
 

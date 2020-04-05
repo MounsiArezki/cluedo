@@ -74,7 +74,7 @@ public class ResolutionIndice implements IEtatPartie{
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         return joueurCourant.toString()+" a tiré "+indices.size()+ "carte indice";
     }
 }

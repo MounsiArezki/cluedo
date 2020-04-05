@@ -61,7 +61,7 @@ public class PartieFinie implements IEtatPartie {
     }
 
     @Override
-    public String getTexte() {
+    public String obtenirTexte() {
         String texte;
         if(gagnant==null){
             texte="Aucun des joueurs n'a accepté l'invitation, la partie n'a pas pu être lancée.";

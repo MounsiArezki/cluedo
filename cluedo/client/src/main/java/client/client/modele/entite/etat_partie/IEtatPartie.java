@@ -36,5 +36,7 @@ public interface IEtatPartie {
 
     public String obtenirTexte();
 
+    public List<Actions> obtenirActionsPossibles();
+
 
 }

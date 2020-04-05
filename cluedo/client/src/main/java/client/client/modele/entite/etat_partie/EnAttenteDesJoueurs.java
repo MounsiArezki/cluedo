@@ -4,6 +4,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,5 +41,10 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     @Override
     public String obtenirTexte() {
         return "En attente, les joueurs doivent répondre à l'invitation";
+    }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>();
     }
 }

@@ -4,6 +4,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +76,10 @@ public class Hypothese implements IEtatPartie {
     public String obtenirTexte() {
         return joueurCourant.toString()+" a fait l'hypothèse : le crimier est "+hypothese.get(TypeCarte.PERSONNAGE).getNom()+" avec "+hypothese.get(TypeCarte.ARME).getNom()+" dans "+hypothese.get(TypeCarte.LIEU).getNom()
                 +". "+joueurActif.toString()+" doit dévoiler une carte." ;
+    }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>(List.of(Actions.REVELER_CARTE));
     }
 }

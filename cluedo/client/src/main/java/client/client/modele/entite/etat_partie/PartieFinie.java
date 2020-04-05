@@ -4,6 +4,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,5 +71,10 @@ public class PartieFinie implements IEtatPartie {
             texte=gagnant.toString()+" a gagné, le crimier était "+combinaisonGagnante.get(TypeCarte.PERSONNAGE).getNom()+" avec "+combinaisonGagnante.get(TypeCarte.ARME).getNom()+" dans "+combinaisonGagnante.get(TypeCarte.LIEU).getNom()+".";
         }
         return texte;
+    }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>();
     }
 }

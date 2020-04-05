@@ -5,6 +5,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,5 +71,10 @@ public class ResolutionDes implements IEtatPartie {
         String de1= des.get(0)==1 ? " une loupe " : "un "+des.get(0);
         String de2=des.get(1)==1 ? " une loupe " : "un "+des.get(1);
         return joueurCourant.toString()+" a obtenu "+de1+" et "+de2;
+    }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>(List.of(Actions.DEPLACER, Actions.PIOCHER_INDICE));
     }
 }

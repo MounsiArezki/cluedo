@@ -4,6 +4,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,4 +57,8 @@ public class FinTour implements IEtatPartie {
     public String obtenirTexte() {
         return "Fin du tour de "+joueurCourant.toString();
     }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>(List.of(Actions.PASSER,Actions.ACCUSER));    }
 }

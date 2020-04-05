@@ -5,6 +5,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,5 +57,10 @@ public class Supputation implements IEtatPartie {
     @Override
     public String obtenirTexte() {
         return "Tour de "+joueurCourant.toString();
+    }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>(List.of(Actions.ACCUSER, Actions.EMETTRE_HYPOTHESE, Actions.PASSER));
     }
 }

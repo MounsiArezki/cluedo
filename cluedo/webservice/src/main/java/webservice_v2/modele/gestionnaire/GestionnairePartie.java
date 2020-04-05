@@ -26,7 +26,7 @@ public class GestionnairePartie {
     private static boolean checkJoueurCourant(User user, Partie partie){
         return partie
                 .getEtatPartie()
-                .getJoueurCourant()
+                .obtenirJoueurCourant()
                 .getUser()
                 .equals(user);
     }
@@ -205,7 +205,7 @@ public class GestionnairePartie {
         }
 
         Joueur joueur= partie.getJoueurs().get(user.getId());
-        List<Integer> des= partie.getEtatPartie().getDes();
+        List<Integer> des= partie.getEtatPartie().obtenirDes();
 
         boolean isDeplacementOk= isDeplacementOk(position, joueur, des, partie);
         if(!isDeplacementOk){

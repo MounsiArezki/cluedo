@@ -13,6 +13,8 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     public EnAttenteDesJoueurs() {
     }
 
+
+
     @Override
     public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
@@ -59,27 +61,27 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     }
 
     @Override
-    public Joueur getJoueurCourant() throws UnsupportedOperationException {
+    public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Joueur getJoueurAtif() throws UnsupportedOperationException {
+    public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Map<TypeCarte, ICarte> getHypothese() throws UnsupportedOperationException {
+    public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<Integer> getDes() throws UnsupportedOperationException {
+    public List<Integer> obtenirDes() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<ICarte> getIndices() throws UnsupportedOperationException {
+    public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 }

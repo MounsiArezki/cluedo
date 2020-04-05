@@ -100,7 +100,7 @@ public abstract class View<T> {
 
     public void stopTimer(){
         timeline.stop();
-        timeline = null;
+        //timeline = null;
     }
 
 }

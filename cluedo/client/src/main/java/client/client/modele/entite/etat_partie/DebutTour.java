@@ -1,7 +1,5 @@
 package client.client.modele.entite.etat_partie;
 
-
-
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
@@ -13,54 +11,48 @@ public class DebutTour implements IEtatPartie {
 
     private Joueur joueurCourant;
 
+    public DebutTour(){}
+
     public DebutTour(Joueur joueurCourant) {
         this.joueurCourant=joueurCourant;
     }
 
+    public Joueur getJoueurCourant() {
+        return joueurCourant;
+    }
+
+    public void setJoueurCourant(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
+    }
 
     @Override
-    public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
+    public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
+        return joueurCourant;
+    }
+
+    @Override
+    public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie piocherIndice(Joueur jouerCourant, List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
+    public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie deplacer(Joueur joueurCourant) throws UnsupportedOperationException {
+    public List<Integer> obtenirDes() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie revelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
+    public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public IEtatPartie passerRevelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IEtatPartie faireHypothese(Joueur joueurCourant, Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IEtatPartie resoudreHypothese(Joueur joueurCourant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IEtatPartie debuterTour(Joueur joueurSuivant) throws UnsupportedOperationException {
-        return new DebutTour(joueurSuivant);
-    }
-
-    @Override
-    public IEtatPartie finirPartie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagante) throws UnsupportedOperationException {
-        return new PartieFinie(gagnant, combinaisonGagante);
+    public String getTexte() {
+        return "Début du tour de "+joueurCourant.toString();
     }
 
 }

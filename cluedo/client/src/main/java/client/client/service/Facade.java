@@ -169,6 +169,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
 
     @Override
     public Partie getPartieById(String idPartie) {
+        ObjectMapper objectMapper=new ObjectMapper();
         Map<String, String> params = new HashMap<>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         ResponseEntity<String> res = restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID, String.class, params);

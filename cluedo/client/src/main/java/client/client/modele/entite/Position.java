@@ -2,12 +2,28 @@ package client.client.modele.entite;
 
 public class Position {
 
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
+
+    public Position() {
+    }
 
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+
+    public int getY() {
+        return y;
+    }
+
+    public int[] getLocation() {
+        return new int[] {x, y};
     }
 
     @Override
@@ -18,17 +34,5 @@ public class Position {
                 '}';
     }
 
-    public int[] getLocation() {
-        return new int[] {x, y};
-    }
 
-
-    public int getX() {
-        return x;
-    }
-
-
-    public int getY() {
-        return y;
-    }
 }

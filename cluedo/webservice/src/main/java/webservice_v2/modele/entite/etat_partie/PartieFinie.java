@@ -12,11 +12,28 @@ public class PartieFinie implements IEtatPartie {
     private Joueur gagnant;
     private Map<TypeCarte, ICarte> combinaisonGagnante;
 
+    public PartieFinie(){}
+
     public PartieFinie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagnante) {
         this.gagnant = gagnant;
         this.combinaisonGagnante = combinaisonGagnante;
     }
 
+    public Joueur getGagnant() {
+        return gagnant;
+    }
+
+    public void setGagnant(Joueur gagnant) {
+        this.gagnant = gagnant;
+    }
+
+    public Map<TypeCarte, ICarte> getCombinaisonGagnante() {
+        return combinaisonGagnante;
+    }
+
+    public void setCombinaisonGagnante(Map<TypeCarte, ICarte> combinaisonGagnante) {
+        this.combinaisonGagnante = combinaisonGagnante;
+    }
 
     @Override
     public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
@@ -64,27 +81,27 @@ public class PartieFinie implements IEtatPartie {
     }
 
     @Override
-    public Joueur getJoueurCourant() throws UnsupportedOperationException {
+    public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
         return null;
     }
 
     @Override
-    public Joueur getJoueurAtif() throws UnsupportedOperationException {
+    public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
         return null;
     }
 
     @Override
-    public Map<TypeCarte, ICarte> getHypothese() throws UnsupportedOperationException {
+    public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
         return null;
     }
 
     @Override
-    public List<Integer> getDes() throws UnsupportedOperationException {
+    public List<Integer> obtenirDes() throws UnsupportedOperationException {
         return null;
     }
 
     @Override
-    public List<ICarte> getIndices() throws UnsupportedOperationException {
+    public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
         return null;
     }
 }

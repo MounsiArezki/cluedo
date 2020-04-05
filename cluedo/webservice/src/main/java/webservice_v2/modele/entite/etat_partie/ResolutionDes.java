@@ -12,8 +12,27 @@ public class ResolutionDes implements IEtatPartie {
     private Joueur joueurCourant;
     private List<Integer> des;
 
+    public ResolutionDes() {
+    }
+
     public ResolutionDes(Joueur joueurCourant, List<Integer> des) {
         this.joueurCourant = joueurCourant;
+        this.des = des;
+    }
+
+    public Joueur getJoueurCourant() {
+        return joueurCourant;
+    }
+
+    public void setJoueurCourant(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
+    }
+
+    public List<Integer> getDes() {
+        return des;
+    }
+
+    public void setDes(List<Integer> des) {
         this.des = des;
     }
 
@@ -63,29 +82,29 @@ public class ResolutionDes implements IEtatPartie {
     }
 
     @Override
-    public Joueur getJoueurCourant() throws UnsupportedOperationException {
+    public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
         return joueurCourant;
     }
 
 
     @Override
-    public Joueur getJoueurAtif() throws UnsupportedOperationException {
+    public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Map<TypeCarte, ICarte> getHypothese() throws UnsupportedOperationException {
+    public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<Integer> getDes() throws UnsupportedOperationException {
+    public List<Integer> obtenirDes() throws UnsupportedOperationException {
         return des;
     }
 
 
     @Override
-    public List<ICarte> getIndices() throws UnsupportedOperationException {
+    public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 }

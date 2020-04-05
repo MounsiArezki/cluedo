@@ -9,6 +9,9 @@ public class Position {
     int x;
     int y;
 
+    public Position() {
+    }
+
     public Lieu getLieu() {
         return lieu;
     }

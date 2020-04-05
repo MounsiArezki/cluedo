@@ -17,6 +17,17 @@ public class ServiceConfig {
     public final static String URL_USER_ID_INVITATION_EMISE=URL_USER_ID+"/invitation/emise";
     public final static String URL_USER_ID_PARTIES_SAUVEGARDEES=URL_USER_ID+"/sauvegardees";
 
+
+    //
+    // INVITATION
+    //
+    public final static String INVITATION_ID_PARAM="id";
+    public final static String URL_INVITATION="/invitation";
+    public final static String URL_INVITATION_ID=URL_INVITATION+"/{id}";
+    public final static String URL_INVITATION_ID_ACCEPTATION=URL_INVITATION_ID+"/acceptation";
+    public final static String URL_INVITATION_ID_REFUS=URL_INVITATION_ID+"/refus";
+
+
     //
     // PARTIE
     //
@@ -28,13 +39,13 @@ public class ServiceConfig {
     public final static String  URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
     public final static String  URL_PARTIE_ID_RESTAURATION=URL_PARTIE_ID+"/restauration";
 
-    //
-    // INVITATION
-    //
-    public final static String INVITATION_ID_PARAM="id";
-    public final static String URL_INVITATION="/invitation";
-    public final static String URL_INVITATION_ID=URL_INVITATION+"/{id}";
-    public final static String URL_INVITATION_ID_ACCEPTATION=URL_INVITATION_ID+"/acceptation";
-    public final static String URL_INVITATION_ID_REFUS=URL_INVITATION_ID+"/refus";
+    public final static String URL_PARTIE_ID_LANCER_DES= URL_PARTIE_ID+"/lancerdes";
+    public final static String URL_PARTIE_ID_DEPLACER= URL_PARTIE_ID+"/deplacer";
+    public final static String URL_PARTIE_ID_ACCUSER= URL_PARTIE_ID+"/accuser";
+    public final static String URL_PARTIE_ID_FIN_TOUR= URL_PARTIE_ID+"/fintour";
+    public final static String URL_PARTIE_ID_EMETTRE_HYPOTHESE= URL_PARTIE_ID+"/emettrehypothse";
+    public final static String URL_PARTIE_ID_REVELER_CARTE= URL_PARTIE_ID+"/revelercarte";
+
+
 
 }

@@ -42,6 +42,11 @@ public enum Personnage implements ICarte{
     @Override
     public void ImageUrl(String url) {
         this.imageUrl=url;
+    }
 
+
+    @Override
+    public String toString() {
+        return nom;
     }
 }

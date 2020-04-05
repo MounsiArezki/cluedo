@@ -4,16 +4,16 @@ import client.client.modele.entite.Position;
 
 public enum Lieu implements ICarte{
 
-    HALL("Hall",  'h', new Position(11, 3)),
-    LOUNGE("Lounge", 'l', new Position(20, 2)),
-    DINING_ROOM("Dining Room", 'd', new Position(20, 11)),
-    KITCHEN("Kitchen", 'k', new Position(22, 23)),
-    BALL_ROOM("Ball Room",  'a', new Position(11, 20)),
-    CONSERVATORY("Conservatory",  'c', new Position(2, 20)),
-    BILLIARD_ROOM("Billiard Room",  'b', new Position(2, 14)),
-    LIBRARY("Library",  'i', new Position(3, 8)),
-    STUDY("Study",  's', new Position(3, 1)),
-    EXIT("Exit",  'e', new Position(11, 11))
+    HALL("le Hall",  'h', new Position(11, 3)),
+    LOUNGE("le Lounge", 'l', new Position(20, 2)),
+    DINING_ROOM("le Dining Room", 'd', new Position(20, 11)),
+    KITCHEN("la Kitchen", 'k', new Position(22, 23)),
+    BALL_ROOM("la Ball Room",  'a', new Position(11, 20)),
+    CONSERVATORY("le Conservatory",  'c', new Position(2, 20)),
+    BILLIARD_ROOM("la Billiard Room",  'b', new Position(2, 14)),
+    LIBRARY("la Library",  'i', new Position(3, 8)),
+    STUDY("la Study",  's', new Position(3, 1)),
+    EXIT("la Exit",  'e', new Position(11, 11))
     ;
 
     private String nom;

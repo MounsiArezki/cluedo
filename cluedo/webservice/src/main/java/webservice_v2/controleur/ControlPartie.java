@@ -44,4 +44,5 @@ public class ControlPartie{
         return ResponseEntity.ok(partie);
     }
 
+
 }

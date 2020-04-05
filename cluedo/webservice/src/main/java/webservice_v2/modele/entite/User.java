@@ -8,6 +8,9 @@ public class User {
     private String pseudo;
     private String pwd;
 
+    public User() {
+    }
+
     public User(String pseudo) {
         this.pseudo = pseudo;
     }

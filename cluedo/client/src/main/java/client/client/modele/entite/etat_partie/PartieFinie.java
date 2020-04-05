@@ -1,69 +1,74 @@
 package client.client.modele.entite.etat_partie;
 
-
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class PartieFinie implements IEtatPartie {
 
     private Joueur gagnant;
     private Map<TypeCarte, ICarte> combinaisonGagnante;
 
+    public PartieFinie(){}
+
     public PartieFinie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagnante) {
         this.gagnant = gagnant;
         this.combinaisonGagnante = combinaisonGagnante;
     }
 
+    public Joueur getGagnant() {
+        return gagnant;
+    }
 
-    @Override
-    public IEtatPartie lancerDe(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public void setGagnant(Joueur gagnant) {
+        this.gagnant = gagnant;
+    }
+
+    public Map<TypeCarte, ICarte> getCombinaisonGagnante() {
+        return combinaisonGagnante;
+    }
+
+    public void setCombinaisonGagnante(Map<TypeCarte, ICarte> combinaisonGagnante) {
+        this.combinaisonGagnante = combinaisonGagnante;
     }
 
     @Override
-    public IEtatPartie piocherIndice(Joueur jouerCourant, List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
+        return null;
     }
 
     @Override
-    public IEtatPartie deplacer(Joueur joueurCourant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
+        return null;
     }
 
     @Override
-    public IEtatPartie revelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
+        return null;
     }
 
     @Override
-    public IEtatPartie passerRevelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public List<Integer> obtenirDes() throws UnsupportedOperationException {
+        return null;
     }
 
     @Override
-    public IEtatPartie faireHypothese(Joueur joueurCourant, Joueur joueurActif, Map<TypeCarte, ICarte> hypothese) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
+        return null;
     }
 
     @Override
-    public IEtatPartie resoudreHypothese(Joueur joueurCourant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+    public String getTexte() {
+        String texte;
+        if(gagnant==null){
+            texte="Aucun des joueurs n'a accepté l'invitation, la partie n'a pas pu être lancée.";
+        }
+        else {
+            texte=gagnant.toString()+" a gagné, le crimier était "+combinaisonGagnante.get(TypeCarte.PERSONNAGE).getNom()+" avec "+combinaisonGagnante.get(TypeCarte.ARME).getNom()+" dans "+combinaisonGagnante.get(TypeCarte.LIEU).getNom()+".";
+        }
+        return texte;
     }
-
-    @Override
-    public IEtatPartie debuterTour(Joueur joueurSuivant) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IEtatPartie finirPartie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagante) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
-    }
-
-
 }

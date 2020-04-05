@@ -235,6 +235,7 @@ public class Facade {
         listeInvitations.remove(id);
     }
 
+
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les parties
     // ----------------------------------------------------------------------------------------
@@ -293,5 +294,7 @@ public class Facade {
     public void removePartie(String id) {
         listeParties.remove(id);
     }
+
+
 
 }

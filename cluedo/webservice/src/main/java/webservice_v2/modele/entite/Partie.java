@@ -29,6 +29,9 @@ public class Partie {
 
     private List<String> logs;
 
+    public Partie() {
+    }
+
     public Partie(String id, User hote) {
         this.id = id;
         this.hote = hote;
@@ -97,4 +100,6 @@ public class Partie {
     public void setOrdres(Map<String, Integer> ordres) {
         this.ordres = ordres;
     }
+
+
 }

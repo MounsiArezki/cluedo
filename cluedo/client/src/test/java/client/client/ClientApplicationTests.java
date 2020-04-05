@@ -9,6 +9,7 @@ import client.client.modele.entite.User;
 import client.client.service.IProxyV2;
 import client.client.service.ProxyV2;
 import org.junit.*;
+import org.junit.Test;
 import org.mockserver.junit.MockServerRule;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpResponse;

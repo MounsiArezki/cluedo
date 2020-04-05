@@ -6,7 +6,6 @@ import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import com.google.gson.Gson;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +15,8 @@ import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class Facade implements IUserService, IInvitationService, IPartieService {
     RestTemplate restTemplate;

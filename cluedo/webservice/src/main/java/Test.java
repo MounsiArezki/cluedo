@@ -26,7 +26,7 @@ public class Test {
         String s2=o.writeValueAsString(p);
         System.out.println(s2);
 
-        o.readValue(s2, Partie.class);
+        o.readValue(s, Partie.class);
     }
 
 

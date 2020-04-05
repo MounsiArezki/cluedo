@@ -21,7 +21,6 @@ import java.util.Map;
         @JsonSubTypes.Type(value = ResolutionDes.class, name="ResolutionDes"),
         @JsonSubTypes.Type(value = ResolutionIndice.class, name="ResolutionIndice"),
         @JsonSubTypes.Type(value = Supputation.class, name="Supputation")
-
 })
 public interface IEtatPartie {
 

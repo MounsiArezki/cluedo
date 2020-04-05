@@ -2,15 +2,15 @@ package webservice_v2.modele.entite.carte;
 
 public enum Lieu implements ICarte {
 
-    SALLE_RECEPTION("Salle de réception"),
-    SALLE_BILLARD("Salle de billard"),
-    JARDIN_HIVERS("Jardin d'hivers"),
-    SALLE_MANGER("Salle à manger"),
-    ENTREE("Entrée"),
-    BIBLIOTHEQUE("Bibliothèque"),
-    SALON("Salon"),
-    CUISINE("Cuisine"),
-    BUREAU("Bureau");
+    BALL_ROOM("Salle de réception"),
+    BILLIARD_ROOM("Salle de billard"),
+    CONSERVATORY("Jardin d'hivers"),
+    DINING_ROOM("Salle à manger"),
+    HALL("Entrée"),
+    LIBRARY("Bibliothèque"),
+    LOUNGE("Salon"),
+    KITCHEN("Cuisine"),
+    STUDY("Bureau");
 
     private String nom;
 

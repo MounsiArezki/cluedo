@@ -8,8 +8,8 @@ public enum  Arme implements ICarte {
     CHANDELIER("CHANDELIER", ImagePath.CHANDELIER_IMG.getUrl()),
     REVOLVER("revolver", ImagePath.REVOLVER_IMG.getUrl()),
     CORDE("CORDE", ImagePath.CORDE_IMG.getUrl()),
-    TUYAU_EN_PLOMB("TUYAU_EN_PLOMB", ImagePath.TUYAU_EN_PLOMP_IMG.getUrl()),
-    CLE("cle", ImagePath.CLE_IMG.getUrl()) ;
+    TUYAU_DE_PLOMB("TUYAU_EN_PLOMB", ImagePath.TUYAU_EN_PLOMP_IMG.getUrl()),
+    CLE_ANGLAISE("cle", ImagePath.CLE_IMG.getUrl()) ;
 
     Arme(String nom, String imageUrl) {
         this.nom = nom;

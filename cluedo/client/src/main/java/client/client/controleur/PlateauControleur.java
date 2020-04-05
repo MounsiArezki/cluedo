@@ -47,7 +47,7 @@ public class PlateauControleur {
 
     public void getMyCard(){
         // a remplacer par les carte recu du WS
-        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE,Arme.COUTEAU);
+        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE_ANGLAISE,Arme.COUTEAU);
 
     }
 

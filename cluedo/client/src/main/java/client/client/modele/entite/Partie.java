@@ -17,7 +17,9 @@ public class Partie {
     private Map<String, Joueur> joueurs;
 
     //int : ordre du joueur (début 1)
-    private Map<String, Integer> ordres;
+    private Map<String, Integer> ordreByJoueur;
+
+    private Map<Integer, String> joueurByOrdre;
 
     private Map<TypeCarte, ICarte> combinaisonGagante;
 
@@ -39,6 +41,8 @@ public class Partie {
         indices=new Stack<>();
         etatPartie=new EnAttenteDesJoueurs();
         logs=new ArrayList<>();
+        this.ordreByJoueur = new HashMap<>();
+        this.joueurByOrdre = new HashMap<>();
     }
 
 
@@ -91,12 +95,19 @@ public class Partie {
         this.logs = logs;
     }
 
-    public Map<String, Integer> getOrdres() {
-        return ordres;
+    public Map<String, Integer> getOrdreByJoueur() {
+        return ordreByJoueur;
     }
 
-    public void setOrdres(Map<String, Integer> ordres) {
-        this.ordres = ordres;
+    public void setOrdreByJoueur(Map<String, Integer> ordreByJoueur) {
+        this.ordreByJoueur = ordreByJoueur;
     }
 
+    public Map<Integer, String> getJoueurByOrdre() {
+        return joueurByOrdre;
+    }
+
+    public void setJoueurByOrdre(Map<Integer, String> joueurByOrdre) {
+        this.joueurByOrdre = joueurByOrdre;
+    }
 }

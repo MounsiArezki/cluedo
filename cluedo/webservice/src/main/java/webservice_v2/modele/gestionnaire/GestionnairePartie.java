@@ -5,6 +5,7 @@ import webservice_v2.exception.partie.PasJoueurCourantException;
 import webservice_v2.exception.partie.PiocherIndiceNonAutoriseException;
 import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.Personnage;
 import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
@@ -75,9 +76,6 @@ public class GestionnairePartie {
         //répartit aléatoirement les personnages entre les joueurs
         repartirPersonnages(partie);
 
-        //ordre jeu des joueurs
-        aleatoireOdreJoueurs(partie);
-
         // memes listes utilisées par TIRAGECOMBINAISON et DISTRIBUTIONCARTES
         List<ICarte> persos = FactoryCarte.getAllCartesPersonnage();
         List<ICarte> armes = FactoryCarte.getAllCartesArme();
@@ -93,36 +91,36 @@ public class GestionnairePartie {
         aleatoirePileIndice(partie);
 
         //transitionne vers l'état Debut Tour du P1
-        Joueur p1= partie.getJoueurs().get(1);
+        String id = partie.getJoueurByOrdre().get(1);
+        Joueur p1= partie.getJoueurs().get(id);
+        System.out.println("coucou "+p1.getPersonnage());
         partie.setEtatPartie(
                 partie.getEtatPartie().debuterTour(p1)
         );
     }
 
     private static void repartirPersonnages(Partie partie){
+
+        List<Joueur> listeJoueurs = new ArrayList<>(partie.getJoueurs().values());
         List<ICarte> persos=FactoryCarte.getAllCartesPersonnage();
-        Stack<ICarte> pile=new Stack<>();
-        pile.addAll(persos);
+        Stack<Joueur> pile=new Stack<>();
+        pile.addAll(listeJoueurs);
         Collections.shuffle(pile);
 
-        for(Joueur j : partie.getJoueurs().values()){
-            ICarte p= pile.pop();
-            j.setPersonnage(p);
-        }
-    }
-
-    private static void aleatoireOdreJoueurs(Partie partie){
-        List<Joueur> aleatoire= List.copyOf(partie.getJoueurs().values());
-        Collections.shuffle(aleatoire);
-
+        int i = 0;
         Map<String, Integer> ordres=new HashMap<>();
-        int ordre=1;
+        Map<Integer, String> joueursByOrdre = new HashMap<>();
 
-        for(Joueur j : aleatoire){
-            ordres.put(j.getUser().getId(), ordre);
-            ordre++;
+        while(!pile.empty()){
+            Joueur j = pile.pop();
+            j.setPersonnage(persos.get(i));
+            ordres.put(j.getUser().getId(),i+1);
+            joueursByOrdre.put(i+1, j.getUser().getId());
+            i++;
         }
-        partie.setOrdres(ordres);
+
+        partie.setJoueurByOrdre(joueursByOrdre);
+        partie.setOrdreByJoueur(ordres);
     }
 
     private static void tirageCombinaison(Partie partie, List<ICarte> persos, List<ICarte> armes, List<ICarte> lieux) {
@@ -154,10 +152,12 @@ public class GestionnairePartie {
         all.addAll(lieux);
         Collections.shuffle(all);
         int i=0;
+        List<Joueur> joueurs = new ArrayList<>(partie.getJoueurs().values());
         while(!all.empty()){
             ICarte carte=all.pop();
-            partie.getJoueurs().get(i).ajouterCarte(carte);
-            i+=1 % partie.getJoueurs().size();
+            joueurs.get(i).ajouterCarte(carte);
+            i+=1;
+            i%=joueurs.size();
         }
     }
 

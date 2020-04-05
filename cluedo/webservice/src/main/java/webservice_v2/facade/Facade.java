@@ -39,6 +39,11 @@ public class Facade {
         listeInvitations = new HashMap<>(); //liste d'invitations
         listeParties = new HashMap<>(); //liste de partie
         listePartiesartiesMongo = new HashMap<>(); //liste de partie sauvegardées pour "simuler mongo"
+
+        User user = facU.createUser("a","a");
+        listeUsers.put(user.getId(),user);
+        user = facU.createUser("b","b");
+        listeUsers.put(user.getId(),user);
     }
 
    

@@ -1,6 +1,5 @@
 package webservice_v2.modele.gestionnaire;
 
-import webservice.webservice.modele.entite.etat_partie.EtatPartie;
 import webservice_v2.exception.partie.*;
 import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.Arme;

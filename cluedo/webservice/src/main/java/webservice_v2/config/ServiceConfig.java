@@ -51,7 +51,7 @@ public class ServiceConfig {
     public final static String URL_PARTIE_ID_FIN_TOUR= URL_PARTIE_ID+"/fintour";
     public final static String URL_PARTIE_ID_EMETTRE_HYPOTHESE= URL_PARTIE_ID+"/emettrehypothse";
     public final static String URL_PARTIE_ID_REVELER_CARTE= URL_PARTIE_ID+"/revelercarte";
-    public final static String URL_PARTIE_ID_JOUEUR_CARTE= URL_PARTIE_ID+"/"+URL_JOUEUR_ID+"/carte";
-    public final static String URL_PARTIE_ID_JOUEUR_FICHE= URL_PARTIE_ID+"/"+URL_JOUEUR_ID+"/fiche";
+    public final static String URL_PARTIE_ID_JOUEUR_CARTE= URL_PARTIE_ID+""+URL_JOUEUR_ID+"/carte";
+    public final static String URL_PARTIE_ID_JOUEUR_FICHE= URL_PARTIE_ID+""+URL_JOUEUR_ID+"/fiche";
 
 }

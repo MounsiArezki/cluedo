@@ -34,7 +34,7 @@ public class ControlJoueur {
         }
     }
 
-    @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<ICarte, Joueur>> getJoueurFiche(@PathVariable String idP, @PathVariable String idJ){
         try {
             return ResponseEntity.ok(facade.getJoueurFiche(idP, idJ));

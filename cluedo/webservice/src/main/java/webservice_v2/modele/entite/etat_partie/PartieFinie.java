@@ -82,26 +82,31 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<Integer> obtenirDes() throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 }

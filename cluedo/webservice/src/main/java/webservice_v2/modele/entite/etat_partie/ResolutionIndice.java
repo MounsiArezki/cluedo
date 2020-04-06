@@ -115,4 +115,9 @@ public class ResolutionIndice implements IEtatPartie{
     public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
         return indices;
     }
+
+    @Override
+    public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 }

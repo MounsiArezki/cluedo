@@ -53,5 +53,6 @@ public interface IEtatPartie {
 
     public List<ICarte> obtenirIndices() throws UnsupportedOperationException;
 
+    public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException;
 
 }

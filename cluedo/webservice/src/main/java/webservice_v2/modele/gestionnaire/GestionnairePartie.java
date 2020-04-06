@@ -1,15 +1,16 @@
 package webservice_v2.modele.gestionnaire;
 
-import webservice_v2.exception.partie.DeplacementNonAutoriseException;
-import webservice_v2.exception.partie.PasJoueurCourantException;
-import webservice_v2.exception.partie.PiocherIndiceNonAutoriseException;
+import webservice.webservice.modele.entite.etat_partie.EtatPartie;
+import webservice_v2.exception.partie.*;
 import webservice_v2.modele.entite.Position;
+import webservice_v2.modele.entite.carte.Arme;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.Personnage;
 import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
+import webservice_v2.modele.entite.etat_partie.*;
 import webservice_v2.modele.fabrique.FactoryCarte;
 
 import java.util.*;
@@ -24,38 +25,71 @@ public class GestionnairePartie {
         partie.getJoueurs().put(user.getId(), joueur);
     }
 
-    private static boolean checkJoueurCourant(User user, Partie partie){
-        return partie
-                .getEtatPartie()
-                .obtenirJoueurCourant()
-                .getUser()
-                .equals(user);
+    private static boolean isJoueurCourant(User user, Partie partie){
+        try{
+            return partie
+                    .getEtatPartie()
+                    .obtenirJoueurCourant()
+                    .getUser()
+                    .equals(user);
+        }
+        catch (UnsupportedOperationException e){
+            return false;
+        }
+
     }
 
+    private static boolean isJoueurActif(User user, Partie partie){
+        try{
+            return partie
+                    .getEtatPartie()
+                    .obtenirJoueurAtif()
+                    .getUser()
+                    .equals(user);
+        }
+        catch (UnsupportedOperationException e){
+            return false;
+        }
+
+    }
+
+    private static Joueur getJoueurSuivant(Partie partie){
+        try{
+            Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
+            int ordreCourant=partie.getOrdreByJoueur().get(joueurCourant.getUser().getId());
+            int ordreSuivant= (ordreCourant+1) % partie.getJoueurs().size();
+            String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
+            return partie.getJoueurs().get(idSuivant);
+        }
+        catch (UnsupportedOperationException e){
+            return null;
+        }
+    }
+
+    private static Joueur getJoueurActifSuivant(Partie partie){
+        try{
+            Joueur joueurActif=partie.getEtatPartie().obtenirJoueurAtif();
+            int ordreActif=partie.getOrdreByJoueur().get(joueurActif.getUser().getId());
+            int ordreActifSuivant= (ordreActif+1) % partie.getJoueurs().size();
+            String idSuivant=partie.getJoueurByOrdre().get(ordreActifSuivant);
+
+            Joueur joueurActifSuivant=null;
+
+            //check que le joueur courant ne soit pas le prochain joueur actif
+            Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
+            if(!idSuivant.equals(joueurCourant.getUser().getId())){
+                joueurActifSuivant=partie.getJoueurs().get(idSuivant);
+            }
+            return joueurActifSuivant;
+        }
+        catch (UnsupportedOperationException e){
+            return null;
+        }
+    }
+
+    //A implementer
     private static boolean isDeplacementOk(Position position, Joueur joueur, List<Integer> des, Partie partie){
         boolean res=true;
-
-        //check si arrivée sur un autre joueur
-        if(position.getLieu()==null){
-            for(Joueur j : partie.getJoueurs().values()){
-                if(j.getPosition().equals(position)){
-                    res=false;
-                }
-            }
-        }
-        if(res){
-            int xVoulu=position.getX();
-            int yVoulu=position.getY();
-
-            int xJoueur=joueur.getPosition().getX();
-            int yJoueur=joueur.getPosition().getY();
-
-            int distanceDisponible=0;
-            des.stream().filter(i -> i!=1).reduce(distanceDisponible, Integer::sum);
-
-            int distanceVoulue=Math.abs(xJoueur-xVoulu)+Math.abs(yJoueur-yVoulu);
-            res=distanceDisponible>=distanceVoulue;
-        }
         return res;
     }
 
@@ -181,11 +215,20 @@ public class GestionnairePartie {
     //
     // Actions
     //
-    public static List<Integer> lancerDes(User user, Partie partie) throws PasJoueurCourantException {
-        boolean isJoueurCourant=checkJoueurCourant(user, partie);
+
+    //LANCER_DES
+    public static List<Integer> lancerDes(User user, Partie partie) throws PasJoueurCourantException, ActionNonAutoriseeException {
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
         if(!isJoueurCourant){
             throw new PasJoueurCourantException();
         }
+
+        //check si etat = debut tour
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof DebutTour)){
+            throw new ActionNonAutoriseeException();
+        }
+
         List<Integer> des= new ArrayList<>();
         Random random = new Random();
 
@@ -198,10 +241,17 @@ public class GestionnairePartie {
         return des;
     }
 
-    public static void seDeplacer(User user, Position position, Partie partie) throws PasJoueurCourantException, DeplacementNonAutoriseException {
-        boolean isJoueurCourant=checkJoueurCourant(user, partie);
+    //DEPLACER
+    public static void seDeplacer(User user, Position position, Partie partie) throws PasJoueurCourantException, DeplacementNonAutoriseException, ActionNonAutoriseeException {
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
         if(!isJoueurCourant){
             throw new PasJoueurCourantException();
+        }
+
+        //check si etat = resolution des OU resolution indices
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof ResolutionDes || etatPartie instanceof ResolutionIndice)){
+            throw new ActionNonAutoriseeException();
         }
 
         Joueur joueur= partie.getJoueurs().get(user.getId());
@@ -218,14 +268,24 @@ public class GestionnairePartie {
         );
     }
 
-    public static void tirerIndice(User user, List<Integer> des, Partie partie) throws PasJoueurCourantException, PiocherIndiceNonAutoriseException {
-        boolean isJoueurCourant=checkJoueurCourant(user, partie);
+    //PIOCHER_INDICE
+    public static void tirerIndice(User user, List<Integer> des, Partie partie) throws PasJoueurCourantException, PiocherIndiceNonAutoriseException, ActionNonAutoriseeException {
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
         if(!isJoueurCourant){
             throw new PasJoueurCourantException();
         }
+
+        //check si etat = resolution indice
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof ResolutionIndice)){
+            throw new ActionNonAutoriseeException();
+        }
+
+        //check resultats des
         if(!des.contains(1)){
             throw new PiocherIndiceNonAutoriseException();
         }
+
         List<ICarte> indices=new ArrayList<>();
         for(Integer de : des){
             if(de==1){
@@ -239,6 +299,141 @@ public class GestionnairePartie {
         );
     }
 
+    //QUITTER
+    public static void quitterPartie(User user, Partie partie){
+        Joueur joueur= partie.getJoueurs().get(user.getId());
+
+        //Check si le joueur est courant ou actif et modifie etat partie
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
+        boolean isJoueurActif=isJoueurActif(user, partie);
+
+        if(isJoueurCourant){
+            Joueur suivant=getJoueurSuivant(partie);
+            partie.setEtatPartie(
+                    new DebutTour(suivant)
+            );
+        }
+        else if(isJoueurActif){
+            Joueur actifSuivant=getJoueurActifSuivant(partie);
+            partie.getEtatPartie().changerJoueurActif(actifSuivant);
+        }
+
+        //Distribution des cartes joueur aux autres
+        List<ICarte> cartes=joueur.getListeCartes();
+
+        //Suppression du joueur AVANT distribution de ses cartes
+        partie.getJoueurs().remove(user.getId());
+        List<ICarte> persos=new ArrayList<>();
+        List<ICarte> armes=new ArrayList<>();
+        List<ICarte> lieux=new ArrayList<>();
+
+        for(ICarte carte : cartes){
+            if(carte instanceof Personnage){
+                persos.add(carte);
+            }
+            else if(carte instanceof Arme){
+                armes.add(carte);
+            }
+            else{
+                lieux.add(carte);
+            }
+        }
+        distributionCartes(partie, persos, armes, lieux);
+
+    }
+
+    //ACCUSER
+    public static void accuser(User user, Map<TypeCarte, ICarte> accusation, Partie partie) throws PasJoueurCourantException, ActionNonAutoriseeException{
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
+        if(!isJoueurCourant){
+            throw new PasJoueurCourantException();
+        }
+
+        //check si etat = debut tour ou supputation ou fin tour
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof DebutTour || etatPartie instanceof Supputation || etatPartie instanceof FinTour)){
+            throw new ActionNonAutoriseeException();
+        }
+
+        Map<TypeCarte, ICarte> combinaisonGagnante=partie.getCombinaisonGagante();
+        if(combinaisonGagnante.get(TypeCarte.PERSONNAGE).equals(accusation.get(TypeCarte.PERSONNAGE))
+            && combinaisonGagnante.get(TypeCarte.ARME).equals(accusation.get(TypeCarte.ARME))
+            && combinaisonGagnante.get(TypeCarte.LIEU).equals(accusation.get(TypeCarte.LIEU))
+        ){
+            Joueur gagnant=partie.getJoueurs().get(user.getId());
+            partie.setEtatPartie(
+                    partie.getEtatPartie().finirPartie(gagnant, partie.getCombinaisonGagante())
+            );
+        }
+        else{
+            quitterPartie(user, partie);
+        }
+    }
+
+    //PASSER
+    public static void passer(User user, Partie partie)throws PasJoueurCourantException, ActionNonAutoriseeException{
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
+        if(!isJoueurCourant){
+            throw new PasJoueurCourantException();
+        }
+
+        //check si etat = supputation ou fin tour
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof Supputation || etatPartie instanceof FinTour)){
+            throw new ActionNonAutoriseeException();
+        }
+
+        Joueur suivant=getJoueurSuivant(partie);
+        partie.setEtatPartie(
+                partie.getEtatPartie().debuterTour(suivant)
+        );
+    }
+
+    //EMETTRE_HYPOTHESE
+    public static void emettreHypothese(User user, Map<TypeCarte, ICarte> hypothese, Partie partie) throws PasJoueurCourantException, ActionNonAutoriseeException{
+        boolean isJoueurCourant=isJoueurCourant(user, partie);
+        if(!isJoueurCourant){
+            throw new PasJoueurCourantException();
+        }
+
+        //check si etat = supputation
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof Supputation)){
+            throw new ActionNonAutoriseeException();
+        }
+
+        partie.setEtatPartie(
+                partie.getEtatPartie().faireHypothese(partie.getJoueurs().get(user.getId()), hypothese)
+        );
+    }
+
+    //REVELER_CARTE
+    public static void revelerCarte(User user, ICarte carte, Partie partie) throws PasJouerActifException, ActionNonAutoriseeException{
+        boolean isJoueurActif=isJoueurActif(user, partie);
+        if(!isJoueurActif){
+            throw new PasJouerActifException();
+        }
+
+        //check si etat = hypothese
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if(!(etatPartie instanceof Hypothese)){
+            throw new ActionNonAutoriseeException();
+        }
+
+        Joueur actifSuivant=getJoueurActifSuivant(partie);
+        if(carte==null && actifSuivant!=null){
+            partie.setEtatPartie(
+                    partie.getEtatPartie().revelerCarte(actifSuivant)
+            );
+        }
+        else {
+            partie.setEtatPartie(
+                    partie.getEtatPartie().resoudreHypothese()
+            );
+        }
+    }
+
+    //JOUER_INDICE
 
 
 

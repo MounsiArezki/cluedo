@@ -84,4 +84,9 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 }

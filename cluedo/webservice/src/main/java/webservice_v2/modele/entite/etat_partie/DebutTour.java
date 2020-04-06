@@ -95,4 +95,9 @@ public class DebutTour implements IEtatPartie {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
 }

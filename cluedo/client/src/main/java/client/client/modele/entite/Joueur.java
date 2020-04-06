@@ -5,6 +5,7 @@ import client.client.modele.entite.carte.Personnage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Joueur  {
 
@@ -12,6 +13,7 @@ public class Joueur  {
     ICarte personnage;
     Position position;
     List<ICarte> listeCartes;
+
 
     public Joueur() {
     }
@@ -56,6 +58,7 @@ public class Joueur  {
     public void ajouterCarte(ICarte carte){
         listeCartes.add(carte);
     }
+
 
     @Override
     public String toString() {

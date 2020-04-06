@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.util.Pair;
 import webservice_v2.modele.entite.carte.ICarte;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Joueur {
 
@@ -20,7 +17,7 @@ public class Joueur {
     List<ICarte> listeCartes;
 
     @JsonIgnore
-    Set<Pair<ICarte,Joueur>> ficheEnquete;
+    Map<ICarte, Joueur> ficheEnquete;
 
     public Joueur() {
     }
@@ -28,6 +25,7 @@ public class Joueur {
     public Joueur(User user) {
         this.user = user;
         listeCartes=new ArrayList<>();
+        ficheEnquete=new HashMap<>();
     }
 
     public User getUser() {
@@ -64,6 +62,14 @@ public class Joueur {
 
     public void ajouterCarte(ICarte carte){
         listeCartes.add(carte);
+    }
+
+    public Map<ICarte, Joueur> getFicheEnquete() {
+        return ficheEnquete;
+    }
+
+    public void setFicheEnquete(Map<ICarte, Joueur> ficheEnquete) {
+        this.ficheEnquete = ficheEnquete;
     }
 
     @Override

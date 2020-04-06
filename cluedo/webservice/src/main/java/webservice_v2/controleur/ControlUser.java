@@ -85,10 +85,9 @@ public class ControlUser {
                     .buildAndExpand(u.getId())
                     .toUri();
 
-            ResponseEntity<?> responseEnty = ResponseEntity
+            return ResponseEntity
                     .created(location)
                     .body(u);
-            return responseEnty;
         }
         catch (MdpIncorrectException | NonInscritException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -97,9 +96,9 @@ public class ControlUser {
 
     // déconnecter un utilisateur
     @DeleteMapping(value = ServiceConfig.URL_USER_DECONNEXION)
-    public ResponseEntity<String> deconnectUser(@PathVariable String id) {
+    public ResponseEntity<String> deconnectUser(@PathVariable String id, @RequestBody String pseudo) {
         try {
-            facade.deconnexion(id);
+            facade.deconnexion(pseudo);
         } catch (PasConnecteException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

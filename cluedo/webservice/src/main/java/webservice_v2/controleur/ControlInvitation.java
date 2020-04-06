@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.InvitationInvalideException;
+import webservice_v2.exception.PartieInexistanteException;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
@@ -76,7 +77,12 @@ public class ControlInvitation {
     //accepter une invitation
     @PutMapping(value = ServiceConfig.URL_INVITATION_ID_ACCEPTATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> acceptInv(@PathVariable String id, @RequestBody User user) {
-        facade.accepterInvitation(id, user.getId());
+        try {
+            facade.accepterInvitation(id, user.getId());
+        } catch (PartieInexistanteException e) {
+            System.out.println("200 ws partie non trouvée");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -90,7 +96,12 @@ public class ControlInvitation {
     //accepter une invitation
     @PutMapping(value = ServiceConfig.URL_INVITATION_ID_REFUS, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> refuseInv(@PathVariable String id, @RequestBody User user) {
-        facade.refuserInvitation(id, user.getId());
+        try {
+            facade.refuserInvitation(id, user.getId());
+        } catch (PartieInexistanteException e) {
+            System.out.println("200 ws partie non trouvée");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

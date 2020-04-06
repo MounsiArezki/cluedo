@@ -122,6 +122,7 @@ public class Facade {
     // déconnexion
     public User deconnexion(String ps) throws PasConnecteException {
         User u = findUserByLogin(ps);
+        System.out.println(u.getId()+"ws");
         if (u == null){
             throw new PasConnecteException();
         }

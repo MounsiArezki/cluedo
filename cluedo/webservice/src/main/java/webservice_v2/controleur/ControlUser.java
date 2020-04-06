@@ -98,9 +98,11 @@ public class ControlUser {
     // déconnecter un utilisateur
     @DeleteMapping(value = ServiceConfig.URL_USER_DECONNEXION)
     public ResponseEntity<String> deconnectUser(@PathVariable String id) {
+        System.out.println("deconn");
         try {
             facade.deconnexion(id);
         } catch (PasConnecteException e) {
+            System.out.println("pas connecter");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);

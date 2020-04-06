@@ -5,7 +5,9 @@ public enum CodeStatus {
     OK(200),
     CONFLICT(409),
     NOT_FOUND(404),
+    NO_CONTENT(204),
     UNAUTHORIZED(401);
+
 
     public final int getCode() {
         return code;

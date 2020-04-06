@@ -84,13 +84,7 @@ public class ClientApplicationTests {
         User user = proxyV2.connexion("moi","000");
 
     }
-    @Test
-    public void testGetAllInvitationsRecuesOk() throws InterruptedException, MdpIncorrectOuNonInscritException, IOException {
 
-        proxyV2.getAllInvitationsRecues();
-
-
-    }
 
 
 }

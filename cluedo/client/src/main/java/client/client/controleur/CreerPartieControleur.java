@@ -10,14 +10,17 @@ import client.client.service.IUserService;
 import client.client.vue.CreerPartie;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class CreerPartieControleur {
 
     IInvitationService invitationService;
-    IUserService userService;
+//    IUserService userService;
+
 
     CreerPartie creerPartie;
     Stage creerPartieStage;
@@ -25,7 +28,7 @@ public class CreerPartieControleur {
 
     public CreerPartieControleur(Stage creerPartieStage) {
         invitationService = new Facade();
-        userService=new Facade();
+     //   userService=new Facade();
         this.creerPartieStage = creerPartieStage;
         creerPartie = (CreerPartie)CreerPartie.creerInstance(creerPartieStage , FxmlPath.CREER_PARTIE.getUrl());
         creerPartie.setControleur(this);
@@ -35,13 +38,14 @@ public class CreerPartieControleur {
         creerPartie.show("Creation Partie");
     }
 
-    public User[] getAllUsers(String recherche){
-        User[] users;
+    public Collection<User> getAllUsers(String recherche) {
+       // User[] users;
+        Collection<User> users;
         if("".equals(recherche)){
-            users= userService.getAllUsers();
+            users= VariablesGlobales.getProxyV2().getAllUsers();
         }
         else{
-            users= userService.getAllUsersWithFiltre(recherche);
+            users= VariablesGlobales.getProxyV2().getAllUsersWithFiltre(recherche);
         }
         return users;
     }

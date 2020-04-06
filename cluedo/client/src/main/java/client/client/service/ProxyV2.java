@@ -35,16 +35,28 @@ public class ProxyV2 implements IProxyV2 {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public Collection<User> getAllUsers() throws IOException, InterruptedException {
+    public List<User> getAllUsers() {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(ServiceConfig.URL_USER))
                 .build();
 
         HttpResponse<String> response =
-                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                null;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        List<User> userList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+        List<User> userList = null;
+        try {
+            userList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return userList;
 
@@ -84,7 +96,7 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public void deconnexion() throws IOException, InterruptedException, NonInscritException {
+    public void deconnexion() throws  NonInscritException {
 
         User user=VariablesGlobales.getUser();
         String pseudo= user.getPseudo();
@@ -94,7 +106,14 @@ public class ProxyV2 implements IProxyV2 {
                 .uri(URI.create(BASE_URL+"/user/connexion/"+pseudo))
                 .DELETE()
                 .build();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (response.statusCode()==CodeStatus.UNAUTHORIZED.getCode()){
             throw new NonInscritException();
         }
@@ -131,7 +150,7 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public void desinscription() throws IOException, InterruptedException, NonInscritException {
+    public void desinscription() throws NonInscritException {
 
 
         User user=VariablesGlobales.getUser();
@@ -142,7 +161,14 @@ public class ProxyV2 implements IProxyV2 {
                 .uri(URI.create(BASE_URL+"/user/"+pseudo))
                 .DELETE()
                 .build();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (response.statusCode()==CodeStatus.UNAUTHORIZED.getCode()){
             throw new NonInscritException();
         }
@@ -150,7 +176,7 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public Collection<Invitation> getAllInvitationsRecues() throws IOException, InterruptedException {
+    public Collection<Invitation> getAllInvitationsRecues() {
 
         User user= VariablesGlobales.getUser();
         String id = user.getId();
@@ -161,16 +187,24 @@ public class ProxyV2 implements IProxyV2 {
                 .GET()
                 .build();
 
-        HttpResponse<String>  response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String>  response ;
+        List<Invitation> InvList = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            InvList= objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Invitation.class));
 
-        List<Invitation> InvList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Invitation.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return InvList;
 
     }
 
     @Override
-    public Collection<Invitation> getAllInvitationsEmises() throws IOException, InterruptedException {
+    public Collection<Invitation> getAllInvitationsEmises() {
         User user= VariablesGlobales.getUser();
         String id = user.getId();
         HttpClient client = HttpClient.newHttpClient();
@@ -180,9 +214,16 @@ public class ProxyV2 implements IProxyV2 {
                 .GET()
                 .build();
 
-        HttpResponse<String>  response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        List<Invitation> InvList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Invitation.class));
+
+        List<Invitation> InvList = null;
+        HttpResponse<String>  response ;
+        try {
+            response=client.send(request, HttpResponse.BodyHandlers.ofString());
+            InvList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Invitation.class));
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return InvList;
 

@@ -9,28 +9,27 @@ import client.client.modele.entite.User;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 public interface IProxyV2 {
 
     //user
 
-    public Collection<User> getAllUsers() throws IOException, InterruptedException;
+    public Collection<User> getAllUsers() ;
 
     public Collection<User>  getAllUsersWithFiltre(String filtre);
 
     public User connexion(String login, String pwd) throws IOException, InterruptedException, MdpIncorrectOuNonInscritException;
 
-    public void deconnexion() throws IOException, InterruptedException, NonInscritException;
+    public void deconnexion() throws NonInscritException;
 
     public User insciption(String login, String pwd) throws DejaInscritException;
 
-    public void desinscription() throws IOException, InterruptedException, NonInscritException;
+    public void desinscription() throws  NonInscritException;
 
-    public Collection<Invitation> getAllInvitationsRecues() throws IOException, InterruptedException;
+    public Collection<Invitation> getAllInvitationsRecues();
 
-    public Collection<Invitation> getAllInvitationsEmises() throws IOException, InterruptedException;
-
-
+    public Collection<Invitation> getAllInvitationsEmises() ;
 
 
 

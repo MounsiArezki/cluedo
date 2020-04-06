@@ -12,8 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class CreerPartie extends View<CreerPartieControleur> {
@@ -81,7 +83,9 @@ public class CreerPartie extends View<CreerPartieControleur> {
                             if(joueursInvitesList.size()<5){
                                 joueursInvitesList.add(user);
                             }
-                            refresh();
+
+                                refresh();
+
                         });
                     }
 
@@ -117,7 +121,9 @@ public class CreerPartie extends View<CreerPartieControleur> {
                         btn.setOnAction((ActionEvent event) -> {
                             User user = getTableView().getItems().get(getIndex());
                             joueursInvitesList.remove(user);
-                            refresh();
+
+                                refresh();
+
                         });
                     }
 
@@ -149,7 +155,7 @@ public class CreerPartie extends View<CreerPartieControleur> {
 
     @Override
     public void refresh() {
-        List<User> listUsers= Arrays.asList(getControleur().getAllUsers(recherche.getText()));
+        List<User> listUsers= (List<User>) getControleur().getAllUsers(recherche.getText());
         drawTableJoueur(listUsers);
         drawTableJoueurInvite(joueursInvitesList);
     }

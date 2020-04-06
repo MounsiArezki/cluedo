@@ -1,0 +1,4 @@
+package webservice_v2.exception;
+
+public class PartieInexistanteException extends Throwable{
+}

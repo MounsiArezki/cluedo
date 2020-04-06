@@ -2,7 +2,6 @@ package webservice_v2.modele.entite;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javafx.util.Pair;
 import webservice_v2.modele.entite.carte.ICarte;
 
 import java.util.*;

@@ -29,6 +29,12 @@ public class ServiceConfig {
 
 
     //
+    // JOUEUR
+    //
+    public final static String URL_JOUEUR="/joueur";
+    public final static String URL_JOUEUR_ID="/joueur/{id}";
+
+    //
     // PARTIE
     //
     public final static String PARTIE_ID_PARAM="id";
@@ -36,8 +42,8 @@ public class ServiceConfig {
     public final static String URL_PARTIE_ID=URL_PARTIE+"/{id}";
     public final static String URL_PARTIE_ID_JOUEUR=URL_PARTIE_ID+"/joueur";
     public final static String URL_PARTIE_ID_HYPOTHESE=URL_PARTIE_ID+"/hypothese";
-    public final static String  URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
-    public final static String  URL_PARTIE_ID_RESTAURATION=URL_PARTIE_ID+"/restauration";
+    public final static String URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
+    public final static String URL_PARTIE_ID_RESTAURATION=URL_PARTIE_ID+"/restauration";
 
     public final static String URL_PARTIE_ID_LANCER_DES= URL_PARTIE_ID+"/lancerdes";
     public final static String URL_PARTIE_ID_DEPLACER= URL_PARTIE_ID+"/deplacer";
@@ -45,7 +51,7 @@ public class ServiceConfig {
     public final static String URL_PARTIE_ID_FIN_TOUR= URL_PARTIE_ID+"/fintour";
     public final static String URL_PARTIE_ID_EMETTRE_HYPOTHESE= URL_PARTIE_ID+"/emettrehypothse";
     public final static String URL_PARTIE_ID_REVELER_CARTE= URL_PARTIE_ID+"/revelercarte";
-
-
+    public final static String URL_PARTIE_ID_JOUEUR_CARTE= URL_PARTIE_ID+"/"+URL_JOUEUR_ID+"/carte";
+    public final static String URL_PARTIE_ID_JOUEUR_FICHE= URL_PARTIE_ID+"/"+URL_JOUEUR_ID+"/fiche";
 
 }

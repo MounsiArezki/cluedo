@@ -2,8 +2,10 @@ package webservice_v2.facade;
 
 import webservice_v2.exception.*;
 import webservice_v2.modele.entite.Invitation;
+import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
+import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.fabrique.FactoryInvitation;
 import webservice_v2.modele.fabrique.FactoryPartie;
 import webservice_v2.modele.fabrique.FactoryUser;
@@ -20,11 +22,11 @@ public class Facade {
     private FactoryInvitation facI; //factory à invitation
     private FactoryPartie facP; //factory à partie (est-ce qu'on gère qu'une partie ou plusieurs ?)
 
-    private Map<String,User> listeUsers; //liste d'utilisateurs
-    private Map<String,User> listeUserssersConnectes; //liste d'utilisateurs connectés (?)
+    private Map<String, User> listeUsers; //liste d'utilisateurs
+    private Map<String, User> listeUsersConnectes; //liste d'utilisateurs connectés (?)
     private Map<String, Invitation> listeInvitations; //liste d'invitations
     private Map<String, Partie> listeParties; //liste de partie
-    private Map<String,Partie> listePartiesartiesMongo; //liste de partie sauvegardées pour "simuler mongo"
+    private Map<String, Partie> listePartiesartiesMongo; //liste de partie sauvegardées pour "simuler mongo"
 
     // récupérer le singleton de la facade
     public static Facade getFac() { return fac; }
@@ -35,7 +37,7 @@ public class Facade {
         facP = FactoryPartie.getFacP(); //factory à partie (est-ce qu'on gère qu'une partie ou plusieurs ?)
 
         listeUsers = new HashMap<>(); //liste d'utilisateurs
-        listeUserssersConnectes = new HashMap<>(); //liste d'utilisateurs connectés (?)
+        listeUsersConnectes = new HashMap<>(); //liste d'utilisateurs connectés (?)
         listeInvitations = new HashMap<>(); //liste d'invitations
         listeParties = new HashMap<>(); //liste de partie
         listePartiesartiesMongo = new HashMap<>(); //liste de partie sauvegardées pour "simuler mongo"
@@ -45,8 +47,6 @@ public class Facade {
         user = facU.createUser("b","b");
         listeUsers.put(user.getId(),user);
     }
-
-   
 
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les utilisateurs
@@ -115,7 +115,7 @@ public class Facade {
         if (!u.getPwd().equals(pwd)){ //mdp incorrect
             throw new MdpIncorrectException();
         }
-        listeUserssersConnectes.put(u.getId(), u); //ajout à la liste des connectés
+        listeUsersConnectes.put(u.getId(), u); //ajout à la liste des connectés
         return u;
 }
 
@@ -125,7 +125,7 @@ public class Facade {
         if (u == null){
             throw new PasConnecteException();
         }
-        listeUserssersConnectes.remove(u.getId());
+        listeUsersConnectes.remove(u.getId());
         return u;
     }
 
@@ -240,7 +240,6 @@ public class Facade {
         listeInvitations.remove(id);
     }
 
-
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les parties
     // ----------------------------------------------------------------------------------------
@@ -300,6 +299,34 @@ public class Facade {
         listeParties.remove(id);
     }
 
+    // ----------------------------------------------------------------------------------------
+    // Méthodes sur les joueurs
+    // ----------------------------------------------------------------------------------------
 
+    // retourner la liste des cartes d'un joueur (dans une partie donnée)
+    public List<ICarte> getJoueurCartes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException {
+        Partie partie;
+
+        if (listeParties.containsKey(idP)) {
+            partie = listeParties.get(idP);
+
+            if (partie.getJoueurs().containsKey(idJ)) return partie.getJoueurs().get(idJ).getListeCartes();
+            else throw new JoueurPasDansLaPartieException();
+
+        } else throw new PartieInexistanteException();
+    }
+
+    // retourner la fiche d'un joueur (dans une partie donnée)
+    public Map<ICarte, Joueur> getJoueurFiche(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException {
+        Partie partie;
+
+        if (listeParties.containsKey(idP)) {
+            partie = listeParties.get(idP);
+
+            if (partie.getJoueurs().containsKey(idJ)) return partie.getJoueurs().get(idJ).getFicheEnquete();
+            else throw new JoueurPasDansLaPartieException();
+
+        } else throw new PartieInexistanteException();
+    }
 
 }

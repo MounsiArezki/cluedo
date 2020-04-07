@@ -21,9 +21,7 @@ public enum Lieu implements ICarte{
     private Position center;
     private String imageUrl;
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    Lieu(){}
 
     public Position getCenter() {
         return center;
@@ -36,12 +34,6 @@ public enum Lieu implements ICarte{
         return nom;
     }
 
-    @Override
-    public void ImageUrl(String url) {
-        this.imageUrl=url;
-    }
-
-
     public char getKey() {
         return key;
     }
@@ -50,10 +42,7 @@ public enum Lieu implements ICarte{
         this.key = key;
     }
 
-
-
     Lieu(String name,  char key, Position centre) {
-
         this.nom = name;
         this.key = key;
         this.center = centre;

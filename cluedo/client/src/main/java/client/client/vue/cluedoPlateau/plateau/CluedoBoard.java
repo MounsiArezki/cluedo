@@ -12,16 +12,10 @@ import java.util.Scanner;
 
 public class CluedoBoard extends Board<Place> {
 
-
     public CluedoBoard() {
-
-
         super();
         this.setWidth(750);
         this.setHeight(620);
-
-
-
     }
 /*
     private void initializeGrid() {

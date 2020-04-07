@@ -51,7 +51,7 @@ public class PlateauControleur {
     public void getMyCard(){
         // a remplacer par les carte recu du WS
 /*        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE_ANGLAISE,Arme.COUTEAU);*/
-        this.cartesJ= new ArrayList<>(List.of(joueurService.getCartesJoueurs(partie.getId())));
+        this.cartesJ= joueurService.getCartesJoueurs(partie.getId());
         System.out.println(cartesJ.toString());
 
     }
@@ -77,6 +77,7 @@ public class PlateauControleur {
 
 
     public Collection<ICarte> getCarteJoueur() {
+        getMyCard();
         return cartesJ;
     }
 

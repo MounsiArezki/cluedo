@@ -5,38 +5,58 @@ import client.client.config.ServiceConfig;
 import client.client.exception.connexionException.DejaConnecteException;
 import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
+import client.client.exception.connexionException.NonInscritException;
+import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.mozilla.javascript.tools.shell.Global;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ProxyV2 implements IProxyV2 {
 
 
+    //je trouve que c 'est moche de recup l id utilisateur de la class  Variablesglobale
+    // veut dire proxy depand du model !
+
+
+    public static String BASE_URL="http://localhost:8080/serv";
     private HttpClient httpClient = HttpClient.newHttpClient();
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public Collection<User> getAllUsers() throws IOException, InterruptedException {
+    public List<User> getAllUsers() {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(ServiceConfig.URL_USER))
                 .build();
 
         HttpResponse<String> response =
-                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                null;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        List<User> userList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+        List<User> userList = null;
+        try {
+            userList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return userList;
 
@@ -76,7 +96,28 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public void deconnexion() {
+    public void deconnexion() throws  NonInscritException {
+
+        User user=VariablesGlobales.getUser();
+        String pseudo= user.getPseudo();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Accept","application/json")
+                .uri(URI.create(BASE_URL+"/user/connexion/"+pseudo))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode()==CodeStatus.UNAUTHORIZED.getCode()){
+            throw new NonInscritException();
+        }
+     //  System.out.println(response.statusCode());
 
     }
 
@@ -109,17 +150,82 @@ public class ProxyV2 implements IProxyV2 {
     }
 
     @Override
-    public void desinscrition() {
+    public void desinscription() throws NonInscritException {
+
+
+        User user=VariablesGlobales.getUser();
+        String pseudo= user.getPseudo();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Accept","application/json")
+                .uri(URI.create(BASE_URL+"/user/"+pseudo))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode()==CodeStatus.UNAUTHORIZED.getCode()){
+            throw new NonInscritException();
+        }
 
     }
 
     @Override
     public Collection<Invitation> getAllInvitationsRecues() {
-        return null;
+
+        User user= VariablesGlobales.getUser();
+        String id = user.getId();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Accept","application/json")
+                .uri(URI.create(BASE_URL+"/user/"+id+"/invitation/recue"))
+                .GET()
+                .build();
+
+        HttpResponse<String>  response ;
+        List<Invitation> InvList = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            InvList= objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Invitation.class));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return InvList;
+
     }
 
     @Override
     public Collection<Invitation> getAllInvitationsEmises() {
-        return null;
+        User user= VariablesGlobales.getUser();
+        String id = user.getId();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .header("Accept","application/json")
+                .uri(URI.create(BASE_URL+"/user/"+id+"/invitation/emise"))
+                .GET()
+                .build();
+
+
+
+        List<Invitation> InvList = null;
+        HttpResponse<String>  response ;
+        try {
+            response=client.send(request, HttpResponse.BodyHandlers.ofString());
+            InvList = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Invitation.class));
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return InvList;
+
     }
 }

@@ -53,5 +53,6 @@ public class ServiceConfig {
     public final static String URL_PARTIE_ID_REVELER_CARTE= URL_PARTIE_ID+"/revelercarte";
     public final static String URL_PARTIE_ID_JOUEUR_CARTE= URL_PARTIE+"/{idP}"+URL_JOUEUR+"/{idJ}/carte";
     public final static String URL_PARTIE_ID_JOUEUR_FICHE= URL_PARTIE_ID+""+URL_JOUEUR_ID+"/fiche";
+    public final static String URL_PARTIE_ID_JOUEUR_LANCER= URL_PARTIE_ID+""+URL_JOUEUR_ID+"/lancerDes";
 
 }

@@ -1,6 +1,8 @@
 package webservice_v2.facade;
 
 import webservice_v2.exception.*;
+import webservice_v2.exception.partie.ActionNonAutoriseeException;
+import webservice_v2.exception.partie.PasJoueurCourantException;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
@@ -122,13 +124,12 @@ public class Facade {
     // déconnexion
     public User deconnexion(String ps) throws PasConnecteException {
         User u = findUserByLogin(ps);
-        if (u == null){
+        if (u == null) {
             throw new PasConnecteException();
         }
         listeUsersConnectes.remove(u.getId());
         return u;
     }
-
 
     // ----------------------------------------------------------------------------------------
     // Méthodes sur les invitations
@@ -193,14 +194,14 @@ public class Facade {
     }
 
     // l'utilisateur avec idU accepte l'invitation idI
-    public boolean accepterInvitation(String idI, String idU) {
+    public boolean accepterInvitation(String idI, String idU) throws PartieInexistanteException {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
         boolean res=false;
         if (i != null) {
             if (i.getInvites().contains(u)) { // si l'utilisateur est dans la liste des invités
                 i.getInvites().remove(u); // on le retire de la liste des invités
-                Partie partie=findPartie(i.getIdPartie());
+                Partie partie = findPartie(i.getIdPartie());
                 GestionnairePartie.ajouterJoueur(partie, u); // on l'intègre à la partie
                 checkInvitationPartie(i,partie);
                 res= true;
@@ -210,13 +211,13 @@ public class Facade {
     }
 
     // l'utilisateur avec idU refuse l'invitation idI
-    public boolean refuserInvitation(String idI, String idU) {
+    public boolean refuserInvitation(String idI, String idU) throws PartieInexistanteException {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
 
         boolean res=false;
         if (i != null) {
-            Partie partie=findPartie(i.getIdPartie());
+            Partie partie = findPartie(i.getIdPartie());
             i.getInvites().remove(u); // on le retire simplement de la liste des invités
             checkInvitationPartie(i,partie);
             res=true;
@@ -257,11 +258,10 @@ public class Facade {
     }
 
     // trouver une partie par son id
-    public Partie findPartie(String id) {
-        Partie partie=null;
-        if(listeParties.containsKey(id)){
-            partie=listeParties.get(id);
-        }
+    public Partie findPartie(String id) throws PartieInexistanteException {
+        Partie partie;
+        if (listeParties.containsKey(id)) partie = listeParties.get(id);
+        else throw new PartieInexistanteException();
         return partie;
     }
 
@@ -275,7 +275,7 @@ public class Facade {
     }
 
     // sauvegarde d'une partie
-    public Partie savePartie(String idP, String idH) {
+    public Partie savePartie(String idP, String idH) throws PartieInexistanteException {
         Partie p = findPartie(idP);
         if (idH.equals(p.getHote().getId())){
             listePartiesartiesMongo.put(p.getId(), p);
@@ -305,28 +305,26 @@ public class Facade {
 
     // retourner la liste des cartes d'un joueur (dans une partie donnée)
     public List<ICarte> getJoueurCartes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException {
-        Partie partie;
+        Partie partie = findPartie(idP);
 
-        if (listeParties.containsKey(idP)) {
-            partie = listeParties.get(idP);
-
-            if (partie.getJoueurs().containsKey(idJ)) return partie.getJoueurs().get(idJ).getListeCartes();
-            else throw new JoueurPasDansLaPartieException();
-
-        } else throw new PartieInexistanteException();
+        if (partie.getJoueurs().containsKey(idJ)) return partie.getJoueurs().get(idJ).getListeCartes();
+        else throw new JoueurPasDansLaPartieException();
     }
 
     // retourner la fiche d'un joueur (dans une partie donnée)
     public Map<ICarte, Joueur> getJoueurFiche(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException {
-        Partie partie;
+        Partie partie = findPartie(idP);
 
-        if (listeParties.containsKey(idP)) {
-            partie = listeParties.get(idP);
+        if (partie.getJoueurs().containsKey(idJ)) return partie.getJoueurs().get(idJ).getFicheEnquete();
+        else throw new JoueurPasDansLaPartieException();
+    }
 
-            if (partie.getJoueurs().containsKey(idJ)) return partie.getJoueurs().get(idJ).getFicheEnquete();
-            else throw new JoueurPasDansLaPartieException();
+    // retourner le résultat des lancés des dés (dans une partie donnée)
+    public List<Integer> lancerDes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+        Partie partie = findPartie(idP);
 
-        } else throw new PartieInexistanteException();
+        if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), findPartie(idP));
+        else throw new JoueurPasDansLaPartieException();
     }
 
 }

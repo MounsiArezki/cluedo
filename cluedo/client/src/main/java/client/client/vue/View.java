@@ -84,14 +84,20 @@ public abstract class View<T> {
     public void fermerAction(ActionEvent actionEvent) {
     }
 
-    public abstract void refresh();
+    public abstract void refresh() throws IOException, InterruptedException;
 
     public void setTimer(int seconds){
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                refresh();
+                try {
+                    refresh();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);

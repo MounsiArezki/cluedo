@@ -64,6 +64,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     @Override
     public void deconnexion() {
         User user=VariablesGlobales.getUser();
+        System.out.println(user.getId()+"deconnec");
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
         restTemplate.delete(ServiceConfig.URL_USER_DECONNEXION,params);

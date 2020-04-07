@@ -22,7 +22,7 @@ public class ControlPartie{
 
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Partie> getPartieById(@PathVariable String id){
-        Partie partie= null;
+        Partie partie;
         try {
             partie = facade.findPartie(id);
         } catch (PartieInexistanteException e) {

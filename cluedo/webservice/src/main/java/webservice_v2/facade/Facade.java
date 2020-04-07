@@ -8,6 +8,7 @@ import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
 import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.fabrique.FactoryInvitation;
 import webservice_v2.modele.fabrique.FactoryPartie;
 import webservice_v2.modele.fabrique.FactoryUser;
@@ -323,7 +324,15 @@ public class Facade {
     public List<Integer> lancerDes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
         Partie partie = findPartie(idP);
 
-        if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), findPartie(idP));
+        if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // lancer une accusation (dans une partie donnée)
+    public void accuser(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.accuser(findUser(idJ), mc, partie);
         else throw new JoueurPasDansLaPartieException();
     }
 

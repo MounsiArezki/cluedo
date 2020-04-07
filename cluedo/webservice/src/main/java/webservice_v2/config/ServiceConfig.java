@@ -41,18 +41,19 @@ public class ServiceConfig {
     public final static String URL_PARTIE="/partie";
     public final static String URL_PARTIE_ID=URL_PARTIE+"/{id}";
     public final static String URL_PARTIE_ID_JOUEUR=URL_PARTIE_ID+"/joueur";
-    public final static String URL_PARTIE_ID_HYPOTHESE=URL_PARTIE_ID+"/hypothese";
     public final static String URL_PARTIE_ID_SAUVEGARDE=URL_PARTIE_ID+"/sauvegarde";
     public final static String URL_PARTIE_ID_RESTAURATION=URL_PARTIE_ID+"/restauration";
 
-    public final static String URL_PARTIE_ID_LANCER_DES= URL_PARTIE_ID+"/lancerdes";
+    // les actions restantes à "refactor" sur partie/idP/joueur/idJ
     public final static String URL_PARTIE_ID_DEPLACER= URL_PARTIE_ID+"/deplacer";
-    public final static String URL_PARTIE_ID_ACCUSER= URL_PARTIE_ID+"/accuser";
     public final static String URL_PARTIE_ID_FIN_TOUR= URL_PARTIE_ID+"/fintour";
-    public final static String URL_PARTIE_ID_EMETTRE_HYPOTHESE= URL_PARTIE_ID+"/emettrehypothse";
     public final static String URL_PARTIE_ID_REVELER_CARTE= URL_PARTIE_ID+"/revelercarte";
+
+    // les actions traitées
     public final static String URL_PARTIE_ID_JOUEUR_CARTE= URL_PARTIE+"/{idP}"+URL_JOUEUR+"/{idJ}/carte";
-    public final static String URL_PARTIE_ID_JOUEUR_FICHE= URL_PARTIE_ID+""+URL_JOUEUR_ID+"/fiche";
-    public final static String URL_PARTIE_ID_JOUEUR_LANCER= URL_PARTIE_ID+""+URL_JOUEUR_ID+"/lancerDes";
+    public final static String URL_PARTIE_ID_JOUEUR_FICHE= URL_PARTIE+"/{idP}"+URL_JOUEUR+"/{idJ}/fiche";
+    public final static String URL_PARTIE_ID_JOUEUR_LANCER= URL_PARTIE+"/{idP}"+URL_JOUEUR+"/{idJ}/lancerDes";
+    public final static String URL_PARTIE_ID_JOUEUR_HYPOTHESE= URL_PARTIE+"/{idP}"+URL_JOUEUR+"/{idJ}/hypothese";
+    public final static String URL_PARTIE_ID_JOUEUR_ACCUSER= URL_PARTIE+"/{idP}"+URL_JOUEUR+"/{idJ}/accuser";
 
 }

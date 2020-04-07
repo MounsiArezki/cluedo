@@ -1,12 +1,14 @@
 package client.client.controleur;
 
-import client.client.modele.entite.*;
+import client.client.modele.entite.Joueur;
+import client.client.modele.entite.Partie;
 import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
+import client.client.service.IJoueurService;
 import client.client.service.IPartieService;
 import client.client.vue.Plateau;
 import client.client.vue.cluedoPlateau.plateau.Board;
@@ -34,6 +36,7 @@ public class PlateauControleur {
     Player player ;
 
     IPartieService partieService;
+    IJoueurService joueurService;
 
     /*
         Simulation WS
@@ -47,7 +50,9 @@ public class PlateauControleur {
 
     public void getMyCard(){
         // a remplacer par les carte recu du WS
-        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE_ANGLAISE,Arme.COUTEAU);
+/*        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE_ANGLAISE,Arme.COUTEAU);*/
+        this.cartesJ= new ArrayList<>(List.of(joueurService.getCartesJoueurs(partie.getId())));
+        System.out.println(cartesJ.toString());
 
     }
 
@@ -57,18 +62,15 @@ public class PlateauControleur {
         END
      */
     public PlateauControleur(Stage plateauStage, String idPartie) {
-        getMyCard();
         this.plateauStage = plateauStage;
         this.partieService = new Facade();
+        this.joueurService = new Facade();
         this.partie = partieService.getPartieById(idPartie);
         plateau = (Plateau)Plateau.creerInstance(plateauStage, FxmlPath.PLATEAU.getUrl());
         plateau.setControleur(this);
         plateau.refresh();
         plateau.setTimer(5);
-        plateau.distribuerCartes();
         plateau.drawCluedoBoard();
-
-        createCharacters();
 
         plateau.show("plateau");
     }
@@ -181,6 +183,6 @@ public class PlateauControleur {
 
 
     public int roll() {
-       return this.player.lancerDes();
+        return this.player.lancerDes();
     }
 }

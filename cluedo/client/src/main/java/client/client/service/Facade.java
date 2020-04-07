@@ -3,8 +3,10 @@ package client.client.service;
 import client.client.config.ServiceConfig;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
+import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
+import client.client.modele.entite.carte.ICarte;
 import com.google.gson.Gson;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,7 +20,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-public class Facade implements IUserService, IInvitationService, IPartieService {
+public class Facade implements IUserService, IInvitationService, IPartieService, IJoueurService {
     RestTemplate restTemplate;
     Gson gson;
 
@@ -184,4 +186,29 @@ public class Facade implements IUserService, IInvitationService, IPartieService 
         }
         return partie;
     }
+
+    //
+    // IJOUEURSERVICE
+    //
+
+    @Override
+    public ICarte[] getCartesJoueurs(String idPartie) {
+        User user=VariablesGlobales.getUser();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("idJ", user.getId());
+        params.put("idP", idPartie);
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, String.class,params);
+        return gson.fromJson(res.getBody(),ICarte[].class);
+    }
+
+    @Override
+    public Map<ICarte, Joueur> getFicheJoueur(String idPartie) {
+        User user=VariablesGlobales.getUser();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.USER_ID_PARAM, user.getId());
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE, String.class,params);
+        return gson.fromJson(res.getBody(),Map.class);
+    }
+
 }

@@ -1,6 +1,7 @@
 package client.client.service;
 
 import client.client.config.ServiceConfig;
+import client.client.controleur.ConnexionControleur;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Joueur;
@@ -8,6 +9,7 @@ import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 public class Facade implements IUserService, IInvitationService, IPartieService, IJoueurService {
     RestTemplate restTemplate;
@@ -38,6 +42,34 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     //
     // IUSERSERVICE
     //
+    public void subscribeToTest(ConnexionControleur connexionControleur) throws IOException {
+        WebClient client = WebClient.create();
+        Flux<String> events =
+                client.get()
+                        .uri("http://localhost:8080/serv/test")
+                        .accept(TEXT_EVENT_STREAM)
+                        .retrieve()
+                        .bodyToFlux(String.class);
+
+        //Disposable disposable = events.subscribe(test -> System.out.println("test " + test));
+
+        //events.subscribe(eventCallback,
+        //        Throwable::printStackTrace);
+
+        events.subscribe( test -> {
+            Platform.runLater(
+                    () -> connexionControleur.getFluxTests(test)
+            );
+        });
+    }
+
+    public String postTest(String test){
+        HttpEntity<String> httpEntity=buildHttpEntity(test);
+        System.out.println(gson.toJson(httpEntity));
+        ResponseEntity<String> res=restTemplate.postForEntity("http://localhost:8080/serv/test",httpEntity,String.class);
+        return gson.fromJson(res.getBody(), String.class);
+    }
+
     @Override
     public User[] getAllUsers() {
         ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class);

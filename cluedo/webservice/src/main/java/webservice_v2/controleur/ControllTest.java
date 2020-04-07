@@ -25,7 +25,8 @@ public class ControllTest {
     {
         //System.out.println(testNotifications.toString());
         Flux<String> flux=Flux.fromIterable(tests);
-        return flux;
+        //return flux;
+        return testNotifications;
     }
 
 
@@ -33,6 +34,7 @@ public class ControllTest {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> UpdateInvitationWithResponse(@RequestBody String test)
     {
+        testNotifications.onNext(test);
         tests.add(test);
         //testNotifications.onNext(test);
         System.out.println(test);

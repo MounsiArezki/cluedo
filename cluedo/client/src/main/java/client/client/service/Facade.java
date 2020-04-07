@@ -43,13 +43,12 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     // IUSERSERVICE
     //
     public void subscribeToTest(ConnexionControleur connexionControleur) throws IOException {
-        WebClient client = WebClient.create();
-        Flux<String> events =
-                client.get()
-                        .uri("http://localhost:8080/serv/test")
-                        .accept(TEXT_EVENT_STREAM)
-                        .retrieve()
-                        .bodyToFlux(String.class);
+
+        Flux<String> events = WebClient
+                .create("http://localhost:8080/serv/test")
+                .get()
+                .retrieve()
+                .bodyToFlux(String.class);
 
         //Disposable disposable = events.subscribe(test -> System.out.println("test " + test));
 

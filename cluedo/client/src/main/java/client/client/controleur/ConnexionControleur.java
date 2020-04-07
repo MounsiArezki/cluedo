@@ -46,6 +46,11 @@ public class ConnexionControleur {
             e.printStackTrace();
         }
 
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         facade.postTest("test10");
         facade.postTest("test11");
         facade.postTest("test12");

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.ReplayProcessor;
 import webservice_v2.config.ServiceConfig;
+import webservice_v2.flux.GlobalReplayProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.List;
 public class ControllTest {
 
     public static List<String> tests=new ArrayList<>();
-    public ReplayProcessor<String> testNotifications = ReplayProcessor.create(0, false);
 
     @RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -25,7 +25,8 @@ public class ControllTest {
     {
         //System.out.println(testNotifications.toString());
         Flux<String> flux=Flux.fromIterable(tests);
-        return flux;
+        //return flux;
+        return GlobalReplayProcessor.testNotifications;
     }
 
 
@@ -33,6 +34,7 @@ public class ControllTest {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> UpdateInvitationWithResponse(@RequestBody String test)
     {
+        GlobalReplayProcessor.testNotifications.onNext(test);
         tests.add(test);
         //testNotifications.onNext(test);
         System.out.println(test);

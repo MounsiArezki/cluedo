@@ -1,7 +1,9 @@
 package client.client.controleur;
 
+import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
+import client.client.modele.entite.Position;
 import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
@@ -19,40 +21,35 @@ import client.client.vue.place.Place;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.*;
 
 public class PlateauControleur {
 
     Stage plateauStage;
-
     Plateau plateau;
-
     Partie partie;
-
-    public Player getPlayer() {
-        return player;
-    }
-
     Player player ;
 
     IPartieService partieService;
     IJoueurService joueurService;
+
+    public Player getPlayer() {
+        return player;
+    }
 
     /*
         Simulation WS
      */
 
     List<Character> characters ;
-    //simulation facade api
-    Collection<ICarte> cartesJ ;
     //simulation get autres joueurs partie
     Collection<Joueur> joueursPartie;
 
-    public void getMyCard(){
-        // a remplacer par les carte recu du WS
-/*        this.cartesJ= List.of(Personnage.MOUTARDE,Personnage.OLIVE, Arme.CORDE,Arme.CLE_ANGLAISE,Arme.COUTEAU);*/
-        this.cartesJ= joueurService.getCartesJoueurs(partie.getId());
+    public Collection<ICarte> getMyCard(){
+        Collection<ICarte> cartesJ= joueurService.getCartesJoueurs(partie.getId());
         System.out.println(cartesJ.toString());
+        return cartesJ;
 
     }
 
@@ -74,13 +71,6 @@ public class PlateauControleur {
 
         plateau.show("plateau");
     }
-
-
-    public Collection<ICarte> getCarteJoueur() {
-        getMyCard();
-        return cartesJ;
-    }
-
 
     public void afficherListeJoueurs(){
 
@@ -119,14 +109,6 @@ public class PlateauControleur {
         this.partieService = partieService;
     }
 
-    public Collection<ICarte> getCartesJ() {
-        return cartesJ;
-    }
-
-    public void setCartesJ(Collection<ICarte> cartesJ) {
-        this.cartesJ = cartesJ;
-    }
-
     public Board<Place> getCluedoBoard(){
         return plateau.getBoard();
     }
@@ -136,37 +118,14 @@ public class PlateauControleur {
         new MenuControleur(plateauStage);
     }
 
-    private void createCharacters() {
+    public void createCharacters() {
         this.characters = new ArrayList<>();
 
-
-        // recuperer les departplaces
-        List<DepartPlace> startPlaces = new ArrayList<>();
-        Place[][] grid = this.getCluedoBoard().getGrid();
-        for(int y = 0; y < grid.length; y++) {
-            for(int x = 0; x < grid[y].length; x++) {
-                if(!(grid[y][x] instanceof DepartPlace))
-                    continue;
-                startPlaces.add((DepartPlace) grid[y][x]);
-            }
-        }
-
-        List<Lieu> rooms = new LinkedList<>(Arrays.asList(Lieu.values()));
-        rooms.remove(Lieu.EXIT);
-        List<Arme> weapons = new LinkedList<>(Arrays.asList(Arme.values()));
-        List<Personnage> suspects = new LinkedList<>(Arrays.asList(Personnage.values()));
-
-        // Generer une liste de joueurs
-        List<Personnage> characters = new ArrayList<>(suspects);
-
-        // Randomize rooms, weapons, and suspects
-        Collections.shuffle(rooms);
-        Collections.shuffle(weapons);
-        Collections.shuffle(suspects);
-        // TO DO chosen suspect
-
         // creer joueur
-        this.player = new Player( this.plateau, suspects.get(0),  startPlaces.get(5)  );
+        Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
+        Personnage perso = (Personnage) j.getPersonnage();
+        Position p = new Position(7,7);
+        this.player = new Player( this.plateau, perso, getCluedoBoard().getItemFromCoordinate(p.getX(),p.getY()));
 
         this.characters.add(
                 this.player

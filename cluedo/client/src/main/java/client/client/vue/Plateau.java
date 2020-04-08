@@ -38,10 +38,9 @@ public class Plateau extends View<PlateauControleur> {
 
 
     public void distribuerCartes(){
-        Collection<ICarte> listeCartes = getControleur().getCarteJoueur();
-        for(ICarte carte : listeCartes){
+        Collection<ICarte> listeCartes = getControleur().getMyCard();
 
-            System.out.println(ImagePath.getImagePath(carte.getNom()));
+        for(ICarte carte : listeCartes){
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             Button buttonImg = new Button();
             ImageView imageView = new ImageView(image);
@@ -50,14 +49,12 @@ public class Plateau extends View<PlateauControleur> {
             buttonImg.setGraphic(imageView);
             buttonImg.setId(carte.getNom());
 
-
             buttonImg.addEventHandler(
                     MouseEvent.MOUSE_CLICKED, (event) -> getControleur().getPlayer()
                             .passCard(
                                     event.getPickResult().getIntersectedNode().getId()
                             )
             );
-
 
             observableListCard.add(buttonImg);
         }
@@ -89,6 +86,7 @@ public class Plateau extends View<PlateauControleur> {
         try {
             etat.obtenirJoueurCourant();
             distribuerCartes();
+            getControleur().createCharacters();
         } catch (UnsupportedOperationException e){
             System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
         }
@@ -99,7 +97,6 @@ public class Plateau extends View<PlateauControleur> {
         board.initializeGrid();
         board.calcAdjacent();
         board.draw();
-
     }
 
     public CluedoBoard getBoard() {

@@ -7,7 +7,6 @@ import javafx.scene.control.Alert;
 
 public class Player extends Character {
 
-
     public Player(Plateau plat, Personnage personnage, Place departPlace) {
         super(plat, personnage, departPlace);
     }

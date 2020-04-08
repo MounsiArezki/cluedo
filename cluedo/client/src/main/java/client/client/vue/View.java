@@ -56,7 +56,7 @@ public abstract class View<T> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        View vue =fxmlLoader.getController();
+        View vue = fxmlLoader.getController();
         vue.setStage(stage);
         return vue;
 

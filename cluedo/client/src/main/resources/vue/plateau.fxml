@@ -50,6 +50,11 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
+                  <Button id="hypotheseBouton" text="Emettre une hypothèse" mnemonicParsing="false" onAction="#emettreHypotheseAction" prefHeight="34.0" prefWidth="47.0">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                </children>
             </VBox>
          </children>

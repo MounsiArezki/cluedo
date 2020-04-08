@@ -65,12 +65,16 @@ public class Plateau extends View<PlateauControleur> {
 
     public void lancerDesAction(ActionEvent actionEvent) {
         if(getControleur().getPlayer().isMY_TURN()){
-            int res =getControleur().roll();
+            int res = getControleur().roll();
             this.desResultat.setText(Integer.toString(res));
         }else {
             this.showMessage("Not your turn !", Alert.AlertType.WARNING);
         }
 
+    }
+
+    public void emettreHypotheseAction(ActionEvent actionEvent){
+        getControleur().goToHypothese();
     }
 
     public void passerAction(ActionEvent actionEvent) {

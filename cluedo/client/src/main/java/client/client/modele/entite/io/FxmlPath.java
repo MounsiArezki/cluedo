@@ -12,7 +12,7 @@ public enum FxmlPath {
     CREER_PARTIE(CreerPartie.class.getResource("/vue/creerPartie.fxml")),
     RESTAURER_PARTIE(RestaurerPartie.class.getResource("/vue/restaurerPartie.fxml")),
     ACCUSATION(Accusation.class.getResource("/vue/accusation.fxml")),
-    HYPOTHESE(Hypothese.class.getResource("/vue/hypothese.fxml"));
+    HYPOTHESE(HypotheseVue.class.getResource("/vue/hypothese.fxml"));
 
     private URL url;
 

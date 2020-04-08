@@ -113,6 +113,11 @@ public class PlateauControleur {
         return plateau.getBoard();
     }
 
+    public void goToHypothese(){
+        plateau.stopTimer();
+        new HypotheseControleur(plateauStage);
+    }
+
     public void retourMenu(){
         plateau.stopTimer();
         new MenuControleur(plateauStage);

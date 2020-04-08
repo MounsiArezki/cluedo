@@ -1,25 +1,21 @@
 package client.client.service;
 
 import client.client.config.ServiceConfig;
-import client.client.controleur.ConnexionControleur;
-import client.client.exception.connexionException.OperationNonAutoriseeException;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.TypeCarte;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
-import javafx.application.Platform;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +25,6 @@ import java.util.function.Consumer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 public class Facade implements IUserService, IInvitationService, IPartieService, IJoueurService {
     RestTemplate restTemplate;
@@ -228,6 +223,23 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         return partie;
     }
 
+    @Override
+    public Partie emettreHypothese(String idPartie, String idJoueur, Map<TypeCarte, ICarte> hypothese){
+        ObjectMapper objectMapper=new ObjectMapper();
+        Map<String, String> params = new HashMap<>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, idJoueur);
+        HttpEntity<String> httpEntity=buildHttpEntity(hypothese);
+        ResponseEntity<String> res = restTemplate.postForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE, httpEntity, String.class, params);
+        Partie partie = null;
+        try {
+            partie = objectMapper.readValue(res.getBody(),Partie.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return partie;
+    }
+
     //
     // IJOUEURSERVICE
     //
@@ -237,8 +249,8 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         ObjectMapper objectMapper = new ObjectMapper();
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
-        params.put("idJ", user.getId());
-        params.put("idP", idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, String.class,params);
         List<ICarte> listeCartes = new ArrayList<>();
         try {

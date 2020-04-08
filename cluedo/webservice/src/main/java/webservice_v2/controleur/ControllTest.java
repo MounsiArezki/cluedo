@@ -38,7 +38,7 @@ public class ControllTest {
         tests.add(test);
         //testNotifications.onNext(test);
         System.out.println(test);
-        return ResponseEntity.ok().body(test);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
 

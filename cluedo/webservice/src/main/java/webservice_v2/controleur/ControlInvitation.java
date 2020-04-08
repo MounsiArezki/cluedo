@@ -63,7 +63,7 @@ public class ControlInvitation {
 
     // trouver une invitation par son id
     @GetMapping(value = ServiceConfig.URL_INVITATION_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Invitation> getInvById(@PathVariable String id) {
+    public ResponseEntity<Invitation> getInvById(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id) {
         Invitation i= facade.findInvitation(id);
         return ResponseEntity.ok(i);
     }
@@ -77,7 +77,7 @@ public class ControlInvitation {
 
     // accepter une invitation
     @PutMapping(value = ServiceConfig.URL_INVITATION_ID_ACCEPTATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> acceptInv(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<String> acceptInv(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id, @RequestBody User user) {
         try {
             facade.accepterInvitation(id, user.getId());
         } catch (PartieInexistanteException e) {
@@ -96,7 +96,7 @@ public class ControlInvitation {
 
     // refuser une invitation
     @PutMapping(value = ServiceConfig.URL_INVITATION_ID_REFUS, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> refuseInv(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<String> refuseInv(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id, @RequestBody User user) {
         try {
             facade.refuserInvitation(id, user.getId());
         } catch (PartieInexistanteException e) {

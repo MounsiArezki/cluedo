@@ -1,9 +1,6 @@
 package client.client.controleur;
 
-import client.client.exception.connexionException.DejaConnecteException;
-import client.client.exception.connexionException.DejaInscritException;
-import client.client.exception.connexionException.InscriptionException;
-import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
+import client.client.exception.connexionException.*;
 import client.client.global.VariablesGlobales;
         import client.client.modele.entite.User;
         import client.client.modele.entite.io.FxmlPath;
@@ -12,7 +9,9 @@ import client.client.service.IProxyV2;
 import client.client.service.ProxyV2;
 import client.client.vue.Login;
 import client.client.vue.View;
-        import javafx.stage.Stage;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class ConnexionControleur {
         Facade facade=new Facade();
         tests=new ArrayList<>();
         try {
-            facade.subscribeToTest(this);
+            facade.subscribeToTest(this::getFluxTests);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,9 +50,15 @@ public class ConnexionControleur {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        facade.postTest("test10");
-        facade.postTest("test11");
-        facade.postTest("test12");
+
+        try{
+            facade.postTest("test10");
+        }
+        catch (HttpStatusCodeException e){
+            System.out.println(e.getStatusCode());
+        }
+
+
     }
 
     public void loginCntrl(String login,String pwd) throws InterruptedException, MdpIncorrectOuNonInscritException, IOException {
@@ -73,13 +78,13 @@ public class ConnexionControleur {
     }
 
     public void getFluxTests(String test){
-        //Platform.runLater( () ->{
+        Platform.runLater( () ->{
         if (test != null) {
             System.out.println(test);
             tests.add(test);
             System.out.println("\n\n\n" + tests);
         }
 
-        //});
+        });
     }
 }

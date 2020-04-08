@@ -27,7 +27,7 @@ public class ControlJoueur {
     private Facade facade = Facade.getFac();
 
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ICarte>> getJoueurCartes(@PathVariable String idP, @PathVariable String idJ){
+    public ResponseEntity<List<ICarte>> getJoueurCartes(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
         try {
             return ResponseEntity.ok(facade.getJoueurCartes(idP, idJ));
         } catch (JoueurPasDansLaPartieException e) {
@@ -40,7 +40,7 @@ public class ControlJoueur {
     }
 
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<ICarte, Joueur>> getJoueurFiche(@PathVariable String idP, @PathVariable String idJ){
+    public ResponseEntity<Map<ICarte, Joueur>> getJoueurFiche(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
         try {
             return ResponseEntity.ok(facade.getJoueurFiche(idP, idJ));
         } catch (JoueurPasDansLaPartieException e) {
@@ -53,7 +53,7 @@ public class ControlJoueur {
     }
 
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_LANCER, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Integer>> lancerDes(@PathVariable String idP, @PathVariable String idJ) {
+    public ResponseEntity<List<Integer>> lancerDes(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ) {
         try {
             return ResponseEntity.ok(facade.lancerDes(idP, idJ));
         } catch (PasJoueurCourantException e) {
@@ -73,7 +73,7 @@ public class ControlJoueur {
 
     // créer une accusation et la transmettre à la facade
     @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_ACCUSER)
-    public ResponseEntity<?> accuser(@PathVariable String idP, @PathVariable String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
+    public ResponseEntity<?> accuser(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
         try {
             facade.accuser(idP, idJ, mc);
             return ResponseEntity.status(HttpStatus.CREATED).build();

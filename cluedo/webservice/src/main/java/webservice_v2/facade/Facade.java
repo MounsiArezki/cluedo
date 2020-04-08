@@ -8,6 +8,7 @@ import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
 import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.fabrique.FactoryInvitation;
 import webservice_v2.modele.fabrique.FactoryPartie;
 import webservice_v2.modele.fabrique.FactoryUser;
@@ -57,6 +58,11 @@ public class Facade {
     // récupérer tous les utilisateurs
     public Collection<User> getUsers() {
         return listeUsers.values();
+    }
+
+    // récupérer tous les utilisateurs connectés
+    public Collection<User> getConnectedUsers() {
+        return listeUsersConnectes.values();
     }
 
     // ajouter un utilisateur
@@ -139,14 +145,17 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeInvitations.values(); }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException {
-        if(lj.size()<1){
-            throw new InvitationInvalideException();
-        }
+    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, JoueurNonConnecteException {
+        if (lj.size() < 1) throw new InvitationInvalideException();
+
         User hote = findUser(idH);
-        Invitation i = facI.createInvitation(idP, hote, lj);
-        listeInvitations.put(i.getId(), i);
-        return i;
+        Invitation i;
+
+        if (listeUsersConnectes.containsKey(idH)) {
+            i = facI.createInvitation(idP, hote, lj);
+            listeInvitations.put(i.getId(), i);
+            return i;
+        } else throw new JoueurNonConnecteException();
     }
 
     // trouver une invitation par son id
@@ -323,7 +332,15 @@ public class Facade {
     public List<Integer> lancerDes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
         Partie partie = findPartie(idP);
 
-        if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), findPartie(idP));
+        if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // lancer une accusation (dans une partie donnée)
+    public void accuser(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.accuser(findUser(idJ), mc, partie);
         else throw new JoueurPasDansLaPartieException();
     }
 

@@ -1,30 +1,40 @@
 package client.client.service;
 
 import client.client.config.ServiceConfig;
+import client.client.controleur.ConnexionControleur;
+import client.client.exception.connexionException.OperationNonAutoriseeException;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
+import javafx.application.Platform;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.function.Consumer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 public class Facade implements IUserService, IInvitationService, IPartieService, IJoueurService {
     RestTemplate restTemplate;
     Gson gson;
 
     public Facade() {
+        RestTemplateBuilder builder=new RestTemplateBuilder();
         restTemplate=new RestTemplate();
         gson=new Gson();
     }
@@ -38,6 +48,34 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     //
     // IUSERSERVICE
     //
+    public void subscribeToTest(Consumer<String> fct) throws IOException {
+
+        Flux<String> events = WebClient
+                .create("http://localhost:8080/serv/test")
+                .get()
+                .retrieve()
+                .bodyToFlux(String.class);
+
+        //Disposable disposable = events.subscribe(test -> System.out.println("test " + test));
+
+        //events.subscribe(eventCallback,
+        //        Throwable::printStackTrace);
+
+        events.subscribe( fct , Throwable::printStackTrace);
+    }
+
+    public String postTest(String test) throws HttpStatusCodeException {
+        HttpEntity<String> httpEntity=buildHttpEntity(test);
+        System.out.println(gson.toJson(httpEntity));
+        ResponseEntity<String>res=null;
+
+            res=restTemplate.postForEntity("http://localhost:8080/serv/test",httpEntity,String.class);
+
+
+
+        return gson.fromJson(res.getBody(), String.class);
+    }
+
     @Override
     public User[] getAllUsers() {
         ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class);
@@ -193,21 +231,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     //
 
     @Override
-    public List<ICarte> getCartesJoueurs(String idPartie) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ICarte[] getCartesJoueurs(String idPartie) {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put("idJ", user.getId());
         params.put("idP", idPartie);
         ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, String.class,params);
-        List<ICarte> listeCartes = new ArrayList<>();
-        try {
-            ICarte[] cartes = objectMapper.readValue(res.getBody(),ICarte[].class);
-            listeCartes.addAll(List.of(cartes));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return listeCartes;
+        return gson.fromJson(res.getBody(),ICarte[].class);
     }
 
     @Override

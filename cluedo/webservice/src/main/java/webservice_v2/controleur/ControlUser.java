@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import reactor.core.publisher.Flux;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.DejaInscritException;
 import webservice_v2.exception.MdpIncorrectException;
@@ -17,6 +18,9 @@ import webservice_v2.facade.Facade;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
+
+import static webservice_v2.flux.GlobalReplayProcessor.connectedUsersNotification;
 
 @RestController
 @RequestMapping(ServiceConfig.BASE_URL)
@@ -28,8 +32,17 @@ public class ControlUser {
     // récupérer tous les utilisateurs
     @GetMapping(value = ServiceConfig.URL_USER, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> getUsers() {
-        Collection<User> liste=facade.getUsers();
+        Collection<User> liste = facade.getUsers();
         return ResponseEntity.ok(liste);
+    }
+
+    // récupérer tous les utilisateurs connectés
+    @RequestMapping(value = ServiceConfig.URL_USER, method = RequestMethod.GET, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Flux<Collection<User>> getAllConnectedUsers()
+    {
+        connectedUsersNotification.onNext(facade.getConnectedUsers());
+        return Flux.from(connectedUsersNotification);
     }
 
     // ajouter un utilisateur
@@ -55,7 +68,7 @@ public class ControlUser {
 
     // trouver un utilisateur par son id
     @GetMapping(value = ServiceConfig.URL_USER_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> findUser(@PathVariable String id) {
+    public ResponseEntity<User> findUser(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
         User user=facade.findUser(id);
         return ResponseEntity.ok(user);
     }
@@ -69,7 +82,7 @@ public class ControlUser {
 
     // supprimer un utilisateur
     @DeleteMapping(value = ServiceConfig.URL_USER_ID)
-    public ResponseEntity<String> removeUser(@PathVariable String id) {
+    public ResponseEntity<String> removeUser(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
         facade.removeUser(id);
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
@@ -79,6 +92,7 @@ public class ControlUser {
     public ResponseEntity<?> connectUser(@RequestBody User user)  {
         try {
             User u = facade.connexion(user.getPseudo(), user.getPwd());
+            connectedUsersNotification.onNext(facade.getConnectedUsers());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
@@ -96,9 +110,10 @@ public class ControlUser {
 
     // déconnecter un utilisateur
     @DeleteMapping(value = ServiceConfig.URL_USER_DECONNEXION)
-    public ResponseEntity<String> deconnectUser(@PathVariable String id, @RequestBody String pseudo) {
+    public ResponseEntity<String> deconnectUser(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id, @RequestBody String pseudo) {
         try {
             facade.deconnexion(pseudo);
+            connectedUsersNotification.onNext(facade.getConnectedUsers());
         } catch (PasConnecteException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -107,21 +122,21 @@ public class ControlUser {
 
     // récupère les parties SAUVEGARDEES d'un hôte
     @GetMapping(value = ServiceConfig.URL_USER_ID_PARTIES_SAUVEGARDEES, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Partie>> getPartiesSauvegardees(@PathVariable String id) {
+    public ResponseEntity<Collection<Partie>> getPartiesSauvegardees(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
         Collection<Partie> liste = facade.findPartieSauvegardeesByHost(id);
         return ResponseEntity.ok(liste);
     }
 
     // récupère les invitations émises d'un user
     @GetMapping(value = ServiceConfig.URL_USER_ID_INVITATION_EMISE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Invitation>> getInvEmises(@PathVariable String id) {
+    public ResponseEntity<Collection<Invitation>> getInvEmises(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
         Collection<Invitation> invitations= facade.findInvitationByHost(id);
         return ResponseEntity.ok(invitations);
     }
 
     // récupère les invitations reçues d'un user
     @GetMapping(value = ServiceConfig.URL_USER_ID_INVITATION_RECU, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Invitation>> getInvRecues(@PathVariable String id) {
+    public ResponseEntity<Collection<Invitation>> getInvRecues(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
         Collection<Invitation> liste= facade.findInvitationByGuest(id);
         return ResponseEntity.ok(liste);
     }

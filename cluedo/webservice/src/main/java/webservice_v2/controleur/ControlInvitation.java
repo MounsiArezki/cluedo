@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.InvitationInvalideException;
+import webservice_v2.exception.JoueurNonConnecteException;
 import webservice_v2.exception.PartieInexistanteException;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Partie;
@@ -40,14 +41,14 @@ public class ControlInvitation {
                 .path("/{id}")
                 .buildAndExpand(partie.getId())
                 .toUri(); //URI Partie*/
-        Invitation i = null;
+        Invitation i;
         try {
             i = facade.addInvitation(
                     partie.getId(),
                     invitation.getHote().getId(),
                     invitation.getInvites()
             );
-        } catch (InvitationInvalideException e) {
+        } catch (InvitationInvalideException | JoueurNonConnecteException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         URI location = ServletUriComponentsBuilder
@@ -62,7 +63,7 @@ public class ControlInvitation {
 
     // trouver une invitation par son id
     @GetMapping(value = ServiceConfig.URL_INVITATION_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Invitation> getInvById(@PathVariable String id) {
+    public ResponseEntity<Invitation> getInvById(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id) {
         Invitation i= facade.findInvitation(id);
         return ResponseEntity.ok(i);
     }
@@ -74,9 +75,9 @@ public class ControlInvitation {
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
-    //accepter une invitation
+    // accepter une invitation
     @PutMapping(value = ServiceConfig.URL_INVITATION_ID_ACCEPTATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> acceptInv(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<String> acceptInv(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id, @RequestBody User user) {
         try {
             facade.accepterInvitation(id, user.getId());
         } catch (PartieInexistanteException e) {
@@ -93,9 +94,9 @@ public class ControlInvitation {
                 .build();
     }
 
-    //accepter une invitation
+    // refuser une invitation
     @PutMapping(value = ServiceConfig.URL_INVITATION_ID_REFUS, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> refuseInv(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<String> refuseInv(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id, @RequestBody User user) {
         try {
             facade.refuserInvitation(id, user.getId());
         } catch (PartieInexistanteException e) {

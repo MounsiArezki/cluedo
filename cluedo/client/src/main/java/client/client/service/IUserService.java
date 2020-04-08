@@ -2,27 +2,29 @@ package client.client.service;
 
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.function.Consumer;
 
 public interface IUserService {
 
-    public void getAllUsers(Consumer<String> consumer);
+    public void subscribeFluxUsersConnectes(Consumer<User[]> consumer)throws HttpStatusCodeException, JsonProcessingException;
 
-    public User[] getAllUsersWithFiltre(String filtre);
+    public User[] getAllUsersWithFiltre(String filtre)throws HttpStatusCodeException, JsonProcessingException;
 
-    public User connexion(String login, String pwd);
+    public User connexion(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException;
 
-    public void deconnexion();
+    public void deconnexion(String id) throws HttpStatusCodeException, JsonProcessingException;
 
-    public User insciption(String login, String pwd);
+    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException;
 
-    public void desinscrition();
+    public void desinscrition() throws HttpStatusCodeException, JsonProcessingException;
 
-    public Invitation[] getAllInvitationsRecues();
+    public void subscribeFluxInvitationsRecues(String idUser, Consumer<Invitation> consumer)throws HttpStatusCodeException, JsonProcessingException;
 
-    public Invitation[] getAllInvitationsEmises();
+    public Invitation[] getAllInvitationsEmises() throws HttpStatusCodeException, JsonProcessingException;
 
 }
 

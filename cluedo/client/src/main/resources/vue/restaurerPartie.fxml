@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane id="background" fx:id="root" prefHeight="587.0" prefWidth="744.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.RestaurerPartie">
+<BorderPane id="background" fx:id="root" prefHeight="587.0" prefWidth="744.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.RestaurerPartieView">
     <center>
         <GridPane prefHeight="396.0" prefWidth="744.0" BorderPane.alignment="CENTER">
             <columnConstraints>

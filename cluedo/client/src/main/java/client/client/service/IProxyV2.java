@@ -15,7 +15,7 @@ public interface IProxyV2 {
 
     //user
 
-    public Collection<User> getAllUsers() ;
+    public Collection<User> getAllUsers();
 
     public Collection<User>  getAllUsersWithFiltre(String filtre);
 

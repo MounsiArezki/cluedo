@@ -10,7 +10,7 @@ public class User {
     private String id;
     private String pseudo;
 
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
 
     public User() {

@@ -1,4 +1,4 @@
 package client.client.vue;
 
-public class Hypothese {
+public class HypotheseView {
 }

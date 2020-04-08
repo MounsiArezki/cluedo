@@ -7,63 +7,109 @@ import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IInvitationService;
 import client.client.service.IUserService;
-import client.client.vue.Menu;
+import client.client.vue.MenuView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.springframework.web.client.HttpStatusCodeException;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuControleur  {
 
     Stage menuStage;
- //   IUserService userService;
+
     IInvitationService invitationService;
-    Menu menu;
+    IUserService userService;
+
+    MenuView menuView;
+
+    List<Invitation> invitationsRecues;
 
     public MenuControleur(Stage menuStage) {
         this.menuStage =menuStage;
-        //userService = new Facade();
-        invitationService = new Facade();
-        menu = (Menu)Menu.creerInstance(menuStage , FxmlPath.MENU.getUrl());
-        menu.setControleur(this);
-        menu.setTimer(5);
-        menu.show("menu");
+
+        invitationService =Facade.getInstance();
+        userService=Facade.getInstance();
+        invitationsRecues=new ArrayList<>();
+
+        try {
+            userService.subscribeFluxInvitationsRecues(VariablesGlobales.getUser().getId(), this::consumeFluxInvitations);
+        }
+        catch (JsonProcessingException e) {
+            menuView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+        }
+        catch (HttpStatusCodeException e) {
+            menuView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
+
+        menuView = (MenuView) MenuView.creerInstance(menuStage , FxmlPath.MENU.getUrl());
+        menuView.setControleur(this);
+        menuView.show("menu");
     }
 
-    public List<Invitation> getAllInvitationsRecues(){
-        List<Invitation> invitationsRecues = (List<Invitation>) VariablesGlobales.getProxyV2().getAllInvitationsRecues();
+    public List<Invitation> getInvitationsRecues(){
         return invitationsRecues;
     }
 
 
     public void goToCreerPartie()  {
-        menu.stopTimer();
         new CreerPartieControleur(menuStage);
     }
 
     public void goToRestaurerPartie() {
-        menu.stopTimer();
         new RestaurerPartieControleur(menuStage);
     }
 
     public void rejoindrePartie(Invitation invitation){
-        menu.stopTimer();
-        invitationService.accepterInvitation(invitation.getId());
-        new PlateauControleur(menuStage, invitation.getIdPartie());
+        try {
+            invitationService.accepterInvitation(invitation.getId());
+            new PlateauControleur(menuStage, invitation.getIdPartie());
+        }
+        catch (JsonProcessingException e) {
+            menuView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+        }
+        catch (HttpStatusCodeException e) {
+            menuView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
     }
 
     public void refuserInvitation(Invitation invitation) {
-        invitationService.refuserInvitation(invitation.getId());
+        try {
+            invitationService.refuserInvitation(invitation.getId());
+        }
+        catch (JsonProcessingException e) {
+            menuView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+        }
+        catch (HttpStatusCodeException e) {
+            menuView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
     }
 
     public void deconnexion(){
-        menu.stopTimer();
         try {
-            VariablesGlobales.getProxyV2().deconnexion();
-        } catch (NonInscritException e) {}
-        VariablesGlobales.setUser(null);
-        new ConnexionControleur(menuStage);
+            userService.deconnexion(VariablesGlobales.getUser().getId());
+            VariablesGlobales.setUser(null);
+            new ConnexionControleur(menuStage);
+        }
+        catch (JsonProcessingException e) {
+            menuView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+        }
+        catch (HttpStatusCodeException e) {
+            menuView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public void consumeFluxInvitations(Invitation invitation){
+        Platform.runLater( () -> {
+            if (invitation != null) {
+                invitationsRecues.add(invitation);
+                menuView.refresh();
+            }
+        });
+
     }
 
 }

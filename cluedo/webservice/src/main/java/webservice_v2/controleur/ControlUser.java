@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import reactor.core.publisher.Flux;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.DejaInscritException;
 import webservice_v2.exception.MdpIncorrectException;
@@ -17,6 +18,9 @@ import webservice_v2.facade.Facade;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
+
+import static webservice_v2.flux.GlobalReplayProcessor.connectedUsersNotification;
 
 @RestController
 @RequestMapping(ServiceConfig.BASE_URL)
@@ -28,8 +32,17 @@ public class ControlUser {
     // récupérer tous les utilisateurs
     @GetMapping(value = ServiceConfig.URL_USER, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> getUsers() {
-        Collection<User> liste=facade.getUsers();
+        Collection<User> liste = facade.getUsers();
         return ResponseEntity.ok(liste);
+    }
+
+    // récupérer tous les utilisateurs connectés
+    @RequestMapping(value = ServiceConfig.URL_USER, method = RequestMethod.GET, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public Flux<Collection<User>> getAllConnectedUsers()
+    {
+        connectedUsersNotification.onNext(facade.getConnectedUsers());
+        return Flux.from(connectedUsersNotification);
     }
 
     // ajouter un utilisateur
@@ -79,6 +92,7 @@ public class ControlUser {
     public ResponseEntity<?> connectUser(@RequestBody User user)  {
         try {
             User u = facade.connexion(user.getPseudo(), user.getPwd());
+            connectedUsersNotification.onNext(facade.getConnectedUsers());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
@@ -99,6 +113,7 @@ public class ControlUser {
     public ResponseEntity<String> deconnectUser(@PathVariable String id, @RequestBody String pseudo) {
         try {
             facade.deconnexion(pseudo);
+            connectedUsersNotification.onNext(facade.getConnectedUsers());
         } catch (PasConnecteException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

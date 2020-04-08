@@ -4,14 +4,18 @@ import reactor.core.publisher.ReplayProcessor;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
+import webservice_v2.modele.entite.User;
 import webservice_v2.modele.entite.carte.ICarte;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class GlobalReplayProcessor {
 
     public static ReplayProcessor<String> testNotifications = ReplayProcessor.create(0, false);
+
+    public static ReplayProcessor<Collection<User>> connectedUsersNotification = ReplayProcessor.create(0, false);
 
     public static ReplayProcessor<Partie> partieNotification = ReplayProcessor.create(0, false);
 

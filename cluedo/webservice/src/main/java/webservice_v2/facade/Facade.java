@@ -60,6 +60,11 @@ public class Facade {
         return listeUsers.values();
     }
 
+    // récupérer tous les utilisateurs connectés
+    public Collection<User> getConnectedUsers() {
+        return listeUsersConnectes.values();
+    }
+
     // ajouter un utilisateur
     public User addUser(String pseudo, String pwd) throws DejaInscritException {
         User test=new User(pseudo);
@@ -140,14 +145,17 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeInvitations.values(); }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException {
-        if(lj.size()<1){
-            throw new InvitationInvalideException();
-        }
+    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, JoueurNonConnecteException {
+        if (lj.size() < 1) throw new InvitationInvalideException();
+
         User hote = findUser(idH);
-        Invitation i = facI.createInvitation(idP, hote, lj);
-        listeInvitations.put(i.getId(), i);
-        return i;
+        Invitation i;
+
+        if (listeUsersConnectes.containsKey(idH)) {
+            i = facI.createInvitation(idP, hote, lj);
+            listeInvitations.put(i.getId(), i);
+            return i;
+        } else throw new JoueurNonConnecteException();
     }
 
     // trouver une invitation par son id

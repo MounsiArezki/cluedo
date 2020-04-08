@@ -24,7 +24,7 @@ public class ControllTest {
     public Flux<String> getTests()
     {
         //System.out.println(testNotifications.toString());
-        Flux<String> flux=Flux.fromIterable(tests);
+        Flux<String> flux = Flux.fromIterable(tests);
         //return flux;
         return GlobalReplayProcessor.testNotifications;
     }

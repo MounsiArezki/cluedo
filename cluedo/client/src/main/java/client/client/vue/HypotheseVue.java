@@ -30,6 +30,8 @@ public class HypotheseVue extends View<HypotheseControleur> {
     public HBox armes;
     @FXML
     public HBox lieux;
+    @FXML
+    public HBox hypotheseEnCours;
 
     private Map<String, ICarte> hypothese;
 
@@ -55,7 +57,6 @@ public class HypotheseVue extends View<HypotheseControleur> {
     public void initBox(HBox box, List<ICarte> liste){
         ObservableList<Button> observableListeCartes = FXCollections.observableArrayList();
         for(ICarte carte : liste){
-            System.out.println(carte.getNom());
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(67);
@@ -65,15 +66,13 @@ public class HypotheseVue extends View<HypotheseControleur> {
             buttonImg.setId(carte.getNom());
 
             buttonImg.addEventHandler(
-                    MouseEvent.MOUSE_CLICKED, (event) -> this.hypothese.put(
-                            carte.getNom(),
-                            carte
-                            )
+                    MouseEvent.MOUSE_CLICKED, (event) -> {
+                        this.hypothese.put(carte.getNom(), carte);
+                        hypotheseEnCours.getChildren().add(buttonImg);
+                    }
             );
-
             observableListeCartes.add(buttonImg);
         }
-
         box.getChildren().addAll(observableListeCartes);
     }
 }

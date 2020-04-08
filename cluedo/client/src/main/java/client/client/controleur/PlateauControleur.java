@@ -65,9 +65,9 @@ public class PlateauControleur {
         this.partie = partieService.getPartieById(idPartie);
         plateau = (Plateau)Plateau.creerInstance(plateauStage, FxmlPath.PLATEAU.getUrl());
         plateau.setControleur(this);
-        plateau.refresh();
         plateau.setTimer(5);
         plateau.drawCluedoBoard();
+        plateau.refresh();
 
         plateau.show("plateau");
     }

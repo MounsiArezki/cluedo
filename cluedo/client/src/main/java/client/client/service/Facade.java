@@ -9,6 +9,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -23,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -281,13 +283,21 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     //
 
     @Override
-    public ICarte[] getCartesJoueurs(String idPartie) {
+    public List<ICarte> getCartesJoueurs(String idPartie) {
+        ObjectMapper objectMapper = new ObjectMapper();
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
         params.put("idJ", user.getId());
         params.put("idP", idPartie);
         ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, String.class,params);
-        return gson.fromJson(res.getBody(),ICarte[].class);
+        List<ICarte> listeCartes = new ArrayList<>();
+        try {
+            ICarte[] cartes = objectMapper.readValue(res.getBody(),ICarte[].class);
+            listeCartes.addAll(List.of(cartes));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return listeCartes;
     }
 
     @Override

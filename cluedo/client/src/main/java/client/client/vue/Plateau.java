@@ -2,6 +2,8 @@ package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.etat_partie.IEtatPartie;
+import client.client.modele.entite.io.ImagePath;
 import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,8 +26,6 @@ public class Plateau extends View<PlateauControleur> {
     public Label nomJoueurJ;
     public TextField desResultat;
 
-
-
     public CluedoBoard board;
     public Label etatPartie;
 
@@ -38,10 +38,10 @@ public class Plateau extends View<PlateauControleur> {
 
 
     public void distribuerCartes(){
-        Collection<ICarte> listeCartes =getControleur().getCarteJoueur();
-        for(ICarte carte : listeCartes){
+        Collection<ICarte> listeCartes = getControleur().getMyCard();
 
-            Image image = new Image(carte.getImageUrl());
+        for(ICarte carte : listeCartes){
+            Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             Button buttonImg = new Button();
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(67);
@@ -49,14 +49,12 @@ public class Plateau extends View<PlateauControleur> {
             buttonImg.setGraphic(imageView);
             buttonImg.setId(carte.getNom());
 
-
             buttonImg.addEventHandler(
                     MouseEvent.MOUSE_CLICKED, (event) -> getControleur().getPlayer()
                             .passCard(
                                     event.getPickResult().getIntersectedNode().getId()
                             )
             );
-
 
             observableListCard.add(buttonImg);
         }
@@ -84,15 +82,21 @@ public class Plateau extends View<PlateauControleur> {
 
     @Override
     public void refresh() {
+        IEtatPartie etat = getControleur().getPartie().getEtatPartie();
+        try {
+            etat.obtenirJoueurCourant();
+            distribuerCartes();
+            getControleur().createCharacters();
+        } catch (UnsupportedOperationException e){
+            System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
+        }
         etatPartie.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
     }
 
     public void drawCluedoBoard(){
-
         board.initializeGrid();
         board.calcAdjacent();
         board.draw();
-
     }
 
     public CluedoBoard getBoard() {

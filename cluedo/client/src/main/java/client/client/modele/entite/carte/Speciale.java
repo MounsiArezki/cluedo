@@ -20,14 +20,4 @@ public enum Speciale implements ICarte {
     public String getNom() {
         return nom;
     }
-
-    @Override
-    public void ImageUrl(String url) {
-
-    }
-
-    @Override
-    public String getImageUrl() {
-        return null;
-    }
 }

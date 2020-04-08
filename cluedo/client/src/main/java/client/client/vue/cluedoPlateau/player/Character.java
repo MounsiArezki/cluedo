@@ -14,7 +14,6 @@ import java.util.Set;
 
 public abstract class Character extends Circle {
 
-
     private static final int  DES_NUM =1;
 
     public int getLancerNum() {
@@ -24,7 +23,6 @@ public abstract class Character extends Circle {
     protected int lancerNum;
     protected final Plateau plateau;
     protected final Personnage personnage;
-
 
     public boolean isMY_TURN() {
         return MY_TURN;
@@ -39,15 +37,20 @@ public abstract class Character extends Circle {
     protected Place actPlace;
     protected Set<Place> posMoves = new HashSet<>();
 
-    protected Character( Plateau plat, Personnage personnage,Place departPlace) {
+    protected Character(Plateau plat, Personnage personnage, Place departPlace) {
         this.plateau = plat;
         this.personnage = personnage;
         this.actPlace =departPlace;
-     if(plateau != null) {
+        if(plateau != null) {
             plateau.getControleur().getCluedoBoard().getChildren().add(this);
             display();
         }
-        moveTo(actPlace, true);
+        this.actPlace = departPlace;
+        this.setCenterX(actPlace.getCenter().getX());
+        this.setCenterY(actPlace.getCenter().getY());
+        departPlace.setOccupied(true);
+        this.toFront();
+        /*moveTo(actPlace, true);*/
         this.MY_TURN =true;
 
     }
@@ -96,19 +99,18 @@ public abstract class Character extends Circle {
             this.setVisible(false);
             this.setCenterX(Integer.MAX_VALUE);
             this.setCenterY(Integer.MAX_VALUE);
-            return;
+        } else {
+            this.actPlace = place;
+            Position position = actPlace.getCenter();
+            System.out.println("i m in");
+            this.setCenterX(position.getX());
+            this.setCenterY(position.getY());
+            place.setOccupied(true);
+            this.toFront();
+
+            // Calc new possible moves
+            this.posMoves = calcPosMoves();
         }
-        this.actPlace = place;
-        Position position = actPlace.getCenter();
-        System.out.println("i m in");
-        this.setCenterX(position.getX());
-        this.setCenterY(position.getY());
-        place.setOccupied(true);
-        this.toFront();
-
-        // Calc new possible moves
-        this.posMoves = calcPosMoves();
-
 
     }
 

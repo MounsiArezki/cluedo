@@ -21,7 +21,7 @@ public class ControlPartie{
     private Facade facade = Facade.getFac();
 
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Partie> getPartieById(@PathVariable String id){
+    public ResponseEntity<Partie> getPartieById(@PathVariable(name=ServiceConfig.PARTIE_ID_PARAM) String id){
         Partie partie;
         try {
             partie = facade.findPartie(id);
@@ -34,7 +34,7 @@ public class ControlPartie{
 
 
     @PutMapping(value = ServiceConfig.URL_PARTIE_ID_SAUVEGARDE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> savePartie(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<String> savePartie(@PathVariable(name=ServiceConfig.PARTIE_ID_PARAM) String id, @RequestBody User user) {
         try {
             facade.savePartie(id, user.getId());
         } catch (PartieInexistanteException e) {
@@ -52,7 +52,7 @@ public class ControlPartie{
     }
 
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_RESTAURATION, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Partie> restorePartie(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<Partie> restorePartie(@PathVariable(name=ServiceConfig.PARTIE_ID_PARAM) String id, @RequestBody User user) {
         Partie partie=facade.restorePartie(id, user.getId());
         return ResponseEntity.ok(partie);
     }

@@ -2,6 +2,7 @@ package client.client.service;
 
 import client.client.config.ServiceConfig;
 import client.client.controleur.ConnexionControleur;
+import client.client.exception.connexionException.OperationNonAutoriseeException;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.Joueur;
@@ -10,8 +11,10 @@ import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -19,6 +22,8 @@ import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -29,6 +34,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     Gson gson;
 
     public Facade() {
+        RestTemplateBuilder builder=new RestTemplateBuilder();
         restTemplate=new RestTemplate();
         gson=new Gson();
     }
@@ -42,7 +48,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     //
     // IUSERSERVICE
     //
-    public void subscribeToTest(ConnexionControleur connexionControleur) throws IOException {
+    public void subscribeToTest(Consumer<String> fct) throws IOException {
 
         Flux<String> events = WebClient
                 .create("http://localhost:8080/serv/test")
@@ -55,17 +61,18 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         //events.subscribe(eventCallback,
         //        Throwable::printStackTrace);
 
-        events.subscribe( test -> {
-            Platform.runLater(
-                    () -> connexionControleur.getFluxTests(test)
-            );
-        });
+        events.subscribe( fct , Throwable::printStackTrace);
     }
 
-    public String postTest(String test){
+    public String postTest(String test) throws HttpStatusCodeException {
         HttpEntity<String> httpEntity=buildHttpEntity(test);
         System.out.println(gson.toJson(httpEntity));
-        ResponseEntity<String> res=restTemplate.postForEntity("http://localhost:8080/serv/test",httpEntity,String.class);
+        ResponseEntity<String>res=null;
+
+            res=restTemplate.postForEntity("http://localhost:8080/serv/test",httpEntity,String.class);
+
+
+
         return gson.fromJson(res.getBody(), String.class);
     }
 

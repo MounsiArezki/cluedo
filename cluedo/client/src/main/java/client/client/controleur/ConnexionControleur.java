@@ -79,12 +79,11 @@ public class ConnexionControleur {
 
     public void getFluxTests(String test){
         Platform.runLater( () ->{
-        if (test != null) {
-            System.out.println(test);
-            tests.add(test);
-            System.out.println("\n\n\n" + tests);
-        }
-
+            if (test != null) {
+                System.out.println(test);
+                tests.add(test);
+                System.out.println("\n\n\n" + tests);
+            }
         });
     }
 }

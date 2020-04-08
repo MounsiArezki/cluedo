@@ -18,15 +18,22 @@ import java.util.List;
 public class ControllTest {
 
     public static List<String> tests=new ArrayList<>();
+    static {
+        GlobalReplayProcessor.testNotifications.onNext(new ArrayList<>(List.of("lala")));
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Flux<String> getTests()
+    public Flux<List<String>> getTests()
     {
         //System.out.println(testNotifications.toString());
         Flux<String> flux=Flux.fromIterable(tests);
         //return flux;
-        return GlobalReplayProcessor.testNotifications;
+        return GlobalReplayProcessor.testNotifications.filter(
+                chaine -> {
+                    return !chaine.equals("lala");
+                }
+        );
     }
 
 
@@ -34,7 +41,8 @@ public class ControllTest {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> UpdateInvitationWithResponse(@RequestBody String test)
     {
-        GlobalReplayProcessor.testNotifications.onNext(test);
+        tests.add(test);
+        GlobalReplayProcessor.testNotifications.onNext(tests);
         tests.add(test);
         //testNotifications.onNext(test);
         System.out.println(test);

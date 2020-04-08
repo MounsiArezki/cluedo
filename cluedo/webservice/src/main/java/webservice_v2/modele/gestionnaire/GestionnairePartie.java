@@ -407,10 +407,10 @@ public class GestionnairePartie {
     }
 
     //REVELER_CARTE
-    public static void revelerCarte(User user, ICarte carte, Partie partie) throws PasJouerActifException, ActionNonAutoriseeException{
+    public static void revelerCarte(User user, ICarte carte, Partie partie) throws PasJoueurActifException, ActionNonAutoriseeException{
         boolean isJoueurActif=isJoueurActif(user, partie);
         if(!isJoueurActif){
-            throw new PasJouerActifException();
+            throw new PasJoueurActifException();
         }
 
         //check si etat = hypothese

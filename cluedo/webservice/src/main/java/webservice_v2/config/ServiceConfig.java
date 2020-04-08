@@ -48,7 +48,6 @@ public class ServiceConfig {
 
     // les actions restantes à "refactor" sur partie/idP/joueur/idJ
     public final static String URL_PARTIE_ID_DEPLACER= URL_PARTIE_ID+"/deplacer";
-    public final static String URL_PARTIE_ID_FIN_TOUR= URL_PARTIE_ID+"/fintour";
     public final static String URL_PARTIE_ID_REVELER_CARTE= URL_PARTIE_ID+"/revelercarte";
 
     // les actions traitées
@@ -57,5 +56,5 @@ public class ServiceConfig {
     public final static String URL_PARTIE_ID_JOUEUR_LANCER= URL_JOUEUR_ID+"/lancerDes";
     public final static String URL_PARTIE_ID_JOUEUR_HYPOTHESE= URL_JOUEUR_ID+"/hypothese";
     public final static String URL_PARTIE_ID_JOUEUR_ACCUSER= URL_JOUEUR_ID+"/accuser";
-
+    public final static String URL_PARTIE_ID_JOUEUR_PASSER= URL_JOUEUR_ID+"/passer";
 }

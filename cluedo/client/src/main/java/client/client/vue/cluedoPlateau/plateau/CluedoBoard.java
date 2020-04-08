@@ -58,6 +58,7 @@ public class CluedoBoard extends Board<Place> {
                         break;
                     case START:
                         super.grid[y][x] = new DepartPlace();
+                        System.out.println("X: "+x+",Y: "+y);
                         break;
                 }
 

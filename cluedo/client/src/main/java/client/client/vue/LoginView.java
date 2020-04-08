@@ -27,6 +27,7 @@ public class LoginView extends View<ConnexionControleur>   {
 
 
     public LoginView() {
+
     }
 
    // ConnexionControleur controleur;

@@ -24,7 +24,6 @@ import java.util.List;
 public class MenuView extends View<MenuControleur> {
 
 
-    //--------------------------------
     @FXML
     public TableView<Invitation> table;
 

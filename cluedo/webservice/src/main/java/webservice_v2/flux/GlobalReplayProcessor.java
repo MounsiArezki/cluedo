@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class GlobalReplayProcessor {
 
-    public static ReplayProcessor<String> testNotifications = ReplayProcessor.create(0, false);
+    public static ReplayProcessor<List<String>> testNotifications = ReplayProcessor.create(0, false);
 
-    public static ReplayProcessor<Collection<User>> connectedUsersNotification = ReplayProcessor.create(0, false);
+    public static ReplayProcessor<Collection<User>> connectedUsersNotification = ReplayProcessor.create(1, false);
 
     public static ReplayProcessor<Partie> partieNotification = ReplayProcessor.create(0, false);
 

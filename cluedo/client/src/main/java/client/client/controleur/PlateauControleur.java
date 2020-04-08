@@ -12,24 +12,29 @@ import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IJoueurService;
 import client.client.service.IPartieService;
-import client.client.vue.Plateau;
+import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.DepartPlace;
 import client.client.vue.place.Place;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.swing.*;
+import javax.servlet.http.Part;
 import java.util.*;
 
 public class PlateauControleur {
 
     Stage plateauStage;
-    Plateau plateau;
+    PlateauView plateauView;
     Partie partie;
-    Player player ;
+    Player player;
 
     IPartieService partieService;
     IJoueurService joueurService;
@@ -38,42 +43,52 @@ public class PlateauControleur {
         return player;
     }
 
-    /*
-        Simulation WS
-     */
-
-    List<Character> characters ;
+    List<Character> characters;
     //simulation get autres joueurs partie
     Collection<Joueur> joueursPartie;
 
-    public Collection<ICarte> getMyCard(){
-        Collection<ICarte> cartesJ= joueurService.getCartesJoueurs(partie.getId());
-        System.out.println(cartesJ.toString());
-        return cartesJ;
-
-    }
-
-
-
-    /*
-        END
-     */
     public PlateauControleur(Stage plateauStage, String idPartie) {
         this.plateauStage = plateauStage;
-        this.partieService = new Facade();
-        this.joueurService = new Facade();
-        this.partie = partieService.getPartieById(idPartie);
-        plateau = (Plateau)Plateau.creerInstance(plateauStage, FxmlPath.PLATEAU.getUrl());
-        plateau.setControleur(this);
-        plateau.setTimer(5);
-        plateau.drawCluedoBoard();
-        plateau.refresh();
+        this.partieService = Facade.getInstance();
+        this.joueurService = Facade.getInstance();
+        partie=new Partie();
 
-        plateau.show("plateau");
+        try {
+            partieService.subscribeFluxPartie(idPartie, this::consumeFluxPartie);
+        }
+        catch (JsonProcessingException e) {
+            plateauView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+        }
+        catch (HttpStatusCodeException e) {
+            plateauView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
+
+        plateauView = (PlateauView) PlateauView.creerInstance(plateauStage, FxmlPath.PLATEAU.getUrl());
+        plateauView.setControleur(this);
+        plateauView.setTimer(5);
+        plateauView.drawCluedoBoard();
+        plateauView.refresh();
+
+        plateauView.show("plateau");
     }
 
     public void afficherListeJoueurs(){
 
+    }
+
+    public Collection<ICarte> getMyCard(){
+        Collection<ICarte> cartesJ= new ArrayList<>();
+        try {
+            cartesJ = joueurService.getCartesJoueurs(partie.getId());
+        }
+        catch (JsonProcessingException e) {
+            plateauView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+        }
+        catch (HttpStatusCodeException e) {
+            plateauView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
+        System.out.println(cartesJ.toString());
+        return cartesJ;
     }
 
     public Stage getPlateauStage() {
@@ -84,16 +99,15 @@ public class PlateauControleur {
         this.plateauStage = plateauStage;
     }
 
-    public Plateau getPlateau() {
-        return plateau;
+    public PlateauView getPlateauView() {
+        return plateauView;
     }
 
-    public void setPlateau(Plateau plateau) {
-        this.plateau = plateau;
+    public void setPlateauView(PlateauView plateauView) {
+        this.plateauView = plateauView;
     }
 
     public Partie getPartie() {
-        this.partie = partieService.getPartieById(partie.getId());
         return partie;
     }
 
@@ -110,16 +124,16 @@ public class PlateauControleur {
     }
 
     public Board<Place> getCluedoBoard(){
-        return plateau.getBoard();
+        return plateauView.getBoard();
     }
 
     public void goToHypothese(){
-        plateau.stopTimer();
+        plateauView.stopTimer();
         new HypotheseControleur();
     }
 
     public void retourMenu(){
-        plateau.stopTimer();
+        plateauView.stopTimer();
         new MenuControleur(plateauStage);
     }
 
@@ -130,7 +144,7 @@ public class PlateauControleur {
         Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
         Personnage perso = (Personnage) j.getPersonnage();
         Position p = new Position(7,7);
-        this.player = new Player( this.plateau, perso, getCluedoBoard().getItemFromCoordinate(p.getX(),p.getY()));
+        this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p.getX(),p.getY()));
 
         this.characters.add(
                 this.player
@@ -149,5 +163,13 @@ public class PlateauControleur {
 
     public int roll() {
         return this.player.lancerDes();
+    }
+
+    public void consumeFluxPartie(Partie partie){
+        Platform.runLater( () ->{
+            if (partie != null) {
+                this.partie=partie;
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
-public class RestaurerPartie extends View<RestaurerPartieControleur>{
+public class RestaurerPartieView extends View<RestaurerPartieControleur>{
 
 
     public TableView PartieEncourqTable;

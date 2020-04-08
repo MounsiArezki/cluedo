@@ -2,6 +2,7 @@ package webservice_v2.facade;
 
 import webservice_v2.exception.*;
 import webservice_v2.exception.partie.ActionNonAutoriseeException;
+import webservice_v2.exception.partie.PasJoueurActifException;
 import webservice_v2.exception.partie.PasJoueurCourantException;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Joueur;
@@ -341,6 +342,30 @@ public class Facade {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.accuser(findUser(idJ), mc, partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // émettre une hypothèse (dans une partie donnée)
+    public void hypothese(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.emettreHypothese(findUser(idJ), mc, partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // reveler une carte (lors d'une hypothèse)
+    public void revelerCarte(String idP, String idJ, ICarte carte) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurActifException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.revelerCarte(findUser(idJ), carte, partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // finir son tour (lors de la fin du tour et/ou sans avoir émis d'hypothèse/accusation)
+    public void passer(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.passer(findUser(idJ), partie);
         else throw new JoueurPasDansLaPartieException();
     }
 

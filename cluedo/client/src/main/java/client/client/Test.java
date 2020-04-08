@@ -13,7 +13,6 @@ public class Test {
 
         Partie p=new Partie("1", new User("1","la","la"));
 
-
         String ps= "{\"id\":\"4\",\"hote\":{\"id\":\"2\",\"pseudo\":\"la\",\"pwd\":\"la\"},\"joueurs\":{\"2\":{\"user\":{\"id\":\"2\",\"pseudo\":\"la\",\"pwd\":\"la\"},\"personnage\":null,\"position\":null,\"listeCartes\":[]}},\"ordres\":null,\"combinaisonGagante\":{},\"etatPartie\":{\"@type\":\"EnAttenteDesJoueurs\"},\"indices\":[],\"logs\":[]}";
         o.readValue(ps, Partie.class);
     }

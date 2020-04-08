@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane id="background" fx:id="root" prefHeight="550.0" prefWidth="600.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.Menu">
+<BorderPane id="background" fx:id="root" prefHeight="550.0" prefWidth="600.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.MenuView">
    <center>
             <GridPane>
                 <children>

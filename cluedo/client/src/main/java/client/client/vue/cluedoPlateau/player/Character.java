@@ -2,7 +2,7 @@ package client.client.vue.cluedoPlateau.player;
 
 import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.Position;
-import client.client.vue.Plateau;
+import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
@@ -21,7 +21,7 @@ public abstract class Character extends Circle {
     }
 
     protected int lancerNum;
-    protected final Plateau plateau;
+    protected final PlateauView plateau;
     protected final Personnage personnage;
 
     public boolean isMY_TURN() {
@@ -37,7 +37,7 @@ public abstract class Character extends Circle {
     protected Place actPlace;
     protected Set<Place> posMoves = new HashSet<>();
 
-    protected Character(Plateau plat, Personnage personnage, Place departPlace) {
+    protected Character(PlateauView plat, Personnage personnage, Place departPlace) {
         this.plateau = plat;
         this.personnage = personnage;
         this.actPlace =departPlace;

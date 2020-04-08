@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import reactor.core.publisher.Flux;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.InvitationInvalideException;
 import webservice_v2.exception.JoueurNonConnecteException;
@@ -15,7 +16,9 @@ import webservice_v2.modele.entite.User;
 import webservice_v2.facade.Facade;
 
 import java.net.URI;
-import java.util.Collection;
+
+import static webservice_v2.flux.GlobalReplayProcessor.invitationsNotification;
+import static webservice_v2.flux.GlobalReplayProcessor.partieNotification;
 
 @RestController
 @RequestMapping(ServiceConfig.BASE_URL)
@@ -24,18 +27,17 @@ public class ControlInvitation {
 
     private Facade facade = Facade.getFac();
 
-    // récupérer toutes les invitations
-    @GetMapping(value = ServiceConfig.URL_INVITATION, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Invitation>> getInv() {
-        Collection<Invitation> liste= facade.getInvitations();
-        return ResponseEntity.ok(liste);
-    }
+    // récupérer tous les invitations
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ServiceConfig.URL_INVITATION, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Invitation> getAllInvitations() { return Flux.from(invitationsNotification); }
 
     // ajouter une invitation ET une partie
     @PostMapping(value = ServiceConfig.URL_INVITATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invitation> createInv(@RequestBody Invitation invitation) {
         User hote= invitation.getHote();
         Partie partie = facade.addPartie(hote.getId());
+        partieNotification.onNext(partie);
         /*ServletUriComponentsBuilder
                 .fromUriString(ServiceConfig.URL_PARTIE)
                 .path("/{id}")
@@ -48,6 +50,7 @@ public class ControlInvitation {
                     invitation.getHote().getId(),
                     invitation.getInvites()
             );
+            invitationsNotification.onNext(i);
         } catch (InvitationInvalideException | JoueurNonConnecteException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -62,10 +65,11 @@ public class ControlInvitation {
     }
 
     // trouver une invitation par son id
-    @GetMapping(value = ServiceConfig.URL_INVITATION_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Invitation> getInvById(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id) {
-        Invitation i= facade.findInvitation(id);
-        return ResponseEntity.ok(i);
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ServiceConfig.URL_INVITATION_ID, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Invitation> getInvById(@PathVariable(name=ServiceConfig.INVITATION_ID_PARAM) String id) {
+        Invitation inv = facade.findInvitation(id);
+        return Flux.from(invitationsNotification).filter(inv::equals);
     }
 
     // supprimer une invitation

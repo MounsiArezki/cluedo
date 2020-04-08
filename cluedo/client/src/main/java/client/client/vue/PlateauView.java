@@ -17,7 +17,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.Collection;
 
-public class Plateau extends View<PlateauControleur> {
+public class PlateauView extends View<PlateauControleur> {
 
     @FXML
     public HBox Cartes;

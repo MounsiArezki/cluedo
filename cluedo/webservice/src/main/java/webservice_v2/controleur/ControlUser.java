@@ -18,9 +18,8 @@ import webservice_v2.facade.Facade;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 
-import static webservice_v2.flux.GlobalReplayProcessor.connectedUsersNotification;
+import static webservice_v2.flux.GlobalReplayProcessor.*;
 
 @RestController
 @RequestMapping(ServiceConfig.BASE_URL)
@@ -37,11 +36,9 @@ public class ControlUser {
     }
 
     // récupérer tous les utilisateurs connectés
-    @RequestMapping(value = ServiceConfig.URL_USER, method = RequestMethod.GET, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Flux<Collection<User>> getAllConnectedUsers()
-    {
-        connectedUsersNotification.onNext(facade.getConnectedUsers());
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ServiceConfig.URL_USER_CONNECTED, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Collection<User>> getAllConnectedUsers() {
         return Flux.from(connectedUsersNotification);
     }
 
@@ -98,7 +95,7 @@ public class ControlUser {
                     .path("/{id}")
                     .buildAndExpand(u.getId())
                     .toUri();
-
+            connectedUsersNotification.onNext(facade.getConnectedUsers());
             return ResponseEntity
                     .created(location)
                     .body(u);
@@ -121,23 +118,26 @@ public class ControlUser {
     }
 
     // récupère les parties SAUVEGARDEES d'un hôte
-    @GetMapping(value = ServiceConfig.URL_USER_ID_PARTIES_SAUVEGARDEES, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Partie>> getPartiesSauvegardees(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        Collection<Partie> liste = facade.findPartieSauvegardeesByHost(id);
-        return ResponseEntity.ok(liste);
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ServiceConfig.URL_USER_ID_PARTIES_SAUVEGARDEES, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Partie> getPartieSauvegardees(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
+        Collection<Partie> lp = facade.findPartieSauvegardeesByHost(id);
+        return Flux.from(partieNotification).filter(lp::contains);
     }
 
     // récupère les invitations émises d'un user
-    @GetMapping(value = ServiceConfig.URL_USER_ID_INVITATION_EMISE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Invitation>> getInvEmises(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        Collection<Invitation> invitations= facade.findInvitationByHost(id);
-        return ResponseEntity.ok(invitations);
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ServiceConfig.URL_USER_ID_INVITATION_EMISE, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Invitation> getInvEmises(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
+        Collection<Invitation> li = facade.findInvitationByHost(id);
+        return Flux.from(invitationsNotification).filter(li::contains);
     }
 
     // récupère les invitations reçues d'un user
-    @GetMapping(value = ServiceConfig.URL_USER_ID_INVITATION_RECU, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Invitation>> getInvRecues(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        Collection<Invitation> liste= facade.findInvitationByGuest(id);
-        return ResponseEntity.ok(liste);
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ServiceConfig.URL_USER_ID_INVITATION_RECU, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Invitation> getInvRecues(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
+        Collection<Invitation> li = facade.findInvitationByGuest(id);
+        return Flux.from(invitationsNotification).filter(li::contains);
     }
 }

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class Menu extends View<MenuControleur> {
+public class MenuView extends View<MenuControleur> {
 
 
     //--------------------------------
@@ -138,7 +138,7 @@ public class Menu extends View<MenuControleur> {
 
     @Override
     public void refresh() {
-        List<Invitation> invitationsRecues = this.getControleur().getAllInvitationsRecues();
+        List<Invitation> invitationsRecues = this.getControleur().getInvitationsRecues();
         drawTable(invitationsRecues);
     }
 }

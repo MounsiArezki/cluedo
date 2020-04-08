@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class CreerPartie extends View<CreerPartieControleur> {
+public class CreerPartieView extends View<CreerPartieControleur> {
     @FXML
     public TextField recherche;
 

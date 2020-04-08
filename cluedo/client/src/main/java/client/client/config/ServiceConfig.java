@@ -12,6 +12,7 @@ public class ServiceConfig {
     //
     public final static String USER_ID_PARAM="id";
     public final static String URL_USER=BASE_URL+"/user";
+    public final static String URL_USER_CONNECTED=URL_USER+"/connected";
     public final static String URL_USER_FILTRE=URL_USER+"/filtre";
     public final static String URL_USER_CONNEXION=URL_USER+"/connexion";
     public final static String URL_USER_DECONNEXION=URL_USER_CONNEXION+"/{id}";

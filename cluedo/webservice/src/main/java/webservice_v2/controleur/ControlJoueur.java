@@ -11,10 +11,13 @@ import webservice_v2.exception.partie.ActionNonAutoriseeException;
 import webservice_v2.exception.partie.PasJoueurActifException;
 import webservice_v2.exception.partie.PasJoueurCourantException;
 import webservice_v2.facade.Facade;
+import webservice_v2.flux.GlobalReplayProcessor;
 import webservice_v2.modele.entite.Joueur;
+import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
 
+import javax.servlet.http.Part;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,8 @@ public class ControlJoueur {
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ICarte>> getJoueurCartes(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
         try {
+
+
             return ResponseEntity.ok(facade.getJoueurCartes(idP, idJ));
         } catch (JoueurPasDansLaPartieException e) {
             System.out.println("200 ws joueur non trouvé");
@@ -54,7 +59,10 @@ public class ControlJoueur {
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_LANCER, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Integer>> lancerDes(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ) {
         try {
-            return ResponseEntity.ok(facade.lancerDes(idP, idJ));
+            List<Integer> des=facade.lancerDes(idP,idJ);
+            Partie partie=facade.findPartie(idP);
+            GlobalReplayProcessor.partieNotification.onNext(partie);
+            return ResponseEntity.ok(des);
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -74,7 +82,10 @@ public class ControlJoueur {
     @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_ACCUSER)
     public ResponseEntity<?> accuser(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
         try {
+
             facade.accuser(idP, idJ, mc);
+            Partie partie=facade.findPartie(idP);
+            GlobalReplayProcessor.partieNotification.onNext(partie);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");

@@ -19,9 +19,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class CreerPartieView extends View<CreerPartieControleur> {
+
     @FXML
     public TextField recherche;
-
     @FXML
     public TableView joueurInviteTable;
     @FXML

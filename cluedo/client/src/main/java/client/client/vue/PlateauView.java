@@ -59,6 +59,7 @@ public class PlateauView extends View<PlateauControleur> {
             observableListCard.add(buttonImg);
         }
 
+        Cartes.getChildren().removeAll();
         Cartes.getChildren().addAll(observableListCard);
     }
 

@@ -27,6 +27,7 @@ public class LoginView extends View<ConnexionControleur>   {
 
 
     public LoginView() {
+
     }
 
    // ConnexionControleur controleur;
@@ -46,10 +47,12 @@ public class LoginView extends View<ConnexionControleur>   {
     public void inscrireAction(ActionEvent event){
         if (user.getText().isEmpty() || user.getText().isEmpty()){
             this.showMessage("Veuillez remplire les champs svp", Alert.AlertType.INFORMATION);
-        }try {
+        }
+        try {
             getControleur().inscrireCntrl(user.getText(),password.getText());
             showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
-        } catch (InscriptionException | DejaInscritException e) {
+        }
+        catch (InscriptionException | DejaInscritException e) {
             showMessage(e.getMessage(), Alert.AlertType.ERROR);
         }
     }

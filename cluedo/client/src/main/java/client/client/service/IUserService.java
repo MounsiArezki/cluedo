@@ -4,9 +4,11 @@ import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
 import org.springframework.http.ResponseEntity;
 
+import java.util.function.Consumer;
+
 public interface IUserService {
 
-    public User[] getAllUsers();
+    public void getAllUsers(Consumer<String> consumer);
 
     public User[] getAllUsersWithFiltre(String filtre);
 

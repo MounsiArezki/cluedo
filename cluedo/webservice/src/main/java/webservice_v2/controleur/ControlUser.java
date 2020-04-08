@@ -37,11 +37,9 @@ public class ControlUser {
     }
 
     // récupérer tous les utilisateurs connectés
-    @RequestMapping(value = ServiceConfig.URL_USER, method = RequestMethod.GET, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = ServiceConfig.URL_USER_CONNECTED, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Collection<User>> getAllConnectedUsers()
     {
-        connectedUsersNotification.onNext(facade.getConnectedUsers());
         return Flux.from(connectedUsersNotification);
     }
 
@@ -98,7 +96,7 @@ public class ControlUser {
                     .path("/{id}")
                     .buildAndExpand(u.getId())
                     .toUri();
-
+            connectedUsersNotification.onNext(facade.getConnectedUsers());
             return ResponseEntity
                     .created(location)
                     .body(u);

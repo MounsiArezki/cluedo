@@ -13,6 +13,10 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
+import org.springframework.http.codec.cbor.Jackson2CborDecoder;
+import org.springframework.http.codec.cbor.Jackson2CborEncoder;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
+import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -25,18 +29,23 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 public class Facade implements IUserService, IInvitationService, IPartieService, IJoueurService {
     RestTemplate restTemplate;
     Gson gson;
+    ObjectMapper objectMapper;
 
     public Facade() {
         RestTemplateBuilder builder=new RestTemplateBuilder();
         restTemplate=new RestTemplate();
         gson=new Gson();
+        objectMapper=new ObjectMapper();
     }
 
     private HttpEntity<String> buildHttpEntity(Object o){
@@ -77,10 +86,51 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public User[] getAllUsers() {
-        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class);
-        return gson.fromJson(res.getBody(), User[].class);
+    public void getAllUsers(Consumer<String> consumer) {
+        /*ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class);
+        return gson.fromJson(res.getBody(), User[].class);*/
+
+        Flux<String> events = WebClient
+                .create(ServiceConfig.URL_USER_CONNECTED)
+                .get()
+                .retrieve()
+                .bodyToFlux(String.class);
+
+        //Disposable disposable = events.subscribe(test -> System.out.println("test " + test));
+
+        //events.subscribe(eventCallback,
+        //        Throwable::printStackTrace);
+
+        events.subscribe( consumer , Throwable::printStackTrace);
     }
+
+
+    public void getAllUsers2(Consumer<User[]> consumer) {
+        /*ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class);
+        return gson.fromJson(res.getBody(), User[].class);*/
+        ExchangeStrategies strategies=ExchangeStrategies
+                .builder()
+                .codecs(clientDefaultCodecs -> {
+                    clientDefaultCodecs.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
+                    clientDefaultCodecs.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
+
+                })
+                .build();
+        WebClient webClient=WebClient.builder().exchangeStrategies(strategies).build();
+        Flux<User[]> events = webClient
+                .get()
+                .uri(ServiceConfig.URL_USER_CONNECTED)
+                .retrieve()
+                .bodyToFlux(User[].class);
+
+        //Disposable disposable = events.subscribe(test -> System.out.println("test " + test));
+
+        //events.subscribe(eventCallback,
+        //        Throwable::printStackTrace);
+
+        events.subscribe( consumer , Throwable::printStackTrace);
+    }
+
 
     @Override
     public User[] getAllUsersWithFiltre(String filtre) {

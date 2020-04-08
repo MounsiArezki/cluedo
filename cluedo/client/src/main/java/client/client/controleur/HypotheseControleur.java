@@ -12,14 +12,14 @@ public class HypotheseControleur {
     private IPartieService partieService;
     private HypotheseVue hypotheseVue;
 
-    public HypotheseControleur(Stage hypotheseStage){
-        this.hypotheseStage = hypotheseStage;
+    public HypotheseControleur(){
+        this.hypotheseStage = new Stage();
         this.partieService = new Facade();
 
         this.hypotheseVue = (HypotheseVue) HypotheseVue.creerInstance(hypotheseStage, FxmlPath.HYPOTHESE.getUrl());
         this.hypotheseVue.setControleur(this);
 
-        /*this.hypotheseVue.setAllCards();*/
+        this.hypotheseVue.setAllCards();
         this.hypotheseVue.show("hypothese");
     }
 

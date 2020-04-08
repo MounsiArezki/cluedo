@@ -42,6 +42,7 @@ public class HypotheseVue extends View<HypotheseControleur> {
         List<ICarte> listePersonnages = new ArrayList<>(List.of(Personnage.values()));
         List<ICarte> listeArmes = new ArrayList<>(List.of(Arme.values()));
         List<ICarte> listeLieux = new ArrayList<>(List.of(Lieu.values()));
+        listeLieux.remove(Lieu.EXIT);
 
         initBox(personnages, listePersonnages);
         initBox(armes, listeArmes);
@@ -54,6 +55,7 @@ public class HypotheseVue extends View<HypotheseControleur> {
     public void initBox(HBox box, List<ICarte> liste){
         ObservableList<Button> observableListeCartes = FXCollections.observableArrayList();
         for(ICarte carte : liste){
+            System.out.println(carte.getNom());
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(67);

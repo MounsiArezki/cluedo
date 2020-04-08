@@ -115,7 +115,7 @@ public class PlateauControleur {
 
     public void goToHypothese(){
         plateau.stopTimer();
-        new HypotheseControleur(plateauStage);
+        new HypotheseControleur();
     }
 
     public void retourMenu(){

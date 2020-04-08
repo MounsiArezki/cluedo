@@ -9,7 +9,6 @@ import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.gson.internal.$Gson$Types;
 import org.springframework.http.*;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
@@ -28,10 +27,6 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
-import javax.servlet.http.Part;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 public class Facade implements IUserService, IInvitationService, IPartieService, IJoueurService {
 
@@ -39,13 +34,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     ObjectMapper objectMapper;
     WebClient webClient;
 
-    private static Facade facade=new Facade();
+    public static Facade facade=new Facade();
 
     public static Facade getInstance(){
-        return facade;
+        return new Facade();
     }
 
-    private Facade() {
+    public Facade() {
         objectMapper=new ObjectMapper();
         ExchangeStrategies strategies=ExchangeStrategies
                 .builder()
@@ -138,12 +133,14 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
     @Override
     public void subscribeFluxInvitationsRecues(String idUser, Consumer<Invitation> consumer) throws HttpStatusCodeException, JsonProcessingException {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.USER_ID_PARAM, idUser);
+
         Flux<Invitation> events = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE)
-                        .queryParam(ServiceConfig.USER_ID_PARAM, idUser)
-                        .build()
+                        .path(ServiceConfig.URL_USER_ID_INVITATION_RECU)
+                        .build(params)
                 )
                 .retrieve()
                 .bodyToFlux(Invitation.class);
@@ -216,12 +213,14 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     //
     @Override
     public void subscribeFluxPartie(String idPartie, Consumer<Partie> consumer) throws HttpStatusCodeException, JsonProcessingException {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+
         Flux<Partie> events = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE)
-                        .queryParam(ServiceConfig.PARTIE_ID_PARAM, idPartie)
-                        .build()
+                        .path(ServiceConfig.URL_PARTIE_ID)
+                        .build(params)
                 )
                 .retrieve()
                 .bodyToFlux(Partie.class);

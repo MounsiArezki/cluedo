@@ -65,5 +65,8 @@ public class ServiceConfig {
     public final static String URL_PARTIE_ID_JOUEUR_LANCER= URL_JOUEUR_ID+"/lancerDes";
     public final static String URL_PARTIE_ID_JOUEUR_HYPOTHESE= URL_JOUEUR_ID+"/hypothese";
     public final static String URL_PARTIE_ID_JOUEUR_ACCUSER= URL_JOUEUR_ID+"/accuser";
+    public final static String URL_PARTIE_ID_JOUEUR_PASSER= URL_JOUEUR_ID+"/passer";
+    public final static String URL_PARTIE_ID_JOUEUR_SE_DEPLACER= URL_JOUEUR_ID+"/deplacer";
+    public final static String URL_PARTIE_ID_JOUEUR_PIOCHER_INDICES= URL_JOUEUR_ID+"/piocher";
 
 }

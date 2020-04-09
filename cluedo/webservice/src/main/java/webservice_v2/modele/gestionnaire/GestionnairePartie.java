@@ -268,7 +268,7 @@ public class GestionnairePartie {
     }
 
     //PIOCHER_INDICE
-    public static void tirerIndice(User user, List<Integer> des, Partie partie) throws PasJoueurCourantException, PiocherIndiceNonAutoriseException, ActionNonAutoriseeException {
+    public static List<ICarte> tirerIndice(User user, List<Integer> des, Partie partie) throws PasJoueurCourantException, PiocherIndiceNonAutoriseException, ActionNonAutoriseeException {
         boolean isJoueurCourant=isJoueurCourant(user, partie);
         if(!isJoueurCourant){
             throw new PasJoueurCourantException();
@@ -286,16 +286,18 @@ public class GestionnairePartie {
         }
 
         List<ICarte> indices=new ArrayList<>();
+        Stack<ICarte> pileCartes=partie.getIndices();
         for(Integer de : des){
             if(de==1){
-                ICarte indice=partie.getIndices().pop();
-                partie.getIndices().push(indice);
+                ICarte indice=pileCartes.pop();
+                pileCartes.add(pileCartes.size()-1,indice);
             }
         }
 
         partie.setEtatPartie(
                 partie.getEtatPartie().piocherIndice(indices, des)
         );
+        return indices;
     }
 
     //QUITTER

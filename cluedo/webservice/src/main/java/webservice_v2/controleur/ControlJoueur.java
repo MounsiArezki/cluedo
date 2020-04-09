@@ -145,7 +145,7 @@ public class ControlJoueur {
     }
 
     // terminer son tour
-    @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_PASSER)
+    @PutMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_PASSER)
     public ResponseEntity<?> passer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ)  {
         try {
             facade.passer(idP, idJ);

@@ -2,10 +2,7 @@ package client.client.service;
 
 import client.client.config.ServiceConfig;
 import client.client.global.VariablesGlobales;
-import client.client.modele.entite.Invitation;
-import client.client.modele.entite.Joueur;
-import client.client.modele.entite.Partie;
-import client.client.modele.entite.User;
+import client.client.modele.entite.*;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -255,6 +252,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     public Partie restaurerPartie(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
         Map<String, String> params = new HashMap<String, String>();
+
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put("idHote",user.getId());
         ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_RESTAURATION, String.class, params);
@@ -269,7 +267,6 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
     @Override
     public List<ICarte> getCartesJoueurs(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         User user=VariablesGlobales.getUser();
 
         Map<String, String> params = new HashMap<String, String>();
@@ -285,13 +282,15 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public void subscribeFluxFichePartie(String idPartie, String idJoueur, Consumer<Map<ICarte, Joueur>> consumer) throws HttpStatusCodeException, JsonProcessingException {
-        TypeReference<HashMap<ICarte,Joueur>> typeReference=new TypeReference<HashMap<ICarte, Joueur>>() {};
+    public void subscribeFluxFichePartie(String idPartie, Consumer<Map<ICarte, Joueur>> consumer) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
-        params.put(ServiceConfig.JOUEUR_ID_PARAM, VariablesGlobales.getUser().getId());
-        
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        TypeReference<HashMap<ICarte,Joueur>> typeReference=new TypeReference<HashMap<ICarte, Joueur>>() {};
+
         Flux<Map<ICarte,Joueur>> events = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
@@ -313,6 +312,95 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
                 });
 
         events.subscribe( consumer , Throwable::printStackTrace);
+    }
+
+    @Override
+    public void emettreHypothese(String idPartie, Map<TypeCarte, ICarte> hypothese) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        HttpEntity<String> httpEntity=buildHttpEntity(hypothese);
+
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE, httpEntity, String.class, params);
+    }
+
+    @Override
+    public List<Integer> lancerDes(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        ResponseEntity<Integer[]> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE, Integer[].class, params);
+
+        return new ArrayList<>(List.of(res.getBody()));
+    }
+
+    @Override
+    public void emettreAccusation(String idPartie, Map<TypeCarte, ICarte> accusation) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        HttpEntity<String> httpEntity=buildHttpEntity(accusation);
+
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_ACCUSER, httpEntity, String.class, params);
+    }
+
+    @Override
+    public void passerTour(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_PASSER, params);
+    }
+
+    @Override
+    public void seDeplacer(String idPartie, Position position) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        HttpEntity<String> httpEntity=buildHttpEntity(position);
+
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_SE_DEPLACER, httpEntity, String.class, params);
+    }
+
+    @Override
+    public void revelerCarte(String idPartie, ICarte carte) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        HttpEntity<String> httpEntity=buildHttpEntity(carte);
+
+        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE, httpEntity, String.class, params);
+    }
+
+    @Override
+    public List<ICarte> piocherIndices(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+        ResponseEntity<ICarte[]> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_PIOCHER_INDICES, ICarte[].class, params);
+
+        return new ArrayList<>(List.of(res.getBody()));
     }
 
     public void subscribeToTest(Consumer<String> fct) throws IOException {

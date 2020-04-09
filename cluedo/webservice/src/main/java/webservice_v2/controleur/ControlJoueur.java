@@ -62,8 +62,7 @@ public class ControlJoueur {
     public ResponseEntity<List<Integer>> lancerDes(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ) {
         try {
             List<Integer> des=facade.lancerDes(idP,idJ);
-            Partie partie=facade.findPartie(idP);
-            GlobalReplayProcessor.partieNotification.onNext(partie);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.ok(des);
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
@@ -85,6 +84,7 @@ public class ControlJoueur {
     public ResponseEntity<?> deplacer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Position pos)  {
         try {
             facade.deplacer(idP, idJ, pos);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
@@ -109,8 +109,7 @@ public class ControlJoueur {
     public ResponseEntity<?> accuser(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
         try {
             facade.accuser(idP, idJ, mc);
-            Partie partie=facade.findPartie(idP);
-            GlobalReplayProcessor.partieNotification.onNext(partie);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
@@ -132,6 +131,7 @@ public class ControlJoueur {
     public ResponseEntity<?> hypothese(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
         try {
             facade.hypothese(idP, idJ, mc);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
@@ -153,6 +153,7 @@ public class ControlJoueur {
     public ResponseEntity<?> revelerCarte(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody ICarte carte)  {
         try {
             facade.revelerCarte(idP, idJ, carte);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PasJoueurActifException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
@@ -174,6 +175,7 @@ public class ControlJoueur {
     public ResponseEntity<?> passer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ)  {
         try {
             facade.passer(idP, idJ);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");

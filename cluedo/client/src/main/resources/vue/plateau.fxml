@@ -13,7 +13,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#passerAction" text="Passer">
+                  <Button fx:id="passerBtn" mnemonicParsing="false" onAction="#passerAction" text="Passer">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>

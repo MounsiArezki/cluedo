@@ -13,6 +13,7 @@ public class EnAttenteDesJoueurs implements IEtatPartie {
     public EnAttenteDesJoueurs() {
     }
 
+
     @Override
     public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();

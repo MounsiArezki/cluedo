@@ -8,6 +8,7 @@ import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
+import client.client.modele.entite.etat_partie.Actions;
 import client.client.modele.entite.etat_partie.IEtatPartie;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
@@ -30,6 +31,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import javax.swing.*;
 import javax.servlet.http.Part;
 import java.util.*;
+
+import static client.client.modele.entite.etat_partie.Actions.PASSER;
 
 public class PlateauControleur {
 
@@ -169,9 +172,34 @@ public class PlateauControleur {
         IEtatPartie etat = getPartie().getEtatPartie();
         if(etat.obtenirJoueurCourant().getUser().getId().equals(VariablesGlobales.getUser().getId())){
             getPlayer().setMY_TURN(false);
-            getPlateauView().desableButtons(true);
+            getPlateauView().desableAll(true);
         }else {
+            getPlateauView().desableAll(true);
             getPlayer().setMY_TURN(true);
+            List<Actions> actionsList = etat.obtenirActionsPossibles();
+            for (Actions action : actionsList){
+                switch (action){
+                    case PASSER:
+
+                        break;
+                    case ACCUSER:
+                        break;
+                    case DEPLACER:
+                        break;
+                    case LANCER_DES:
+
+                        break;
+                    case JOUER_INDICE:
+                        break;
+                    case REVELER_CARTE:
+                        break;
+                    case PIOCHER_INDICE:
+                        break;
+                    case EMETTRE_HYPOTHESE:
+                        break;
+                }
+            }
+
 
 
         }

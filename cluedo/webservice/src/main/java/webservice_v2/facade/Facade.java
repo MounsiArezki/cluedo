@@ -148,7 +148,6 @@ public class Facade {
     // ajout une invitation
     public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, JoueurNonConnecteException {
         if (lj.size() < 1) throw new InvitationInvalideException();
-
         User hote = findUser(idH);
         Invitation i;
 

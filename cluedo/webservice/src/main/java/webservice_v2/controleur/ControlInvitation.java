@@ -84,6 +84,8 @@ public class ControlInvitation {
     public ResponseEntity<String> acceptInv(@PathVariable(name = ServiceConfig.INVITATION_ID_PARAM) String id, @RequestBody User user) {
         try {
             facade.accepterInvitation(id, user.getId());
+            Partie p = facade.findPartie(facade.findInvitation(id).getIdPartie());
+            partieNotification.onNext(p);
         } catch (PartieInexistanteException e) {
             System.out.println("200 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

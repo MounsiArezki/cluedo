@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.control.Label?>
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.HypotheseVue">
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.HypotheseView">
 
     <Label text="Qui ?" layoutY="10.00"/>
     <HBox fx:id="personnages" layoutY="50.00" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />

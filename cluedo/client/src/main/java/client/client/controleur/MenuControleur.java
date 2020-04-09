@@ -30,7 +30,6 @@ public class MenuControleur  {
 
     public MenuControleur(Stage menuStage) {
         this.menuStage =menuStage;
-
         invitationService =Facade.getInstance();
         userService=Facade.getInstance();
         invitationsRecues=new ArrayList<>();

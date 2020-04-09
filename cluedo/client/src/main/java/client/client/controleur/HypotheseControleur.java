@@ -3,24 +3,24 @@ package client.client.controleur;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IPartieService;
-import client.client.vue.HypotheseVue;
+import client.client.vue.HypotheseView;
 import javafx.stage.Stage;
 
 public class HypotheseControleur {
 
     private Stage hypotheseStage;
     private IPartieService partieService;
-    private HypotheseVue hypotheseVue;
+    private HypotheseView hypotheseView;
 
     public HypotheseControleur(){
         this.hypotheseStage = new Stage();
-        this.partieService = new Facade();
+        this.partieService = Facade.getInstance();
 
-        this.hypotheseVue = (HypotheseVue) HypotheseVue.creerInstance(hypotheseStage, FxmlPath.HYPOTHESE.getUrl());
-        this.hypotheseVue.setControleur(this);
+        this.hypotheseView = (HypotheseView) HypotheseView.creerInstance(hypotheseStage, FxmlPath.HYPOTHESE.getUrl());
+        this.hypotheseView.setControleur(this);
 
-        this.hypotheseVue.setAllCards();
-        this.hypotheseVue.show("hypothese");
+        this.hypotheseView.setAllCards();
+        this.hypotheseView.show("hypothese");
     }
 
     public Stage getHypotheseStage() {
@@ -39,11 +39,11 @@ public class HypotheseControleur {
         this.partieService = partieService;
     }
 
-    public HypotheseVue getHypotheseVue() {
-        return hypotheseVue;
+    public HypotheseView getHypotheseView() {
+        return hypotheseView;
     }
 
-    public void setHypotheseVue(HypotheseVue hypotheseVue) {
-        this.hypotheseVue = hypotheseVue;
+    public void setHypotheseView(HypotheseView hypotheseView) {
+        this.hypotheseView = hypotheseView;
     }
 }

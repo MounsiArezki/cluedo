@@ -7,6 +7,7 @@ import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.User;
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.TypeCarte;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.http.*;
@@ -232,6 +233,11 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
                 .bodyToFlux(Partie.class);
 
         events.subscribe( consumer , Throwable::printStackTrace);
+    }
+
+    @Override
+    public Partie emettreHypothese(String idPartie, String idJoueur, Map<TypeCarte, ICarte> hypothese) {
+        return null;
     }
 
     @Override

@@ -2,12 +2,10 @@ package webservice_v2.facade;
 
 import webservice_v2.exception.*;
 import webservice_v2.exception.partie.ActionNonAutoriseeException;
+import webservice_v2.exception.partie.DeplacementNonAutoriseException;
 import webservice_v2.exception.partie.PasJoueurActifException;
 import webservice_v2.exception.partie.PasJoueurCourantException;
-import webservice_v2.modele.entite.Invitation;
-import webservice_v2.modele.entite.Joueur;
-import webservice_v2.modele.entite.Partie;
-import webservice_v2.modele.entite.User;
+import webservice_v2.modele.entite.*;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.fabrique.FactoryInvitation;
@@ -333,6 +331,14 @@ public class Facade {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // se déplacer
+    public void deplacer(String idP, String idJ, Position pos) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, DeplacementNonAutoriseException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.seDeplacer(findUser(idJ), pos, partie);
         else throw new JoueurPasDansLaPartieException();
     }
 

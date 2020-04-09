@@ -95,7 +95,7 @@ public class PlateauView extends View<PlateauControleur> {
         } catch (UnsupportedOperationException e){
             System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
         }
-        etatPartie.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
+        etatPartie.setText(etat.obtenirTexte());
     }
 
     public void drawCluedoBoard(){

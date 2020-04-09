@@ -1,5 +1,6 @@
 package client.client.controleur;
 
+import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IPartieService;
@@ -12,12 +13,13 @@ public class HypotheseControleur {
     private IPartieService partieService;
     private HypotheseView hypotheseView;
 
-    public HypotheseControleur(){
+    public HypotheseControleur(Lieu l){
         this.hypotheseStage = new Stage();
         this.partieService = Facade.getInstance();
 
         this.hypotheseView = (HypotheseView) HypotheseView.creerInstance(hypotheseStage, FxmlPath.HYPOTHESE.getUrl());
         this.hypotheseView.setControleur(this);
+        this.hypotheseView.setLieu(l);
 
         this.hypotheseView.setAllCards();
         this.hypotheseView.show("hypothese");

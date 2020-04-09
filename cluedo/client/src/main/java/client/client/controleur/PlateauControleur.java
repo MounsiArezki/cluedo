@@ -61,10 +61,7 @@ public class PlateauControleur {
 
         plateauView = (PlateauView) PlateauView.creerInstance(plateauStage, FxmlPath.PLATEAU.getUrl());
         plateauView.setControleur(this);
-        plateauView.setTimer(5);
         plateauView.drawCluedoBoard();
-        plateauView.refresh();
-
         plateauView.show("plateau");
     }
 
@@ -159,6 +156,7 @@ public class PlateauControleur {
         Platform.runLater( () ->{
             if (partie != null) {
                 this.partie=partie;
+                plateauView.refresh();
             }
         });
     }

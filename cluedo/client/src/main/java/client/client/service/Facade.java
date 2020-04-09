@@ -73,7 +73,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     public void subscribeFluxUsersConnectes(Consumer<User[]> consumer) throws HttpStatusCodeException, JsonProcessingException {
         Flux<User[]> events = webClient
                 .get()
-                .uri(ServiceConfig.URL_USER_CONNECTED)
+                .uri(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_CONNECTED)
                 .retrieve()
                 .bodyToFlux(User[].class);
 
@@ -84,7 +84,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     public User[] getAllUsersWithFiltre(String filtre) throws HttpStatusCodeException, JsonProcessingException{
         /*Map<String, String> params = new HashMap<String, String>();
         params.put("filtre", filtre);
-        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER, String.class, params);
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER, String.class, params);
         return gson.fromJson(res.getBody(), User[].class);*/
         return new User[]{};
     }
@@ -94,7 +94,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         User user=new User(login, pwd);
         HttpEntity<String> httpEntity=buildHttpEntity(user);
 
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_USER_CONNEXION,httpEntity,String.class);
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_CONNEXION,httpEntity,String.class);
 
         User userCo=objectMapper.readValue(res.getBody(), User.class);
         return userCo;
@@ -106,7 +106,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, id);
 
-        restTemplate.delete(ServiceConfig.URL_USER_DECONNEXION,params);
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_DECONNEXION,params);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         User user=new User(login, pwd);
         HttpEntity<String> httpEntity=buildHttpEntity(user);
 
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_USER,httpEntity,String.class);
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER,httpEntity,String.class);
 
         User userInsc=objectMapper.readValue(res.getBody(), User.class);
         return userInsc;
@@ -128,7 +128,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
 
-        restTemplate.delete(ServiceConfig.URL_USER_ID, httpEntity, params);
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_ID, httpEntity, params);
     }
 
     @Override
@@ -139,7 +139,10 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Flux<Invitation> events = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(ServiceConfig.URL_USER_ID_INVITATION_RECU)
+                        .scheme(ServiceConfig.SCHEME)
+                        .host(ServiceConfig.HOST)
+                        .port(ServiceConfig.PORT)
+                        .path(ServiceConfig.BASE_API+ServiceConfig.URL_USER_ID_INVITATION_RECU)
                         .build(params)
                 )
                 .retrieve()
@@ -155,7 +158,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
 
-        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_USER_ID_INVITATION_EMISE, String.class,params);
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_ID_INVITATION_EMISE, String.class,params);
 
         return objectMapper.readValue(res.getBody(),Invitation[].class);
     }
@@ -169,7 +172,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Invitation invitation=new Invitation(hote, listeInvites);
         HttpEntity<String> httpEntity=buildHttpEntity(invitation);
 
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.URL_INVITATION, httpEntity, String.class);
+        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_INVITATION, httpEntity, String.class);
 
         return objectMapper.readValue(res.getBody(),Invitation.class);
     }
@@ -182,7 +185,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
 
-        restTemplate.delete(ServiceConfig.URL_INVITATION_ID, httpEntity, String.class,params);
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_INVITATION_ID, httpEntity, String.class,params);
     }
 
     @Override
@@ -193,7 +196,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
 
-        restTemplate.put(ServiceConfig.URL_INVITATION_ID_ACCEPTATION, httpEntity, params);
+        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_INVITATION_ID_ACCEPTATION, httpEntity, params);
     }
 
     @Override
@@ -204,7 +207,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.INVITATION_ID_PARAM, idInvitation);
 
-        restTemplate.put(ServiceConfig.URL_INVITATION_ID_REFUS, httpEntity, params);
+        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_INVITATION_ID_REFUS, httpEntity, params);
     }
 
 
@@ -219,7 +222,10 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Flux<Partie> events = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(ServiceConfig.URL_PARTIE_ID)
+                        .scheme(ServiceConfig.SCHEME)
+                        .host(ServiceConfig.HOST)
+                        .port(ServiceConfig.PORT)
+                        .path(ServiceConfig.BASE_API+ServiceConfig.URL_PARTIE_ID)
                         .build(params)
                 )
                 .retrieve()
@@ -236,7 +242,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
 
-        restTemplate.put(ServiceConfig.URL_PARTIE_ID_SAUVEGARDE, httpEntity, params);
+        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_SAUVEGARDE, httpEntity, params);
     }
 
     @Override
@@ -245,7 +251,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put("idHote",user.getId());
-        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_RESTAURATION, String.class, params);
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_RESTAURATION, String.class, params);
         return objectMapper.readValue(res.getBody(),Partie.class);
     }
 
@@ -264,7 +270,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
 
-        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, String.class,params);
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE, String.class,params);
 
         ICarte[] cartes = objectMapper.readValue(res.getBody(),ICarte[].class);
         List<ICarte> listeCartes = new ArrayList<>(List.of(cartes));
@@ -275,13 +281,19 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     @Override
     public void subscribeFluxFichePartie(String idPartie, String idJoueur, Consumer<Map<ICarte, Joueur>> consumer) throws HttpStatusCodeException, JsonProcessingException {
         TypeReference<HashMap<ICarte,Joueur>> typeReference=new TypeReference<HashMap<ICarte, Joueur>>() {};
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, VariablesGlobales.getUser().getId());
+        
         Flux<Map<ICarte,Joueur>> events = webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE)
-                        .queryParam(ServiceConfig.PARTIE_ID_PARAM, idPartie)
-                        .queryParam(ServiceConfig.JOUEUR_ID_PARAM, idJoueur)
-                        .build()
+                        .scheme(ServiceConfig.SCHEME)
+                        .host(ServiceConfig.HOST)
+                        .port(ServiceConfig.PORT)
+                        .path(ServiceConfig.BASE_API+ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE)
+                        .build(params)
                 )
                 .retrieve()
                 .bodyToFlux(String.class)

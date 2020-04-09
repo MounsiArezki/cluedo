@@ -137,7 +137,9 @@ public class ControlUser {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ServiceConfig.URL_USER_ID_INVITATION_RECU, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Invitation> getInvRecues(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        Collection<Invitation> li = facade.findInvitationByGuest(id);
-        return Flux.from(invitationsNotification).filter(li::contains);
+        return Flux.from(invitationsNotification).filter( i -> {
+            User u = facade.findUser(id);
+            return i.getInvites().contains(u);
+        });
     }
 }

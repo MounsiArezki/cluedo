@@ -33,4 +33,9 @@ public enum Personnage implements ICarte{
     public String toString() {
         return nom;
     }
+
+    @Override
+    public TypeCarte getTypeCarte(){
+        return TypeCarte.PERSONNAGE;
+    }
 }

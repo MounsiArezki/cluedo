@@ -1,10 +1,7 @@
 package client.client.vue;
 
 import client.client.controleur.AccusationControleur;
-import client.client.modele.entite.carte.Arme;
-import client.client.modele.entite.carte.ICarte;
-import client.client.modele.entite.carte.Lieu;
-import client.client.modele.entite.carte.Personnage;
+import client.client.modele.entite.carte.*;
 import client.client.modele.entite.io.ImagePath;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +30,7 @@ public class AccusationView extends View<AccusationControleur> {
     @FXML
     public HBox accusationEnCours;
 
-    private Map<String, ICarte> accusation;
+    private Map<TypeCarte, ICarte> accusation;
 
     @Override
     public void refresh() throws IOException, InterruptedException {
@@ -67,7 +64,7 @@ public class AccusationView extends View<AccusationControleur> {
 
             buttonImg.addEventHandler(
                     MouseEvent.MOUSE_CLICKED, (event) -> {
-                        this.accusation.put(carte.getNom(), carte);
+                        this.accusation.put(carte.getTypeCarte(), carte);
                         accusationEnCours.getChildren().add(buttonImg);
                     }
             );

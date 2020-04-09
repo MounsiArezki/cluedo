@@ -19,4 +19,6 @@ public interface ICarte {
 
     String getNom();
 
+    public TypeCarte getTypeCarte();
+
 }

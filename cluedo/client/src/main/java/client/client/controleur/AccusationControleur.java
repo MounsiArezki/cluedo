@@ -1,6 +1,7 @@
 package client.client.controleur;
 
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.TypeCarte;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IPartieService;
@@ -26,7 +27,7 @@ public class AccusationControleur {
         this.accusationView.show("accusation");
     }
 
-    public void accuser(Map<String, ICarte> accusation){
+    public void accuser(Map<TypeCarte, ICarte> accusation){
 
     }
 

@@ -17,6 +17,7 @@ import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.DepartPlace;
+import client.client.vue.place.LieuPlace;
 import client.client.vue.place.Place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
@@ -125,12 +126,20 @@ public class PlateauControleur {
     }
 
     public void goToHypothese(){
-        plateauView.stopTimer();
-        new HypotheseControleur();
+        Position p = partie.getJoueurs().get(VariablesGlobales.getUser().getId()).getPosition();
+        Place place = getCluedoBoard().getItemFromCoordinate(p.getX(), p.getY());
+        if(place instanceof LieuPlace){
+            Lieu l = ((LieuPlace) place).getRoom();
+            new HypotheseControleur(l);
+        }
+        plateauView.showMessage("Vous devez être dans un lieu pour émettre une hypothèse", Alert.AlertType.ERROR);
+    }
+
+    public void goToAccusation(){
+        new AccusationControleur();
     }
 
     public void retourMenu(){
-        plateauView.stopTimer();
         new MenuControleur(plateauStage);
     }
 
@@ -141,14 +150,12 @@ public class PlateauControleur {
         Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
         Personnage perso = (Personnage) j.getPersonnage();
         Position p = j.getPosition();
-        this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p.getX(),p.getY()));
+        this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
 
         this.characters.add(
                 this.player
         );
-
-        // TO DO ajout autres joueurs
-        //....
+        //attention distinguer les autres players
 
         for(Place[] places : this.getCluedoBoard().getGrid()) {
             for(Place place : places) {

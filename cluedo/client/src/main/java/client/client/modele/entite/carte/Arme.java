@@ -2,6 +2,7 @@ package client.client.modele.entite.carte;
 
 import client.client.modele.entite.io.ImagePath;
 
+
 public enum  Arme implements ICarte {
 
     COUTEAU("COUTEAU"),
@@ -26,6 +27,11 @@ public enum  Arme implements ICarte {
     @Override
     public String getNom() {
         return nom;
+    }
+
+    @Override
+    public TypeCarte getTypeCarte(){
+        return TypeCarte.ARME;
     }
 
 }

@@ -1,17 +1,13 @@
 package webservice_v2.modele.entite;
 
-
-import webservice_v2.modele.entite.carte.Lieu;
-
 public class Position {
 
-    int x;
-    int y;
+    private int x;
+    private int y;
 
-    public Position() {
-    }
+    public Position() { }
 
-    public Position(int x, int y){
+    public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }

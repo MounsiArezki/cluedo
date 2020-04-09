@@ -2,6 +2,7 @@ package client.client.controleur;
 
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
+import client.client.modele.entite.carte.TypeCarte;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IPartieService;
@@ -28,7 +29,7 @@ public class HypotheseControleur {
         this.hypotheseView.show("hypothese");
     }
 
-    public void emettreHypothese(Map<String, ICarte> hypothese){
+    public void emettreHypothese(Map<TypeCarte, ICarte> hypothese){
 
     }
 

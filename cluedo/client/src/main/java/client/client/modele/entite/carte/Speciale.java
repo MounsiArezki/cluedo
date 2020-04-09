@@ -20,4 +20,9 @@ public enum Speciale implements ICarte {
     public String getNom() {
         return nom;
     }
+
+    @Override
+    public TypeCarte getTypeCarte(){
+        return TypeCarte.SPECIALE;
+    }
 }

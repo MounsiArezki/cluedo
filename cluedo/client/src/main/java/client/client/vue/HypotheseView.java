@@ -1,10 +1,7 @@
 package client.client.vue;
 
 import client.client.controleur.HypotheseControleur;
-import client.client.modele.entite.carte.Arme;
-import client.client.modele.entite.carte.ICarte;
-import client.client.modele.entite.carte.Lieu;
-import client.client.modele.entite.carte.Personnage;
+import client.client.modele.entite.carte.*;
 import client.client.modele.entite.io.ImagePath;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,7 +32,7 @@ public class HypotheseView extends View<HypotheseControleur> {
 
     private Lieu lieu;
 
-    private Map<String, ICarte> hypothese;
+    private Map<TypeCarte, ICarte> hypothese;
 
     @Override
     public void refresh() throws IOException, InterruptedException {
@@ -67,7 +64,7 @@ public class HypotheseView extends View<HypotheseControleur> {
 
             buttonImg.addEventHandler(
                     MouseEvent.MOUSE_CLICKED, (event) -> {
-                        this.hypothese.put(carte.getNom(), carte);
+                        this.hypothese.put(carte.getTypeCarte(), carte);
                         hypotheseEnCours.getChildren().add(buttonImg);
                     }
             );

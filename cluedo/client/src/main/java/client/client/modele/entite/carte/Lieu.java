@@ -56,5 +56,9 @@ public enum Lieu implements ICarte{
         return null;
     }
 
+    @Override
+    public TypeCarte getTypeCarte(){
+        return TypeCarte.LIEU;
+    }
 
 }

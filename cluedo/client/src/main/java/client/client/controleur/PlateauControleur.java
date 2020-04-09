@@ -140,7 +140,7 @@ public class PlateauControleur {
         // creer joueur
         Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
         Personnage perso = (Personnage) j.getPersonnage();
-        Position p = new Position(7,7);
+        Position p = j.getPosition();
         this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p.getX(),p.getY()));
 
         this.characters.add(

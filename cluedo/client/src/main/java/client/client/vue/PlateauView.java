@@ -30,7 +30,7 @@ public class PlateauView extends View<PlateauControleur> {
     public TextField desResultat;
 
     public CluedoBoard board;
-    public Label etatPartie;
+    public Label etatPartieLabel;
 
     private boolean init=false;
 
@@ -106,7 +106,7 @@ public class PlateauView extends View<PlateauControleur> {
                 } catch (UnsupportedOperationException e){
                     System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
                 }
-                etatPartie.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
+                etatPartieLabel.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
                 init=true;
             }
         }

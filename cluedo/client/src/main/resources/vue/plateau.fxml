@@ -92,6 +92,6 @@
 
    </center>
    <top>
-      <Label fx:id="etatPartie" prefHeight="32.0" prefWidth="441.0" BorderPane.alignment="CENTER" />
+      <Label fx:id="etatPartieLabel" prefHeight="32.0" prefWidth="441.0" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>

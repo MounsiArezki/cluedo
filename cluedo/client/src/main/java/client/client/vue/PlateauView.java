@@ -58,7 +58,6 @@ public class PlateauView extends View<PlateauControleur> {
 
             observableListCard.add(buttonImg);
         }
-
         Cartes.getChildren().removeAll();
         Cartes.getChildren().addAll(observableListCard);
     }
@@ -71,12 +70,13 @@ public class PlateauView extends View<PlateauControleur> {
         }else {
             this.showMessage("Not your turn !", Alert.AlertType.WARNING);
         }
-
     }
 
-    public void emettreHypotheseAction(ActionEvent actionEvent){
+    public void goHypotheseAction(ActionEvent actionEvent){
         getControleur().goToHypothese();
     }
+
+    public void goAccusationAction(ActionEvent actionEvent) {getControleur().goToAccusation();}
 
     public void passerAction(ActionEvent actionEvent) {
     }

@@ -8,6 +8,7 @@ import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.io.ImagePath;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -81,5 +82,9 @@ public class HypotheseView extends View<HypotheseControleur> {
 
     public void setLieu(Lieu lieu) {
         this.lieu = lieu;
+    }
+
+    public void emettreHypotheseAction(ActionEvent actionEvent) {
+        getControleur().emettreHypothese(hypothese);
     }
 }

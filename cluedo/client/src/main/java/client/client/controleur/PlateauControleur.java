@@ -135,6 +135,10 @@ public class PlateauControleur {
         plateauView.showMessage("Vous devez être dans un lieu pour émettre une hypothèse", Alert.AlertType.ERROR);
     }
 
+    public void goToAccusation(){
+        new AccusationControleur();
+    }
+
     public void retourMenu(){
         new MenuControleur(plateauStage);
     }

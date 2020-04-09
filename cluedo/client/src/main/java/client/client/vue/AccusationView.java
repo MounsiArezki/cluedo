@@ -1,5 +1,6 @@
 package client.client.vue;
 
+import client.client.controleur.AccusationControleur;
 import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
@@ -7,6 +8,7 @@ import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.io.ImagePath;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -20,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AccusationView extends View<AccusationView> {
+public class AccusationView extends View<AccusationControleur> {
 
     @FXML
     public HBox personnages;
@@ -74,4 +76,7 @@ public class AccusationView extends View<AccusationView> {
         box.getChildren().addAll(observableListeCartes);
     }
 
+    public void accuserAction(ActionEvent actionEvent) {
+        getControleur().accuser(accusation);
+    }
 }

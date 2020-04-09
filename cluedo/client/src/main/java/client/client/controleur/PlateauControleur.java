@@ -169,12 +169,12 @@ public class PlateauControleur {
     }
 
     public void gestionAction(){
+
         IEtatPartie etat = getPartie().getEtatPartie();
+        getPlateauView().disableAll(true);
         if(etat.obtenirJoueurCourant().getUser().getId().equals(VariablesGlobales.getUser().getId())){
             getPlayer().setMY_TURN(false);
-            getPlateauView().desableAll(true);
         }else {
-            getPlateauView().desableAll(true);
             getPlayer().setMY_TURN(true);
             List<Actions> actionsList = etat.obtenirActionsPossibles();
             for (Actions action : actionsList){
@@ -183,19 +183,23 @@ public class PlateauControleur {
 
                         break;
                     case ACCUSER:
+                        getPlateauView().disableAcuss(true);
                         break;
                     case DEPLACER:
                         break;
                     case LANCER_DES:
-
+                        getPlateauView().disableDes(true);
+                        // activer les bouttons
                         break;
                     case JOUER_INDICE:
                         break;
                     case REVELER_CARTE:
+                        getPlateauView().disableCartes(true);
                         break;
                     case PIOCHER_INDICE:
                         break;
                     case EMETTRE_HYPOTHESE:
+                        getPlateauView().disableHypBtn(true);
                         break;
                 }
             }

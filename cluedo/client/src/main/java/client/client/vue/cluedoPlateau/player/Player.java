@@ -28,7 +28,7 @@ public class Player extends Character {
         super.moveTo(place);
 
         highlightPosMoves();
-        MY_TURN =false;
+      //  MY_TURN =false;
 
     }
 

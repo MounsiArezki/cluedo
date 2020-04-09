@@ -170,13 +170,13 @@ public class PlateauView extends View<PlateauControleur> {
     public CluedoBoard getBoard() {
         return board;
     }
-    public void desableDes(boolean ok){lancerBtn.setDisable(ok);}
-    public void desableHypBtn(boolean ok){ hypoBtn.setDisable(ok);}
-    public void desableAcuss(boolean ok){ accusBtn.setDisable(ok); }
-    public void desableCartes(Boolean ok){Cartes.setDisable(ok);}
-    public void desablePasser(Boolean ok){passerBtn.setDisable(ok);}
+    public void disableDes(boolean ok){lancerBtn.setDisable(ok);}
+    public void disableHypBtn(boolean ok){ hypoBtn.setDisable(ok);}
+    public void disableAcuss(boolean ok){ accusBtn.setDisable(ok); }
+    public void disableCartes(Boolean ok){Cartes.setDisable(ok);}
+    public void disablePasser(Boolean ok){passerBtn.setDisable(ok);}
 
-    public  void desableAll(boolean ok ){
+    public  void disableAll(boolean ok ){
         lancerBtn.setDisable(ok);
         hypoBtn.setDisable(ok);
         accusBtn.setDisable(ok);

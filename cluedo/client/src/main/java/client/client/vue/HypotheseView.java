@@ -8,6 +8,7 @@ import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.io.ImagePath;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -32,6 +33,8 @@ public class HypotheseView extends View<HypotheseControleur> {
     @FXML
     public HBox hypotheseEnCours;
 
+    private Lieu lieu;
+
     private Map<String, ICarte> hypothese;
 
     @Override
@@ -42,12 +45,10 @@ public class HypotheseView extends View<HypotheseControleur> {
     public void setAllCards(){
         List<ICarte> listePersonnages = new ArrayList<>(List.of(Personnage.values()));
         List<ICarte> listeArmes = new ArrayList<>(List.of(Arme.values()));
-        List<ICarte> listeLieux = new ArrayList<>(List.of(Lieu.values()));
-        listeLieux.remove(Lieu.EXIT);
 
         initBox(personnages, listePersonnages);
         initBox(armes, listeArmes);
-        initBox(lieux, listeLieux);
+        initBox(lieux, List.of(lieu));
 
         hypothese = new HashMap<>();
 
@@ -73,5 +74,17 @@ public class HypotheseView extends View<HypotheseControleur> {
             observableListeCartes.add(buttonImg);
         }
         box.getChildren().addAll(observableListeCartes);
+    }
+
+    public Lieu getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(Lieu lieu) {
+        this.lieu = lieu;
+    }
+
+    public void emettreHypotheseAction(ActionEvent actionEvent) {
+        getControleur().emettreHypothese(hypothese);
     }
 }

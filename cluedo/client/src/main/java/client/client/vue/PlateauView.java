@@ -1,7 +1,10 @@
 package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
+import client.client.modele.entite.Partie;
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.etat_partie.Actions;
+import client.client.modele.entite.etat_partie.EnAttenteDesJoueurs;
 import client.client.modele.entite.etat_partie.IEtatPartie;
 import client.client.modele.entite.io.ImagePath;
 import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
@@ -27,7 +30,9 @@ public class PlateauView extends View<PlateauControleur> {
     public TextField desResultat;
 
     public CluedoBoard board;
-    public Label etatPartie;
+    public Label etatPartieLabel;
+
+    private boolean init=false;
 
 
     public ObservableList<Button> getObservableListCard() {
@@ -74,9 +79,11 @@ public class PlateauView extends View<PlateauControleur> {
 
     }
 
-    public void emettreHypotheseAction(ActionEvent actionEvent){
+    public void goHypotheseAction(ActionEvent actionEvent){
         getControleur().goToHypothese();
     }
+
+    public void goAccusationAction(ActionEvent actionEvent) {getControleur().goToAccusation();}
 
     public void passerAction(ActionEvent actionEvent) {
     }
@@ -87,16 +94,63 @@ public class PlateauView extends View<PlateauControleur> {
 
     @Override
     public void refresh() {
-        IEtatPartie etat = getControleur().getPartie().getEtatPartie();
-        try {
-            etat.obtenirJoueurCourant();
-            distribuerCartes();
-            getControleur().createCharacters();
-        } catch (UnsupportedOperationException e){
-            System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
+        Partie partie= getControleur().getPartie();
+
+        if(!init){
+            if(!(partie.getEtatPartie() instanceof EnAttenteDesJoueurs)){
+                IEtatPartie etat = getControleur().getPartie().getEtatPartie();
+                try {
+                    etat.obtenirJoueurCourant();
+                    distribuerCartes();
+                    getControleur().createCharacters();
+                } catch (UnsupportedOperationException e){
+                    System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
+                }
+                etatPartieLabel.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
+                init=true;
+            }
         }
-        etatPartie.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
+
+        //manque le refresh de certaines parties du plateau, position perso si etat instance of supputation, ...
+
+        //desactive les boutons sauf le bouton quitter
+        desactiverToutesActions();
+
+        //active les boutons des actions disponibles
+        activerActions(partie);
+
     }
+
+    private void desactiverToutesActions(){
+
+    }
+
+    private void activerActions(Partie partie){
+        for(Actions actions: partie.getEtatPartie().obtenirActionsPossibles()){
+            switch (actions){
+                case PASSER:
+                    break;
+                case ACCUSER:
+                    break;
+                case DEPLACER:
+                    break;
+                case LANCER_DES:
+                    break;
+                case JOUER_INDICE:
+                    break;
+                case REVELER_CARTE:
+                    break;
+                case PIOCHER_INDICE:
+                    break;
+                case EMETTRE_HYPOTHESE:
+                    break;
+            }
+        }
+    }
+
+
+
+
 
     public void drawCluedoBoard(){
         board.initializeGrid();

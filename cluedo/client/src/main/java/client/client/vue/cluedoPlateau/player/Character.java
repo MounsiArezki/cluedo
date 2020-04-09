@@ -28,6 +28,10 @@ public abstract class Character extends Circle {
         return MY_TURN;
     }
 
+    public void setMY_TURN(boolean MY_TURN) {
+        this.MY_TURN = MY_TURN;
+    }
+
     protected  boolean MY_TURN ;
 
     public Place getActPlace() {

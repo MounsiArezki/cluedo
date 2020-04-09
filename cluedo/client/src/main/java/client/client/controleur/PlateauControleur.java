@@ -8,6 +8,7 @@ import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
+import client.client.modele.entite.etat_partie.IEtatPartie;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IJoueurService;
@@ -163,6 +164,23 @@ public class PlateauControleur {
             }
         }
     }
+
+    public void gestionAction(){
+        IEtatPartie etat = getPartie().getEtatPartie();
+        if(etat.obtenirJoueurCourant().getUser().getId().equals(VariablesGlobales.getUser().getId())){
+            getPlayer().setMY_TURN(false);
+            getPlateauView().desableButtons(true);
+        }else {
+            getPlayer().setMY_TURN(true);
+
+
+        }
+
+    }
+
+
+
+
 
 
     public int roll() {

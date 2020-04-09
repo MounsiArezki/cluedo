@@ -81,7 +81,7 @@ public class ControlJoueur {
     }
 
     // se déplacer
-    @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_PASSER)
+    @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_DEPLACER)
     public ResponseEntity<?> deplacer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Position pos)  {
         try {
             facade.deplacer(idP, idJ, pos);

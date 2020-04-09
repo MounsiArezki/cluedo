@@ -315,7 +315,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public void emettreHypothese(String idPartie, Map<TypeCarte, ICarte> hypothese) throws HttpStatusCodeException, JsonProcessingException {
+    public void emettreHypothese(String idPartie, List<String> hypothese) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
 
         Map<String, String> params = new HashMap<String, String>();
@@ -341,7 +341,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public void emettreAccusation(String idPartie, Map<TypeCarte, ICarte> accusation) throws HttpStatusCodeException, JsonProcessingException {
+    public void emettreAccusation(String idPartie, List<String> accusation) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
 
         Map<String, String> params = new HashMap<String, String>();
@@ -349,6 +349,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
 
         HttpEntity<String> httpEntity=buildHttpEntity(accusation);
+        System.out.println(httpEntity.getBody());
 
         ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_ACCUSER, httpEntity, String.class, params);
     }

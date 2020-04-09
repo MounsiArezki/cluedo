@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class HypotheseView extends View<HypotheseControleur> {
 
     private Lieu lieu;
 
-    private Map<TypeCarte, ICarte> hypothese;
+    private List<String> hypothese;
 
     @Override
     public void refresh() throws IOException, InterruptedException {
@@ -47,7 +48,7 @@ public class HypotheseView extends View<HypotheseControleur> {
         initBox(armes, listeArmes);
         initBox(lieux, List.of(lieu));
 
-        hypothese = new HashMap<>();
+        hypothese = new ArrayList<>();
 
     }
 
@@ -64,8 +65,11 @@ public class HypotheseView extends View<HypotheseControleur> {
 
             buttonImg.addEventHandler(
                     MouseEvent.MOUSE_CLICKED, (event) -> {
-                        this.hypothese.put(carte.getTypeCarte(), carte);
+                        this.hypothese.add(carte.getNom());
                         hypotheseEnCours.getChildren().add(buttonImg);
+                        for (Button b : observableListeCartes){
+                            b.setDisable(true);
+                        }
                     }
             );
             observableListeCartes.add(buttonImg);

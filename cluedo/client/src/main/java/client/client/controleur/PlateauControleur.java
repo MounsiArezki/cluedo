@@ -130,17 +130,19 @@ public class PlateauControleur {
     }
 
     public void goToHypothese(){
-        Position p = partie.getJoueurs().get(VariablesGlobales.getUser().getId()).getPosition();
+        /*Position p = partie.getJoueurs().get(VariablesGlobales.getUser().getId()).getPosition();
         Place place = getCluedoBoard().getItemFromCoordinate(p.getX(), p.getY());
         if(place instanceof LieuPlace){
             Lieu l = ((LieuPlace) place).getRoom();
-            new HypotheseControleur(l);
-        }
+            new HypotheseControleur(l, partie);
+        }*/
+        Lieu l = Lieu.HALL;
+        new HypotheseControleur(l, partie);
         plateauView.showMessage("Vous devez être dans un lieu pour émettre une hypothèse", Alert.AlertType.ERROR);
     }
 
     public void goToAccusation(){
-        new AccusationControleur();
+        new AccusationControleur(partie);
     }
 
     public void retourMenu(){

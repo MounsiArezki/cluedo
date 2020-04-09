@@ -17,11 +17,11 @@ public interface IJoueurService {
 
     public void subscribeFluxFichePartie(String idPartie, Consumer<Map<ICarte, Joueur>> consumer)throws HttpStatusCodeException, JsonProcessingException;
 
-    public void emettreHypothese(String idPartie, Map<TypeCarte, ICarte> hypothese)throws HttpStatusCodeException, JsonProcessingException;
+    public void emettreHypothese(String idPartie, List<String> hypothese)throws HttpStatusCodeException, JsonProcessingException;
 
     public List<Integer> lancerDes(String idPartie) throws HttpStatusCodeException, JsonProcessingException;
 
-    public void emettreAccusation(String idPartie, Map<TypeCarte, ICarte> accusation) throws HttpStatusCodeException, JsonProcessingException;
+    public void emettreAccusation(String idPartie,List<String> accusation) throws HttpStatusCodeException, JsonProcessingException;
 
     public void passerTour(String idPartie) throws HttpStatusCodeException, JsonProcessingException;
 

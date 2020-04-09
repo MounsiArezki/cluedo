@@ -4,10 +4,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import webservice_v2.config.ServiceConfig;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
+import webservice_v2.modele.entite.carte.Arme;
+import webservice_v2.modele.entite.carte.ICarte;
+import webservice_v2.modele.entite.carte.Lieu;
+import webservice_v2.modele.entite.carte.TypeCarte;
 import webservice_v2.modele.entite.etat_partie.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Test {
 
@@ -16,17 +24,10 @@ public class Test {
 
         ObjectMapper o= new ObjectMapper();
 
-        Partie p=new Partie("1", new User("1","la","la"));
+        Map<TypeCarte, ICarte> m = new HashMap<>();
+        m.put(TypeCarte.LIEU, Lieu.HALL);
 
-        String s=o.writeValueAsString(p);
-        System.out.println(s);
-
-        p.setEtatPartie(p.getEtatPartie().debuterTour(new Joueur(new User("2","lala","lala"))));
-
-        String s2=o.writeValueAsString(p);
-        System.out.println(s2);
-
-        o.readValue(s, Partie.class);
+        System.out.println(o.writeValueAsString(m));
     }
 
 

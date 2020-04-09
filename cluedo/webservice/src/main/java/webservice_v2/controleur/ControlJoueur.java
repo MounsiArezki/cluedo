@@ -16,9 +16,9 @@ import webservice_v2.flux.GlobalReplayProcessor;
 import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.Position;
-import webservice_v2.modele.entite.carte.ICarte;
-import webservice_v2.modele.entite.carte.TypeCarte;
+import webservice_v2.modele.entite.carte.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,9 +106,21 @@ public class ControlJoueur {
 
     // récupérer les données de l'accusation et les transmettre à la facade
     @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_ACCUSER)
-    public ResponseEntity<?> accuser(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
+    public ResponseEntity<?> accuser(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody List<String> mc)  {
         try {
-            facade.accuser(idP, idJ, mc);
+            Map<TypeCarte, ICarte> mapCartes = new HashMap<>();
+            for (String carte : mc){
+                if (Arme.getCarteByNom(carte) != null){
+                    mapCartes.put(TypeCarte.ARME, Arme.getCarteByNom(carte));
+                } else if (Personnage.getCarteByNom(carte) != null){
+                    mapCartes.put(TypeCarte.PERSONNAGE, Personnage.getCarteByNom(carte));
+                } else if (Lieu.getCarteByNom(carte) != null){
+                    mapCartes.put(TypeCarte.LIEU, Lieu.getCarteByNom(carte));
+                } else {
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                }
+            }
+            facade.accuser(idP, idJ, mapCartes);
             GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PasJoueurCourantException e) {
@@ -128,9 +140,24 @@ public class ControlJoueur {
 
     // récupérer les données de l'hypothèse et les transmettre à la facade
     @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE)
-    public ResponseEntity<?> hypothese(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Map<TypeCarte, ICarte> mc)  {
+    public ResponseEntity<?> hypothese(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody List<String> mc)  {
         try {
-            facade.hypothese(idP, idJ, mc);
+            Map<TypeCarte, ICarte> mapCartes = new HashMap<>();
+            for (String carte : mc){
+                if (Arme.getCarteByNom(carte) != null){
+                    System.out.println("ici");
+                    mapCartes.put(TypeCarte.ARME, Arme.getCarteByNom(carte));
+                } else if (Personnage.getCarteByNom(carte) != null){
+                    System.out.println("là");
+                    mapCartes.put(TypeCarte.PERSONNAGE, Personnage.getCarteByNom(carte));
+                } else if (Lieu.getCarteByNom(carte) != null){
+                    System.out.println("oups");
+                    mapCartes.put(TypeCarte.LIEU, Lieu.getCarteByNom(carte));
+                } else {
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                }
+            }
+            facade.hypothese(idP, idJ, mapCartes);
             GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PasJoueurCourantException e) {
@@ -175,7 +202,6 @@ public class ControlJoueur {
     public ResponseEntity<?> passer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ)  {
         try {
             facade.passer(idP, idJ);
-            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");

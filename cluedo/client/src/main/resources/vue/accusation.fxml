@@ -13,7 +13,7 @@
     <Label text="Où ?" layoutY="225.00"/>
     <HBox fx:id="lieux" layoutY="250.0" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
     <Label text="Votre hypothèse :" layoutY="325.00"/>
-    <HBox fx:id="hypotheseEnCours" layoutY="350.00" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <HBox fx:id="accusationEnCours" layoutY="350.00" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
 
     <Button onAction="#accuserAction" text="Valider accusation" layoutY="550.0"></Button>
 

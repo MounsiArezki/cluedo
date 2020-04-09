@@ -4,6 +4,7 @@ package webservice_v2.modele.entite.carte;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonValue;
 import webservice_v2.modele.entite.etat_partie.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,6 +18,7 @@ import webservice_v2.modele.entite.etat_partie.*;
 
 public interface ICarte {
 
+    @JsonValue
     String getNom();
 
 }

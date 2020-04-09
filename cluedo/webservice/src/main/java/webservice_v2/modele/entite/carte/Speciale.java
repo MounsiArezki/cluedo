@@ -1,14 +1,14 @@
 package webservice_v2.modele.entite.carte;
 
 public enum Speciale implements ICarte {
-    REVELER_CARTE_ALL("Tout les joueurs révelent un carte de sa main."),
-    NOMER_ARME("Nommer une arme. Le joueur possédant cette carte doit la révéler."),
-    NOMER_LIEU("Nommer un lieu. Le joueur possédant cette carte doit la révéler."),
-    NOMER_PERSONNAGE("Nommer un personnage. Le joueur possédant cette carte doit la révéler."),
-    MONTRER_CARTE_JOUEUR_GAUCHE("Tous les joueurs montrent une carte discrètement au joueur de gauche."),
-    REVELER_CARTE_JOUEUR_CHOISIT("Choisissez le joueur qui a l’air le plus coupable. Il met une carte de sa main face visible devant lui."),
-    PASSAGE_SECRET("Vous trouvez un passage secret. Mettez cette carte dans la pièce de votre choix. Elle est maintenant reliée aux autres passages secrets."),
-    DEPLACER_ALL_LIEU("Tous les joueurs se précipitent dans la pièce de votre choix.");
+    REVELER_CARTE_ALL("REVELER_CARTE_ALL"),
+    NOMER_ARME("NOMER_ARME"),
+    NOMER_LIEU("NOMER_LIEU"),
+    NOMER_PERSONNAGE("NOMER_PERSONNAGE"),
+    MONTRER_CARTE_JOUEUR_GAUCHE("MONTRER_CARTE_JOUEUR_GAUCHE"),
+    REVELER_CARTE_JOUEUR_CHOISIT("REVELER_CARTE_JOUEUR_CHOISIT"),
+    PASSAGE_SECRET("PASSAGE_SECRET"),
+    DEPLACER_ALL_LIEU("DEPLACER_ALL_LIEU");
 
     private String nom;
 
@@ -19,5 +19,14 @@ public enum Speciale implements ICarte {
     @Override
     public String getNom() {
         return nom;
+    }
+
+    public static ICarte getCarteByNom(String nom) {
+        for (ICarte c : Speciale.values()) {
+            if (c.getNom().equalsIgnoreCase(nom)) {
+                return c;
+            }
+        }
+        return null;
     }
 }

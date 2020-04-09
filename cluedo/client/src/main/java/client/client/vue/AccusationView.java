@@ -30,7 +30,7 @@ public class AccusationView extends View<AccusationControleur> {
     @FXML
     public HBox accusationEnCours;
 
-    private Map<TypeCarte, ICarte> accusation;
+    private List<String> accusation;
 
     @Override
     public void refresh() throws IOException, InterruptedException {
@@ -47,7 +47,7 @@ public class AccusationView extends View<AccusationControleur> {
         initBox(armes, listeArmes);
         initBox(lieux, listeLieux);
 
-        accusation = new HashMap<>();
+        accusation = new ArrayList<>();
 
     }
 
@@ -64,8 +64,11 @@ public class AccusationView extends View<AccusationControleur> {
 
             buttonImg.addEventHandler(
                     MouseEvent.MOUSE_CLICKED, (event) -> {
-                        this.accusation.put(carte.getTypeCarte(), carte);
+                        this.accusation.add(carte.getNom());
                         accusationEnCours.getChildren().add(buttonImg);
+                        for (Button b : observableListeCartes){
+                            b.setDisable(true);
+                        }
                     }
             );
             observableListeCartes.add(buttonImg);

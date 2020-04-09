@@ -1,25 +1,33 @@
 package client.client.controleur;
 
+import client.client.modele.entite.Partie;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.TypeCarte;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
+import client.client.service.IJoueurService;
 import client.client.service.IPartieService;
 import client.client.vue.HypotheseView;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.Map;
 
 public class HypotheseControleur {
 
     private Stage hypotheseStage;
     private IPartieService partieService;
+    private IJoueurService joueurService;
     private HypotheseView hypotheseView;
+    private Partie partie;
 
-    public HypotheseControleur(Lieu l){
+    public HypotheseControleur(Lieu l, Partie partie){
         this.hypotheseStage = new Stage();
         this.partieService = Facade.getInstance();
+        this.joueurService = Facade.getInstance();
+        this.partie = partie;
 
         this.hypotheseView = (HypotheseView) HypotheseView.creerInstance(hypotheseStage, FxmlPath.HYPOTHESE.getUrl());
         this.hypotheseView.setControleur(this);
@@ -29,8 +37,13 @@ public class HypotheseControleur {
         this.hypotheseView.show("hypothese");
     }
 
-    public void emettreHypothese(Map<TypeCarte, ICarte> hypothese){
-
+    public void emettreHypothese(List<String> hypothese){
+        try {
+            joueurService.emettreHypothese(partie.getId(), hypothese);
+            hypotheseStage.close();
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     //GETTERS et SETTERS

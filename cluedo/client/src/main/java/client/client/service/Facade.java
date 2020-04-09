@@ -233,6 +233,11 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
+    public Partie emettreHypothese(String idPartie, String idJoueur, Map<TypeCarte, ICarte> hypothese) {
+        return null;
+    }
+
+    @Override
     public void sauvegarderPartie(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
         HttpEntity<String> httpEntity=buildHttpEntity(user);

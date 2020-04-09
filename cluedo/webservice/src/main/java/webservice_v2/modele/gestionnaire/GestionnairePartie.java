@@ -16,6 +16,16 @@ import java.util.*;
 
 public class GestionnairePartie {
 
+    static Map<Personnage, Position> positionsDepart = new HashMap<>();
+    static {
+        positionsDepart.put(Personnage.ROSE, new Position(16,0));
+        positionsDepart.put(Personnage.MOUTARDE, new Position(23,7));
+        positionsDepart.put(Personnage.OLIVE, new Position(9,24));
+        positionsDepart.put(Personnage.ORCHIDEE, new Position(14,24));
+        positionsDepart.put(Personnage.PERVENCHE, new Position(0,18));
+        positionsDepart.put(Personnage.VIOLET, new Position(0,5));
+    }
+
     //
     // Methodes
     //
@@ -146,7 +156,9 @@ public class GestionnairePartie {
 
         while(!pile.empty()){
             Joueur j = pile.pop();
-            j.setPersonnage(persos.get(i));
+            ICarte perso = persos.get(i);
+            j.setPersonnage(perso);
+            j.setPosition(positionsDepart.get(perso));
             ordres.put(j.getUser().getId(),i+1);
             joueursByOrdre.put(i+1, j.getUser().getId());
             i++;

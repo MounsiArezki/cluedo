@@ -4,7 +4,9 @@ import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.Position;
+import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
@@ -14,6 +16,7 @@ import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
+import client.client.vue.place.DepartPlace;
 import client.client.vue.place.Place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
@@ -22,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.swing.*;
 import javax.servlet.http.Part;
 import java.util.*;
 
@@ -120,6 +124,11 @@ public class PlateauControleur {
         return plateauView.getBoard();
     }
 
+    public void goToHypothese(){
+        plateauView.stopTimer();
+        new HypotheseControleur();
+    }
+
     public void retourMenu(){
         plateauView.stopTimer();
         new MenuControleur(plateauStage);
@@ -131,7 +140,7 @@ public class PlateauControleur {
         // creer joueur
         Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
         Personnage perso = (Personnage) j.getPersonnage();
-        Position p = new Position(7,7);
+        Position p = j.getPosition();
         this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p.getX(),p.getY()));
 
         this.characters.add(
@@ -147,6 +156,7 @@ public class PlateauControleur {
             }
         }
     }
+
 
     public int roll() {
         return this.player.lancerDes();

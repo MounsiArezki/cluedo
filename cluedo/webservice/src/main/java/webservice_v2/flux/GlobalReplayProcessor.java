@@ -17,9 +17,9 @@ public class GlobalReplayProcessor {
 
     public static ReplayProcessor<Collection<User>> connectedUsersNotification = ReplayProcessor.create(1, false);
 
-    public static ReplayProcessor<Partie> partieNotification = ReplayProcessor.create(0, false);
+    public static ReplayProcessor<Partie> partieNotification = ReplayProcessor.create(1, false);
 
-    public static ReplayProcessor<Invitation> invitationsNotification = ReplayProcessor.create(0,false);
+    public static ReplayProcessor<Invitation> invitationsNotification = ReplayProcessor.create(10,false);
 
     public static ReplayProcessor<Map<ICarte, Joueur>> ficheEnqueteNotification = ReplayProcessor.create(0,false);
 

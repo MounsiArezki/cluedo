@@ -5,19 +5,15 @@ import webservice_v2.modele.entite.carte.Lieu;
 
 public class Position {
 
-    Lieu lieu;
     int x;
     int y;
 
     public Position() {
     }
 
-    public Lieu getLieu() {
-        return lieu;
-    }
-
-    public void setLieu(Lieu lieu) {
-        this.lieu = lieu;
+    public Position(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {

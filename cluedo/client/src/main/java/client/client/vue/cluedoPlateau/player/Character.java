@@ -1,5 +1,6 @@
 package client.client.vue.cluedoPlateau.player;
 
+import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.Position;
 import client.client.vue.PlateauView;
@@ -16,12 +17,18 @@ public abstract class Character extends Circle {
 
     private static final int  DES_NUM =1;
 
+
     public int getLancerNum() {
         return lancerNum;
     }
 
     protected int lancerNum;
     protected final PlateauView plateau;
+
+    public Personnage getPersonnage() {
+        return personnage;
+    }
+
     protected final Personnage personnage;
 
     public boolean isMY_TURN() {
@@ -59,11 +66,13 @@ public abstract class Character extends Circle {
 
     }
     //  lancer dés
-    public int lancerDes() {
-        int NumTmp = 0;
-        for(int i = 0; i < DES_NUM; i++)
-            NumTmp += Math.random() * 6 + 1;
-        this.lancerNum = NumTmp;
+    public int lancerDes(int num) {
+         /*   int NumTmp = 0;
+            for(int i = 0; i < DES_NUM; i++)
+                NumTmp += Math.random() * 6 + 1;
+         */
+
+        this.lancerNum = num;
         this.posMoves = calcPosMoves();
       //  posMoves.stream().forEach(x-> x.addHighlight(Color.DARKGREEN));
         delHighlightPosMoves();
@@ -84,6 +93,9 @@ public abstract class Character extends Circle {
     }
 
     public void moveTo(Place place) {
+        this.moveTo(place, false);
+    }
+    public void moveFromServer(Place place) {
         this.moveTo(place, false);
     }
 
@@ -116,6 +128,7 @@ public abstract class Character extends Circle {
             this.posMoves = calcPosMoves();
         }
 
+        System.out.println("fffff"+ actPlace.getX()+" "+actPlace.getY());
     }
 
     public Set<Place> calcPosMoves() {return this.calcPosMoves(this.getActPlace(), this.getLancerNum());}

@@ -356,7 +356,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
 
-        ResponseEntity<Integer[]> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE, Integer[].class, params);
+        ResponseEntity<Integer[]> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_LANCER, Integer[].class, params);
 
         return new ArrayList<>(List.of(res.getBody()));
     }
@@ -390,7 +390,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
         restTemplate.put(uri, params);
     }
-
+/*
     @Override
     public void seDeplacer(String idPartie, Position position) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
@@ -406,6 +406,22 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
         ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
     }
+*/
+@Override
+public void seDeplacer(String idPartie, Position position) throws HttpStatusCodeException, JsonProcessingException {
+    User user=VariablesGlobales.getUser();
+
+    Map<String, String> params = new HashMap<String, String>();
+    params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+    params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_SE_DEPLACER);
+    String uri = builder.build(params).toString();
+
+    HttpEntity<String> httpEntity=buildHttpEntity(position);
+
+    ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
+}
 
     @Override
     public void revelerCarte(String idPartie, ICarte carte) throws HttpStatusCodeException, JsonProcessingException {

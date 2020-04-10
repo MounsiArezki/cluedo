@@ -4,6 +4,7 @@ import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.Position;
+import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
@@ -17,7 +18,7 @@ import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
-import client.client.vue.place.Place;
+import client.client.vue.place.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -25,7 +26,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.swing.*;
+import javax.servlet.http.Part;
 import java.util.*;
+
+import static client.client.modele.entite.etat_partie.Actions.PASSER;
 
 public class PlateauControleur {
 
@@ -157,30 +162,65 @@ public class PlateauControleur {
     public void createCharacters() {
         this.characters = new ArrayList<>();
 
-        // creer joueur
-        Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
-        Personnage perso = (Personnage) j.getPersonnage();
-        Position p = j.getPosition();
-        this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
+        for (Joueur j : partie.getJoueurs().values()){
+            //recup personnage
+            Personnage perso = (Personnage) j.getPersonnage();
+            //recup position
+            Position p = j.getPosition();
+            if (j.getUser().getId().equals(VariablesGlobales.getUser().getId())){
 
-        this.characters.add(
-                this.player
-        );
-        //attention distinguer les autres players
+                this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
+                this.characters.add( this.player );
+            }else {
+                Player adversaire =new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
+                this.characters.add( adversaire );
+            }
+        }
 
         for(Place[] places : this.getCluedoBoard().getGrid()) {
             for(Place place : places) {
-                place.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> this.getPlayer().moveTo((Place) event.getTarget()));
+                place.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                {
+                    Place placeTo =(Place) event.getTarget();
+                    this.getPlayer().moveTo(placeTo);
+                    try {
+                        System.out.println("deppppppppppp"+placeTo.getCenter());
+                        joueurService.seDeplacer(getPartie().getId(),placeTo.getPositionOnGrid());
+                    } catch (JsonProcessingException e) {
+                        getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
+
+                    }
+
+                }
+
+                );
             }
         }
     }
+
+    public void updatePlayersPosition(){
+        System.out.println("update pos");
+        Collection<Joueur> joueurs = getPartie().getJoueurs().values();
+        for (Joueur J : joueurs){
+           characters.stream().forEach(player->
+           {
+               if(player.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
+                   System.out.println("moving :"+J.getUser().getPseudo()+"to "+J.getPosition() );
+
+                 player.moveFromServer(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
+               }
+
+           });
+        }
+    }
+
 
     public void gestionAction(){
 
         IEtatPartie etat = this.partie.getEtatPartie();
         Joueur j = etat.obtenirJoueurCourant();
         getPlateauView().disableAll(true);
-        if(!etat.obtenirJoueurCourant().equals(this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()))){
+        if(etat.obtenirJoueurCourant().getUser().getId().equals(VariablesGlobales.getUser().getId())){
             getPlayer().setMY_TURN(false);
         } else {
             getPlayer().setMY_TURN(true);

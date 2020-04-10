@@ -51,14 +51,15 @@ public class CluedoBoard extends Board<Place> {
                 x+=1;
                 switch(PlaceKey.getPlace(line.charAt(i))) {
                     case PATH:
-                        super.grid[y][x] = new BasicPlace();
+                        super.grid[y][x] = new BasicPlace(new Position(x,y));
+
                         break;
                     case UNREACHABLE:
-                        super.grid[y][x] = new Place(DirectionKey.ALL, false, 1);
+                        super.grid[y][x] = new Place(DirectionKey.ALL, false, 1,new Position(x,y));
                         break;
                     case START:
-                        super.grid[y][x] = new DepartPlace();
-                        System.out.println("X: "+x+",Y: "+y);
+                        super.grid[y][x] = new DepartPlace(new Position(x,y));
+
                         break;
                 }
 
@@ -68,17 +69,17 @@ public class CluedoBoard extends Board<Place> {
 
                 // Is upper
                 if(line.charAt(i) > 64 && line.charAt(i) < 91) {
-                    super.grid[y][x] = new TeleportPlace(DirectionKey.getDirection(line.charAt(i+1)), Lieu.getLieu(line.charAt(i)));
+                    super.grid[y][x] = new TeleportPlace(DirectionKey.getDirection(line.charAt(i+1)), Lieu.getLieu(line.charAt(i)),new Position(x,y));
 
                 }
                 // Is lowercase (lieu/porte)
                 else if (line.charAt(i) > 96 && line.charAt(i) < 123) {
                     // Is porte
                     if(line.charAt(i+1) != DirectionKey.ALL.getKey())
-                        super.grid[y][x] = new PortePlace(DirectionKey.getDirection(line.charAt(i+1)), Lieu.getLieu(line.charAt(i)));
+                        super.grid[y][x] = new PortePlace(DirectionKey.getDirection(line.charAt(i+1)), Lieu.getLieu(line.charAt(i)),new Position(x,y));
                     // Is lieu
                     else
-                        super.grid[y][x] = new LieuPlace(Lieu.getLieu(line.charAt(i)));
+                        super.grid[y][x] = new LieuPlace(Lieu.getLieu(line.charAt(i)),new Position(x,y));
                 }
 
             }

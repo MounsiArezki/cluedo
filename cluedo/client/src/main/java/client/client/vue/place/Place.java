@@ -2,6 +2,7 @@ package client.client.vue.place;
 
 import client.client.modele.entite.Position;
 import client.client.vue.cluedoPlateau.Key.DirectionKey;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
@@ -22,6 +23,18 @@ public class Place extends Rectangle {
     private static final int MAX_SP = 12;
     private final DirectionKey direction;
     private final int moveCost;
+
+    private Position PositionOnGrid;
+
+    public Position getPositionOnGrid() {
+        return PositionOnGrid;
+    }
+
+    public void setPositionOnGrid(Position positionOnGrid) {
+        PositionOnGrid = positionOnGrid;
+    }
+
+
 
     public Place[] getAdjacent() {
         return adjacent;
@@ -49,7 +62,21 @@ public class Place extends Rectangle {
         this(DirectionKey.ALL, true, 1);
     }
 
+    public Place(DirectionKey direction, boolean isReachable, int moveCost,Position gridP) {
+        super();
+        // TODORemove
+     /*   this.setOnMouseClicked(event -> {
+            addHighlight(Color.RED);
+            Alert a=new Alert(Alert.AlertType.INFORMATION,this.getCenter().toString(), ButtonType.OK);
+            a.show();});
 
+      */
+        this.PositionOnGrid = gridP;
+        this.moveCost = moveCost;
+        this.isReachable=isReachable;
+        this.direction=direction;
+        this.setOpacity(0);
+    }
     public Place(DirectionKey direction, boolean isReachable, int moveCost) {
         super();
         // TODORemove

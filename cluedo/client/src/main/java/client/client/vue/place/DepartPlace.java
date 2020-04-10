@@ -1,5 +1,6 @@
 package client.client.vue.place;
 
+import client.client.modele.entite.Position;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
@@ -7,7 +8,8 @@ import javafx.scene.paint.Color;
 public class DepartPlace extends BasicPlace {
 
 
-    public DepartPlace() {
+    public DepartPlace(Position p ) {
+        super(p);
 
         // TO DO remove
   /*      this.setOnMouseClicked(event -> {

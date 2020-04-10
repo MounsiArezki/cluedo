@@ -27,7 +27,8 @@ public class DebutTour implements IEtatPartie {
 
     @Override
     public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+       // throw new UnsupportedOperationException();
+        return new ResolutionDes(joueurCourant,des);
     }
 
     @Override

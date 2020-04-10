@@ -21,6 +21,7 @@ import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.DepartPlace;
 import client.client.vue.place.LieuPlace;
 import client.client.vue.place.Place;
+import client.client.vue.place.PortePlace;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -166,9 +167,8 @@ public class PlateauControleur {
             Personnage perso = (Personnage) j.getPersonnage();
             //recup position
             Position p = j.getPosition();
-            System.out.println("Static "+VariablesGlobales.getUser().getId()+"serv"+j.getUser().getId());
             if (j.getUser().getId().equals(VariablesGlobales.getUser().getId())){
-                System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
                 this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
                 this.characters.add( this.player );
             }else {
@@ -179,10 +179,39 @@ public class PlateauControleur {
 
         for(Place[] places : this.getCluedoBoard().getGrid()) {
             for(Place place : places) {
-                place.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> this.getPlayer().moveTo((Place) event.getTarget()));
+                place.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                {
+                    Place placeTo =(Place) event.getTarget();
+                    this.getPlayer().moveTo(placeTo);
+                    try {
+                        joueurService.seDeplacer(getPartie().getId(),placeTo.getCenter());
+                    } catch (JsonProcessingException e) {
+                        getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
+
+                    }
+
+                }
+
+                );
             }
         }
     }
+
+    public void updatePlayersPosition(){
+        System.out.println("update pos");
+        Collection<Joueur> joueurs = getPartie().getJoueurs().values();
+        for (Joueur J : joueurs){
+           characters.stream().forEach(x->
+           {
+               if(x.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
+                   System.out.println("moving");
+                   x.moveTo( getCluedoBoard().getItemFromCoordinate(J.getPosition()));
+               }
+
+           });
+        }
+    }
+
 
     public void gestionAction(){
 
@@ -232,7 +261,14 @@ public class PlateauControleur {
 
 
     public int roll() {
-        return this.player.lancerDes();
+        int numD=0;
+        try {
+            List<Integer> numDes =joueurService.lancerDes(partie.getId());
+            for (int n : numDes){    numD+=n; }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return this.player.lancerDes(numD);
     }
 
     public void consumeFluxPartie(Partie partie){

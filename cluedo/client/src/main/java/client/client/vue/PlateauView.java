@@ -119,6 +119,8 @@ public class PlateauView extends View<PlateauControleur> {
                 init=false;
             }
         }
+            getControleur().updatePlayersPosition();
+
 
         //manque le refresh de certaines parties du plateau, position perso si etat instance of supputation, ...
 

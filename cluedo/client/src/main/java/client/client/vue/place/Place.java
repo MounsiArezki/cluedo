@@ -23,6 +23,7 @@ public class Place extends Rectangle {
     private final DirectionKey direction;
     private final int moveCost;
 
+
     public Place[] getAdjacent() {
         return adjacent;
     }

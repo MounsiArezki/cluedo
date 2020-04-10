@@ -98,12 +98,14 @@ public class GestionnairePartie {
 
     // vérifier si la distance du déplacement égal le nombre des dés
     private static boolean isDeplacementOk(Position dest, Joueur joueur, List<Integer> des, Partie partie) {
-        Position pInitiale = joueur.getPosition(); // position initiale du joueur
+      Position pInitiale = joueur.getPosition(); // position initiale du joueur
 
         int dRes = des.get(0) + des.get(1); // résultat des deux dés
         int diff = Math.abs(pInitiale.getX() - dest.getX()) + Math.abs(pInitiale.getY() - dest.getY());
 
         return dRes == diff;
+
+
     }
 
     //

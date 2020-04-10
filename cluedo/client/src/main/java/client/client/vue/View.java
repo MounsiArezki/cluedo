@@ -88,16 +88,13 @@ public abstract class View<T> {
 
     public void setTimer(int seconds){
 
-        timeline = new Timeline(new KeyFrame(Duration.seconds(seconds), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    refresh();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        timeline = new Timeline(new KeyFrame(Duration.seconds(seconds), event -> {
+            try {
+                refresh();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);

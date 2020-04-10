@@ -4,7 +4,6 @@ import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.Position;
-import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
@@ -18,7 +17,8 @@ import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
-import client.client.vue.place.*;
+import client.client.vue.place.LieuPlace;
+import client.client.vue.place.Place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -26,11 +26,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import javax.swing.*;
-import javax.servlet.http.Part;
+import java.lang.reflect.Array;
 import java.util.*;
-
-import static client.client.modele.entite.etat_partie.Actions.PASSER;
 
 public class PlateauControleur {
 
@@ -217,13 +214,23 @@ public class PlateauControleur {
 
     public void gestionAction(){
 
+        boolean isActif = false;
+        boolean isCourant = false;
         IEtatPartie etat = this.partie.getEtatPartie();
         Joueur j = etat.obtenirJoueurCourant();
         getPlateauView().disableAll(true);
-        if(etat.obtenirJoueurCourant().getUser().getId().equals(VariablesGlobales.getUser().getId())){
-            getPlayer().setMY_TURN(false);
-        } else {
-            getPlayer().setMY_TURN(true);
+        try{
+            isActif = this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()).equals(etat.obtenirJoueurAtif());
+        } catch (UnsupportedOperationException e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            isCourant = this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()).equals(etat.obtenirJoueurCourant());
+            getPlayer().setMY_TURN(isCourant);
+        } catch (UnsupportedOperationException e){
+            System.out.println(e.getMessage());
+        }
+        if (isActif || isCourant){
             List<Actions> actionsList = etat.obtenirActionsPossibles();
             for (Actions action : actionsList){
                 System.out.println(action);
@@ -264,8 +271,17 @@ public class PlateauControleur {
 
 
 
-    public int roll() {
-        return this.player.lancerDes();
+    public Integer roll() {
+        Integer res = 0;
+        try {
+            res = 0;
+            for (Integer i : joueurService.lancerDes(partie.getId())){
+                res += i;
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public void consumeFluxPartie(Partie partie){

@@ -20,7 +20,8 @@ import java.util.Map;
         @JsonSubTypes.Type(value = PartieFinie.class, name="PartieFinie"),
         @JsonSubTypes.Type(value = ResolutionDes.class, name="ResolutionDes"),
         @JsonSubTypes.Type(value = ResolutionIndice.class, name="ResolutionIndice"),
-        @JsonSubTypes.Type(value = Supputation.class, name="Supputation")
+        @JsonSubTypes.Type(value = Supputation.class, name="Supputation"),
+        @JsonSubTypes.Type(value = AttentePiocheIndice.class, name="AttentePiocheIndice")
 })
 public interface IEtatPartie {
 

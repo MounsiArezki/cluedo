@@ -13,7 +13,6 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use= JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DebutTour.class, name="AttentePiocheIndice"),
         @JsonSubTypes.Type(value = DebutTour.class, name="DebutTour"),
         @JsonSubTypes.Type(value = EnAttenteDesJoueurs.class, name="EnAttenteDesJoueurs"),
         @JsonSubTypes.Type(value = FinTour.class, name="FinTour"),
@@ -22,7 +21,8 @@ import java.util.Map;
         @JsonSubTypes.Type(value = ResolutionDes.class, name="ResolutionDes"),
         @JsonSubTypes.Type(value = ResolutionIndice.class, name="ResolutionIndice"),
         @JsonSubTypes.Type(value = RevelationIndice.class, name="RevelationIndice"),
-        @JsonSubTypes.Type(value = Supputation.class, name="Supputation")
+        @JsonSubTypes.Type(value = Supputation.class, name="Supputation"),
+        @JsonSubTypes.Type(value = AttentePiocheIndice.class, name="AttentePiocheIndice")
 
 })
 public interface IEtatPartie {

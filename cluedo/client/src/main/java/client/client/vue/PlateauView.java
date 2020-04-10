@@ -105,6 +105,7 @@ public class PlateauView extends View<PlateauControleur> {
 
         Partie partie= getControleur().getPartie();
         IEtatPartie etat = partie.getEtatPartie();
+        System.out.println(etat);
 
         if(!init){
 
@@ -115,14 +116,8 @@ public class PlateauView extends View<PlateauControleur> {
             }
 
         }
-        System.out.println("joueur courant "+etat.obtenirJoueurCourant());
-        if (etat.obtenirJoueurCourant().equals(partie.getJoueurs().get(VariablesGlobales.getUser().getId()))){
-            for (Actions act : etat.obtenirActionsPossibles()){
-                System.out.println(act);
-            }
-            //active les boutons des actions disponibles
-            getControleur().gestionAction();
-        }
+        //active les boutons des actions disponibles
+        getControleur().gestionAction();
         etatPartieLabel.setText(etat.obtenirTexte());
     }
 

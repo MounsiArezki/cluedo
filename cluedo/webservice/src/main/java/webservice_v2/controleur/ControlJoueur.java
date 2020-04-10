@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.JoueurPasDansLaPartieException;
 import webservice_v2.exception.PartieInexistanteException;
-import webservice_v2.exception.partie.ActionNonAutoriseeException;
-import webservice_v2.exception.partie.DeplacementNonAutoriseException;
-import webservice_v2.exception.partie.PasJoueurActifException;
-import webservice_v2.exception.partie.PasJoueurCourantException;
+import webservice_v2.exception.partie.*;
 import webservice_v2.facade.Facade;
 import webservice_v2.flux.GlobalReplayProcessor;
 import webservice_v2.modele.entite.Joueur;
@@ -79,6 +76,31 @@ public class ControlJoueur {
         }
     }
 
+    // tirer une carte indice
+    @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_TIRER_INDICE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Integer>> carteIndice(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody List<Integer> des) {
+        try {
+            facade.tirerIndice(idP, idJ, des);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
+            return ResponseEntity.ok(des);
+        } catch (PasJoueurCourantException e) {
+            System.out.println("401 ws ce n'est pas le tour de ce joueur");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (PiocherIndiceNonAutoriseException e) {
+            System.out.println("401 ws action non autorisé : vous n'avez pas fait de loupe au lancer de dé");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (ActionNonAutoriseeException e) {
+            System.out.println("401 ws action non autorisé : ce n'est pas le moment pour de piocher une carte");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (JoueurPasDansLaPartieException e) {
+            System.out.println("200 ws joueur non trouvé");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (PartieInexistanteException e) {
+            System.out.println("200 ws partie non trouvée");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
+
     // se déplacer
     @PostMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_DEPLACER)
     public ResponseEntity<?> deplacer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody Position pos)  {
@@ -90,7 +112,7 @@ public class ControlJoueur {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ActionNonAutoriseeException e) {
-            System.out.println("401 ws action non autorisé : ce n'est pas le moment pour lancer une accusation");
+            System.out.println("401 ws action non autorisé : ce n'est pas le moment pour de se déplacer");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (JoueurPasDansLaPartieException e) {
             System.out.println("200 ws joueur non trouvé");

@@ -43,7 +43,7 @@ public class ResolutionDes implements IEtatPartie {
 
     @Override
     public IEtatPartie piocherIndice(List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
-        return new ResolutionIndice(joueurCourant, indices, des);
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -53,6 +53,16 @@ public class ResolutionDes implements IEtatPartie {
 
     @Override
     public IEtatPartie revelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IEtatPartie attentePiocheIndice(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
+        return new AttentePiocheIndice(joueurCourant, des);
+    }
+
+    @Override
+    public IEtatPartie revelationIndice(Joueur joueurCourant, Joueur joueurActif, ICarte carte) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 

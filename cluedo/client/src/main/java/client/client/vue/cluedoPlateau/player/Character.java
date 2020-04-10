@@ -128,7 +128,6 @@ public abstract class Character extends Circle {
             this.posMoves = calcPosMoves();
         }
 
-        System.out.println("fffff"+ actPlace.getX()+" "+actPlace.getY());
     }
 
     public Set<Place> calcPosMoves() {return this.calcPosMoves(this.getActPlace(), this.getLancerNum());}

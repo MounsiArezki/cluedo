@@ -104,8 +104,8 @@ public class GestionnairePartie {
         int diff = Math.abs(pInitiale.getX() - dest.getX()) + Math.abs(pInitiale.getY() - dest.getY());
 
         System.out.println("nouvelle pos init "+pInitiale.getX()+" , " +pInitiale.getY()+" =>" + dest.getX()+" , "+dest.getY());
-     //   return dRes == diff;
-    return true;
+        return dRes == diff;
+
 
     }
 

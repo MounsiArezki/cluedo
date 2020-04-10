@@ -116,7 +116,8 @@ public class PlateauView extends View<PlateauControleur> {
             }
 
         }
-        //active les boutons des actions disponibles
+
+
         getControleur().gestionAction();
         etatPartieLabel.setText(etat.obtenirTexte());
     }

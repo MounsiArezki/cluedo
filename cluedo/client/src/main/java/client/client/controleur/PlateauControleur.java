@@ -181,7 +181,7 @@ public class PlateauControleur {
                     Place placeTo =(Place) event.getTarget();
                     this.getPlayer().moveTo(placeTo);
                     try {
-                        System.out.println("deppppppppppp"+placeTo.getCenter());
+                        System.out.println("deppppppppppp"+placeTo.getPositionOnGrid());
                         joueurService.seDeplacer(getPartie().getId(),placeTo.getPositionOnGrid());
                     } catch (JsonProcessingException e) {
                         getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
@@ -216,8 +216,9 @@ public class PlateauControleur {
 
         boolean isActif = false;
         boolean isCourant = false;
+        updatePlayersPosition();
         IEtatPartie etat = this.partie.getEtatPartie();
-        Joueur j = etat.obtenirJoueurCourant();
+     //   Joueur j = etat.obtenirJoueurCourant();
         getPlateauView().disableAll(true);
         try{
             isActif = this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()).equals(etat.obtenirJoueurAtif());
@@ -260,7 +261,7 @@ public class PlateauControleur {
                 }
             }
 
-            updatePlayersPosition();
+
 
         }
 

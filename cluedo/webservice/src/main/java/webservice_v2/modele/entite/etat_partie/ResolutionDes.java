@@ -43,7 +43,8 @@ public class ResolutionDes implements IEtatPartie {
 
     @Override
     public IEtatPartie piocherIndice(List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new ResolutionIndice(joueurCourant, indices, des);
+     //   throw new UnsupportedOperationException();
     }
 
     @Override

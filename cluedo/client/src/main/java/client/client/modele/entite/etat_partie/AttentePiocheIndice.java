@@ -1,5 +1,6 @@
 package client.client.modele.entite.etat_partie;
 
+
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
@@ -7,7 +8,10 @@ import client.client.modele.entite.carte.TypeCarte;
 import java.util.List;
 import java.util.Map;
 
+
 public class AttentePiocheIndice implements IEtatPartie {
+
+
     @Override
     public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
         return null;

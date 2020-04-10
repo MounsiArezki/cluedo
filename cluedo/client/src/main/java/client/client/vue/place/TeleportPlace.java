@@ -6,8 +6,8 @@ import client.client.vue.cluedoPlateau.Key.DirectionKey;
 
 public class TeleportPlace extends LieuPlace implements Teleportable {
 
-    public TeleportPlace(DirectionKey direction, Lieu room) {
-        this(direction, room, true, 1);
+    public TeleportPlace(DirectionKey direction, Lieu room,Position p) {
+        this(direction, room, true, 1,p);
   /*      this.setOnMouseClicked(event -> {
             addHighlight(Color.RED);
             Alert a=new Alert(Alert.AlertType.INFORMATION,"teleportPlace"+direction.toString(), ButtonType.OK);
@@ -16,8 +16,8 @@ public class TeleportPlace extends LieuPlace implements Teleportable {
    */
     }
 
-    public TeleportPlace(DirectionKey direction, Lieu room, boolean isReachable, int moveCost) {
-        super(direction, room, isReachable, moveCost);
+    public TeleportPlace(DirectionKey direction, Lieu room, boolean isReachable, int moveCost,Position p) {
+        super(direction, room, isReachable, moveCost, p);
     }
 
 

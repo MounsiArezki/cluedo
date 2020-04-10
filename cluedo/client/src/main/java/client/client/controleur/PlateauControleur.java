@@ -18,10 +18,7 @@ import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
-import client.client.vue.place.DepartPlace;
-import client.client.vue.place.LieuPlace;
-import client.client.vue.place.Place;
-import client.client.vue.place.PortePlace;
+import client.client.vue.place.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -184,7 +181,8 @@ public class PlateauControleur {
                     Place placeTo =(Place) event.getTarget();
                     this.getPlayer().moveTo(placeTo);
                     try {
-                        joueurService.seDeplacer(getPartie().getId(),placeTo.getCenter());
+                        System.out.println("deppppppppppp"+placeTo.getCenter());
+                        joueurService.seDeplacer(getPartie().getId(),placeTo.getPositionOnGrid());
                     } catch (JsonProcessingException e) {
                         getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
 
@@ -201,11 +199,12 @@ public class PlateauControleur {
         System.out.println("update pos");
         Collection<Joueur> joueurs = getPartie().getJoueurs().values();
         for (Joueur J : joueurs){
-           characters.stream().forEach(x->
+           characters.stream().forEach(player->
            {
-               if(x.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
-                   System.out.println("moving");
-                   x.moveTo( getCluedoBoard().getItemFromCoordinate(J.getPosition()));
+               if(player.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
+                   System.out.println("moving :"+J.getUser().getPseudo()+"to "+J.getPosition() );
+
+                 player.moveTo(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
                }
 
            });

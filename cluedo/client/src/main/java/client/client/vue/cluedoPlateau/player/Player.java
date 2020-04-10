@@ -15,13 +15,15 @@ public class Player extends Character {
     public void moveTo(Place place) {
 
         // If move is impossible, send impossible move message
-        if(!posMoves.contains(place) ) {
+    /*    if(!posMoves.contains(place ) ) {
                 plateau.showMessage("impossible move !", Alert.AlertType.WARNING);
             return;
         }else if (!isMY_TURN() ){
             plateau.showMessage("NOT YOUR TURN", Alert.AlertType.WARNING);
             return;
         }
+
+     */
 
         delHighlightPosMoves();
 

@@ -39,7 +39,7 @@ public class PlateauView extends View<PlateauControleur> {
     public Button lancerBtn;
     public Button passerBtn;
 
-    private boolean init=false;
+    private boolean init=true;
 
 
     public ObservableList<Button> getObservableListCard() {
@@ -103,7 +103,7 @@ public class PlateauView extends View<PlateauControleur> {
     public void refresh() {
         Partie partie= getControleur().getPartie();
         System.out.println(partie.getEtatPartie());
-        if(!init){
+        if(init){
 
             if(!(partie.getEtatPartie() instanceof EnAttenteDesJoueurs)){
 
@@ -116,17 +116,17 @@ public class PlateauView extends View<PlateauControleur> {
                     System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
                 }
                 etatPartieLabel.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
-                init=true;
+                init=false;
             }
         }
 
         //manque le refresh de certaines parties du plateau, position perso si etat instance of supputation, ...
 
         //desactive les boutons sauf le bouton quitter
-        desactiverToutesActions();
+  //      desactiverToutesActions();
 
         //active les boutons des actions disponibles
-        activerActions(partie);
+    //    activerActions(partie);
 
     }
 

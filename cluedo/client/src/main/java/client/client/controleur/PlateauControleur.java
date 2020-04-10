@@ -153,6 +153,11 @@ public class PlateauControleur {
         new MenuControleur(plateauStage);
     }
 
+    public void startJoueursPos(){
+
+    }
+
+
     public void createCharacters() {
         this.characters = new ArrayList<>();
 
@@ -161,7 +166,9 @@ public class PlateauControleur {
             Personnage perso = (Personnage) j.getPersonnage();
             //recup position
             Position p = j.getPosition();
-            if (j.getUser().getId()==VariablesGlobales.getUser().getId()){
+            System.out.println("Static "+VariablesGlobales.getUser().getId()+"serv"+j.getUser().getId());
+            if (j.getUser().getId().equals(VariablesGlobales.getUser().getId())){
+                System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
                 this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
                 this.characters.add( this.player );
             }else {

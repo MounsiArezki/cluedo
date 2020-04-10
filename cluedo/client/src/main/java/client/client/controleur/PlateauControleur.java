@@ -260,7 +260,7 @@ public class PlateauControleur {
                 }
             }
 
-
+            updatePlayersPosition();
 
         }
 
@@ -281,7 +281,7 @@ public class PlateauControleur {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return res;
+        return this.player.lancerDes(res);
     }
 
     public void consumeFluxPartie(Partie partie){

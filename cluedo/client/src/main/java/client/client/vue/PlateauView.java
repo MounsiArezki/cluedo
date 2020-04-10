@@ -1,6 +1,7 @@
 package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
+import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.etat_partie.Actions;
@@ -19,9 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.Collection;
-import java.util.List;
-
-import static client.client.modele.entite.etat_partie.Actions.LANCER_DES;
 
 public class PlateauView extends View<PlateauControleur> {
 
@@ -33,7 +31,7 @@ public class PlateauView extends View<PlateauControleur> {
     public Label nomJoueurJ;
     public TextField desResultat;
     public Button accusBtn;
-    public  Button hypoBtn;
+    public Button hypoBtn;
     public CluedoBoard board;
     public Label etatPartieLabel;
     public Button lancerBtn;
@@ -93,6 +91,7 @@ public class PlateauView extends View<PlateauControleur> {
     public void goAccusationAction(ActionEvent actionEvent) {getControleur().goToAccusation();}
 
     public void passerAction(ActionEvent actionEvent) {
+        getControleur().passerTour();
     }
 
     public void fermerAction(ActionEvent actionEvent){
@@ -101,57 +100,55 @@ public class PlateauView extends View<PlateauControleur> {
 
     @Override
     public void refresh() {
+        //desactive les boutons sauf le bouton quitter
+        disableAll(true);
+
         Partie partie= getControleur().getPartie();
-        System.out.println(partie.getEtatPartie());
+        IEtatPartie etat = partie.getEtatPartie();
+
         if(!init){
 
-            if(!(partie.getEtatPartie() instanceof EnAttenteDesJoueurs)){
-
-                IEtatPartie etat = getControleur().getPartie().getEtatPartie();
-                try {
-                    etat.obtenirJoueurCourant();
-                    distribuerCartes();
-                    getControleur().createCharacters();
-                } catch (UnsupportedOperationException e){
-                    System.out.println("La partie n'est pas dans un état permettant la distribution des cartes");
-                }
-                etatPartieLabel.setText(getControleur().getPartie().getEtatPartie().obtenirTexte());
+            if(!(etat instanceof EnAttenteDesJoueurs)){
+                distribuerCartes();
+                getControleur().createCharacters();
                 init=true;
             }
+
         }
-
-        //manque le refresh de certaines parties du plateau, position perso si etat instance of supputation, ...
-
-        //desactive les boutons sauf le bouton quitter
-        desactiverToutesActions();
-
-        //active les boutons des actions disponibles
-        activerActions(partie);
-
-    }
-
-    private void desactiverToutesActions(){
-
+        System.out.println("joueur courant "+etat.obtenirJoueurCourant());
+        if (etat.obtenirJoueurCourant().equals(partie.getJoueurs().get(VariablesGlobales.getUser().getId()))){
+            for (Actions act : etat.obtenirActionsPossibles()){
+                System.out.println(act);
+            }
+            //active les boutons des actions disponibles
+            getControleur().gestionAction();
+        }
+        etatPartieLabel.setText(etat.obtenirTexte());
     }
 
     private void activerActions(Partie partie){
         for(Actions actions: partie.getEtatPartie().obtenirActionsPossibles()){
             switch (actions){
                 case PASSER:
+                    disablePasser(false);
                     break;
                 case ACCUSER:
+                    disableAccusation(false);
                     break;
                 case DEPLACER:
                     break;
                 case LANCER_DES:
+                    disableDes(false);
                     break;
                 case JOUER_INDICE:
                     break;
                 case REVELER_CARTE:
+                    disableCartes(false);
                     break;
                 case PIOCHER_INDICE:
                     break;
                 case EMETTRE_HYPOTHESE:
+                    disableHypothese(false);
                     break;
             }
         }
@@ -171,8 +168,8 @@ public class PlateauView extends View<PlateauControleur> {
         return board;
     }
     public void disableDes(boolean ok){lancerBtn.setDisable(ok);}
-    public void disableHypBtn(boolean ok){ hypoBtn.setDisable(ok);}
-    public void disableAcuss(boolean ok){ accusBtn.setDisable(ok); }
+    public void disableHypothese(boolean ok){ hypoBtn.setDisable(ok);}
+    public void disableAccusation(boolean ok){ accusBtn.setDisable(ok); }
     public void disableCartes(Boolean ok){Cartes.setDisable(ok);}
     public void disablePasser(Boolean ok){passerBtn.setDisable(ok);}
 

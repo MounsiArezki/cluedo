@@ -1,5 +1,7 @@
 package client.client.modele.entite;
 
+import java.util.Objects;
+
 public class User {
 
     private String id;
@@ -49,5 +51,18 @@ public class User {
     @Override
     public String toString() {
         return pseudo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return pseudo.equals(user.pseudo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pseudo);
     }
 }

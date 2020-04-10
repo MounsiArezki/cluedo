@@ -1,9 +1,7 @@
 package client.client.controleur;
 
 import client.client.modele.entite.Partie;
-import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
-import client.client.modele.entite.carte.TypeCarte;
 import client.client.modele.entite.io.FxmlPath;
 import client.client.service.Facade;
 import client.client.service.IJoueurService;
@@ -13,7 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.stage.Stage;
 
 import java.util.List;
-import java.util.Map;
 
 public class HypotheseControleur {
 

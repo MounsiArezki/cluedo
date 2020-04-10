@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
 
@@ -362,7 +364,12 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
 
-        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_PASSER, params);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_PASSER);
+        URI uri = builder.build(params);
+
+        System.out.println(uri);
+
+        restTemplate.put(uri, params);
     }
 
     @Override
@@ -373,9 +380,12 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
 
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_SE_DEPLACER);
+        String uri = builder.build(params).toString();
+
         HttpEntity<String> httpEntity=buildHttpEntity(position);
 
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_SE_DEPLACER, httpEntity, String.class, params);
+        ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
     }
 
     @Override

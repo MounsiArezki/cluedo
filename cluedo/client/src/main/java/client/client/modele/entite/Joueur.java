@@ -6,6 +6,7 @@ import client.client.modele.entite.carte.Personnage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Joueur  {
 
@@ -63,5 +64,18 @@ public class Joueur  {
     @Override
     public String toString() {
         return personnage.toString()+" ("+user.toString()+")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Joueur joueur = (Joueur) o;
+        return user.equals(joueur.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user);
     }
 }

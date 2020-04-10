@@ -4,7 +4,6 @@ import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Joueur;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.Position;
-import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
@@ -18,8 +17,6 @@ import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
 import client.client.vue.cluedoPlateau.player.Player;
-import client.client.vue.place.DepartPlace;
-import client.client.vue.place.LieuPlace;
 import client.client.vue.place.Place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
@@ -28,11 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import javax.swing.*;
-import javax.servlet.http.Part;
 import java.util.*;
-
-import static client.client.modele.entite.etat_partie.Actions.PASSER;
 
 public class PlateauControleur {
 
@@ -149,6 +142,14 @@ public class PlateauControleur {
         new MenuControleur(plateauStage);
     }
 
+    public void passerTour(){
+        try {
+            joueurService.passerTour(partie.getId());
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void createCharacters() {
         this.characters = new ArrayList<>();
 
@@ -172,36 +173,38 @@ public class PlateauControleur {
 
     public void gestionAction(){
 
-        IEtatPartie etat = getPartie().getEtatPartie();
+        IEtatPartie etat = this.partie.getEtatPartie();
+        Joueur j = etat.obtenirJoueurCourant();
         getPlateauView().disableAll(true);
-        if(etat.obtenirJoueurCourant().getUser().getId().equals(VariablesGlobales.getUser().getId())){
+        if(!etat.obtenirJoueurCourant().equals(this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()))){
             getPlayer().setMY_TURN(false);
-        }else {
+        } else {
             getPlayer().setMY_TURN(true);
             List<Actions> actionsList = etat.obtenirActionsPossibles();
             for (Actions action : actionsList){
+                System.out.println(action);
                 switch (action){
                     case PASSER:
-
+                        this.plateauView.disablePasser(false);
                         break;
                     case ACCUSER:
-                        getPlateauView().disableAcuss(true);
+                        this.plateauView.disableAccusation(false);
                         break;
                     case DEPLACER:
                         break;
                     case LANCER_DES:
-                        getPlateauView().disableDes(true);
+                        this.plateauView.disableDes(false);
                         // activer les bouttons
                         break;
                     case JOUER_INDICE:
                         break;
                     case REVELER_CARTE:
-                        getPlateauView().disableCartes(true);
+                        this.plateauView.disableCartes(false);
                         break;
                     case PIOCHER_INDICE:
                         break;
                     case EMETTRE_HYPOTHESE:
-                        getPlateauView().disableHypBtn(true);
+                        this.plateauView.disableHypothese(false);
                         break;
                 }
             }

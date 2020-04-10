@@ -57,7 +57,7 @@ public class ControlJoueur {
         }
     }
 
-    // lancement des dès
+    // lancement des dés
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_LANCER, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Integer>> lancerDes(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ) {
         try {
@@ -207,7 +207,7 @@ public class ControlJoueur {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (ActionNonAutoriseeException e) {
-            System.out.println("401 ws action non autorisé : ce n'est pas le moment pour lancer une accusation");
+            System.out.println("401 ws action non autorisé : vous ne pouvez pas passer à cet instant");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (JoueurPasDansLaPartieException e) {
             System.out.println("200 ws joueur non trouvé");

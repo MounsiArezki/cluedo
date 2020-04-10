@@ -1,0 +1,30 @@
+= Commentaires des professeurs
+
+Pas de CR
+Pas de livraison pour ainsi dire... il a fallu recharger l'application à une date précise.
+
+
+== Code
+
+
+Les points positifs : 
+
+nous avons une application fonctionnelle des deux côtés. 
+
+J'ai pu tester l'inscription, la connexion, la création d'une partie, l'invitation d'un joueur et le lancement d'une partie. 
+
+
+Les points négatifs : 
+- pas de vérification de champs quand on envoie des données vides lors de l'inscription
+- les messages d'informations doivent être bloquantes alert.showAndWait()
+- Il serait bien de mettre un seul contrôleur principal qui contiendrait tous vos petits contrôleurs (qui sont réellement des contrôleurs). Là, c'est un peu l'anarchie car vos contrôleurs se créent entre eux. 
+
+- Au niveau du Web-service, c'est plutôt propre. Des petits scripts hhtp auraient été pas mal. 
+
+
+
+
+== Conclusion
+L'application est fonctionnelle dans sa globalité, c'est déjà une bonne chose. 
+
+Continuez comme çà

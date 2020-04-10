@@ -1,39 +1,41 @@
 package webservice_v2.modele.entite.etat_partie;
 
+import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
-import webservice_v2.modele.entite.Joueur;
 
 import java.util.List;
 import java.util.Map;
 
-public class PartieFinie implements IEtatPartie {
+public class RevelationIndice implements IEtatPartie {
 
-    private Joueur gagnant;
-    private Map<TypeCarte, ICarte> combinaisonGagnante;
+    private Joueur joueurCourant;
+    private Joueur joueurActif;
+    private ICarte carte;
 
-    public PartieFinie(){}
+    public RevelationIndice() { }
 
-    public PartieFinie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagnante) {
-        this.gagnant = gagnant;
-        this.combinaisonGagnante = combinaisonGagnante;
+    public RevelationIndice(Joueur joueurCourant, Joueur joueurActif, ICarte carte) {
+        this.joueurCourant = joueurCourant;
+        this.joueurActif = joueurActif;
+        this.carte = carte;
     }
 
-    public Joueur getGagnant() {
-        return gagnant;
+    public Joueur getJoueurCourant() {
+        return joueurCourant;
     }
 
-    public void setGagnant(Joueur gagnant) {
-        this.gagnant = gagnant;
+    public void setJoueurCourant(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
     }
 
-    public Map<TypeCarte, ICarte> getCombinaisonGagnante() {
-        return combinaisonGagnante;
-    }
+    public Joueur getJoueurActif() { return joueurActif; }
 
-    public void setCombinaisonGagnante(Map<TypeCarte, ICarte> combinaisonGagnante) {
-        this.combinaisonGagnante = combinaisonGagnante;
-    }
+    public void setJoueurActif(Joueur joueurActif) { this.joueurActif = joueurActif; }
+
+    public ICarte getCarte() { return carte; }
+
+    public void setCarte(ICarte carte) { this.carte = carte; }
 
     @Override
     public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
@@ -47,7 +49,7 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public IEtatPartie deplacer() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new Supputation(joueurCourant);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public IEtatPartie revelationIndice(Joueur joueurCourant, Joueur joueurActif, ICarte carte) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new RevelationIndice(joueurCourant, joueurActif, carte);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return joueurCourant;
     }
 
     @Override
@@ -119,4 +121,5 @@ public class PartieFinie implements IEtatPartie {
     public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
+
 }

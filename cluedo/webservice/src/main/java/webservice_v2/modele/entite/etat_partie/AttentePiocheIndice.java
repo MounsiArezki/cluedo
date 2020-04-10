@@ -1,39 +1,35 @@
 package webservice_v2.modele.entite.etat_partie;
 
+import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
-import webservice_v2.modele.entite.Joueur;
 
 import java.util.List;
 import java.util.Map;
 
-public class PartieFinie implements IEtatPartie {
+public class AttentePiocheIndice implements IEtatPartie {
 
-    private Joueur gagnant;
-    private Map<TypeCarte, ICarte> combinaisonGagnante;
+    private Joueur joueurCourant;
+    private List<Integer> des;
 
-    public PartieFinie(){}
+    public AttentePiocheIndice() { }
 
-    public PartieFinie(Joueur gagnant, Map<TypeCarte, ICarte> combinaisonGagnante) {
-        this.gagnant = gagnant;
-        this.combinaisonGagnante = combinaisonGagnante;
+    public AttentePiocheIndice(Joueur joueurCourant, List<Integer> des) {
+        this.joueurCourant = joueurCourant;
+        this.des = des;
     }
 
-    public Joueur getGagnant() {
-        return gagnant;
+    public Joueur getJoueurCourant() {
+        return joueurCourant;
     }
 
-    public void setGagnant(Joueur gagnant) {
-        this.gagnant = gagnant;
+    public void setJoueurCourant(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
     }
 
-    public Map<TypeCarte, ICarte> getCombinaisonGagnante() {
-        return combinaisonGagnante;
-    }
+    public List<Integer> getDes() { return des; }
 
-    public void setCombinaisonGagnante(Map<TypeCarte, ICarte> combinaisonGagnante) {
-        this.combinaisonGagnante = combinaisonGagnante;
-    }
+    public void setDes(List<Integer> des) { this.des = des; }
 
     @Override
     public IEtatPartie lancerDe(List<Integer> des) throws UnsupportedOperationException {
@@ -42,7 +38,7 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public IEtatPartie piocherIndice(List<ICarte> indices, List<Integer> des) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return new ResolutionIndice(joueurCourant, indices, des);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return joueurCourant;
     }
 
     @Override
@@ -107,7 +103,7 @@ public class PartieFinie implements IEtatPartie {
 
     @Override
     public List<Integer> obtenirDes() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+        return des;
     }
 
     @Override
@@ -119,4 +115,5 @@ public class PartieFinie implements IEtatPartie {
     public void changerJoueurActif(Joueur actifSuivant) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
+
 }

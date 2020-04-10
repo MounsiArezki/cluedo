@@ -67,6 +67,16 @@ public class ResolutionIndice implements IEtatPartie{
     }
 
     @Override
+    public IEtatPartie attentePiocheIndice(Joueur joueurCourant, List<Integer> des) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IEtatPartie revelationIndice(Joueur joueurCourant, Joueur joueurActif, ICarte carte) throws UnsupportedOperationException {
+        return new RevelationIndice(joueurCourant, joueurActif, carte);
+    }
+
+    @Override
     public IEtatPartie passerRevelerCarte(Joueur joueurActif) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }

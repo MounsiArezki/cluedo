@@ -261,29 +261,25 @@ public class GestionnairePartie {
 
     //DEPLACER
     public static void seDeplacer(User user, Position position, Partie partie) throws PasJoueurCourantException, DeplacementNonAutoriseException, ActionNonAutoriseeException {
-        boolean isJoueurCourant=isJoueurCourant(user, partie);
-        if(!isJoueurCourant){
-            throw new PasJoueurCourantException();
-        }
+        boolean isJoueurCourant = isJoueurCourant(user, partie);
+        if (!isJoueurCourant) throw new PasJoueurCourantException();
+
 
         //check si etat = resolution des OU resolution indices
         IEtatPartie etatPartie=partie.getEtatPartie();
-        if(!(etatPartie instanceof ResolutionDes || etatPartie instanceof ResolutionIndice)){
+        if (!(etatPartie instanceof ResolutionDes || etatPartie instanceof ResolutionIndice)) {
             throw new ActionNonAutoriseeException();
         }
 
-        Joueur joueur= partie.getJoueurs().get(user.getId());
-        List<Integer> des= partie.getEtatPartie().obtenirDes();
+        Joueur joueur = partie.getJoueurs().get(user.getId());
+        List<Integer> des = partie.getEtatPartie().obtenirDes();
 
-        boolean isDeplacementOk= isDeplacementOk(position, joueur, des, partie);
-        if(!isDeplacementOk){
-            throw new DeplacementNonAutoriseException();
-        }
+        boolean isDeplacementOk = isDeplacementOk(position, joueur, des, partie);
+        if (!isDeplacementOk) throw new DeplacementNonAutoriseException();
 
         joueur.setPosition(position);
-        partie.setEtatPartie(
-                partie.getEtatPartie().deplacer()
-        );
+        if (!des.contains(1)) partie.setEtatPartie(partie.getEtatPartie().deplacer());
+        else partie.setEtatPartie(partie.getEtatPartie().attentePiocheIndice(joueur, des));
     }
 
     //PIOCHER_INDICE
@@ -293,9 +289,9 @@ public class GestionnairePartie {
             throw new PasJoueurCourantException();
         }
 
-        //check si etat = resolution indice
+        //check si etat = attente pioche indice
         IEtatPartie etatPartie=partie.getEtatPartie();
-        if(!(etatPartie instanceof ResolutionIndice)){
+        if(!(etatPartie instanceof AttentePiocheIndice)){
             throw new ActionNonAutoriseeException();
         }
 
@@ -453,9 +449,23 @@ public class GestionnairePartie {
         }
     }
 
-    //JOUER_INDICE
+    //JOUER_INDICE_STANDARD (une carte qui demande au joueur de révéler une carte précise)
+    public static void jouerIndiceStandard(User user, ICarte carte, Partie partie) throws PasJoueurCourantException, ActionNonAutoriseeException {
+        Joueur jc = partie.getJoueurs().get(user.getId()); // récupération du joueur courant
+        boolean carteFound = false; // est-ce que la carte a été trouvée ?
+        if (isJoueurCourant(user, partie)) throw new PasJoueurCourantException();
 
+        //check si etat = indice
+        IEtatPartie etatPartie=partie.getEtatPartie();
+        if (!(etatPartie instanceof ResolutionIndice)) throw new ActionNonAutoriseeException();
 
-
+        for (Joueur ja : partie.getJoueurs().values()) {
+            if (ja.getListeCartes().contains(carte)) {
+                carteFound = true;
+                partie.setEtatPartie(partie.getEtatPartie().revelationIndice(jc, ja, carte));
+            }
+        }
+        if (!carteFound) partie.setEtatPartie(partie.getEtatPartie().deplacer());
+    }
 
 }

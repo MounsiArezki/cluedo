@@ -204,7 +204,7 @@ public class PlateauControleur {
                if(player.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
                    System.out.println("moving :"+J.getUser().getPseudo()+"to "+J.getPosition() );
 
-                 player.moveTo(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
+                 player.moveFromServer(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
                }
 
            });

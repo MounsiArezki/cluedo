@@ -95,6 +95,9 @@ public abstract class Character extends Circle {
     public void moveTo(Place place) {
         this.moveTo(place, false);
     }
+    public void moveFromServer(Place place) {
+        this.moveTo(place, false);
+    }
 
     public void moveTo(Place place, boolean forceMove) {
         if(place instanceof Teleportable)

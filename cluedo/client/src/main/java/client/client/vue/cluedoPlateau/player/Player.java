@@ -11,11 +11,11 @@ public class Player extends Character {
         super(plat, personnage, departPlace);
     }
 
-    @Override
+
     public void moveTo(Place place) {
 
         // If move is impossible, send impossible move message
-    /*    if(!posMoves.contains(place ) ) {
+        if(!posMoves.contains(place )  ) {
                 plateau.showMessage("impossible move !", Alert.AlertType.WARNING);
             return;
         }else if (!isMY_TURN() ){
@@ -23,7 +23,7 @@ public class Player extends Character {
             return;
         }
 
-     */
+
 
         delHighlightPosMoves();
 
@@ -32,6 +32,11 @@ public class Player extends Character {
         highlightPosMoves();
       //  MY_TURN =false;
 
+    }
+
+    @Override
+    public void moveFromServer(Place place ) {
+            super.moveTo(place);
     }
 
     public void guess(){

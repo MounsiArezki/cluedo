@@ -1,6 +1,10 @@
 package client.client.service;
 
+import client.client.config.CodeStatus;
 import client.client.config.ServiceConfig;
+import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
+import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.*;
 import client.client.modele.entite.carte.ICarte;
@@ -88,11 +92,19 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public User connexion(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException{
+    public User connexion(String login, String pwd) throws JsonProcessingException, DejaConnecteException, MdpIncorrectOuNonInscritException {
         User user=new User(login, pwd);
         HttpEntity<String> httpEntity=buildHttpEntity(user);
-
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_CONNEXION,httpEntity,String.class);
+        ResponseEntity<String> res = null;
+        try{
+             res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_CONNEXION,httpEntity,String.class);
+        }catch (HttpStatusCodeException e){
+            if (e.getStatusCode().value() == CodeStatus.CONFLICT.getCode()){
+                throw new DejaConnecteException();
+            }else if (e.getStatusCode().value() == CodeStatus.UNAUTHORIZED.getCode()){
+                throw  new MdpIncorrectOuNonInscritException();
+            }
+        }
 
         User userCo=objectMapper.readValue(res.getBody(), User.class);
         return userCo;
@@ -108,11 +120,18 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException{
+    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException {
         User user=new User(login, pwd);
         HttpEntity<String> httpEntity=buildHttpEntity(user);
+        ResponseEntity<String> res = null;
+    try{
+        res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER,httpEntity,String.class);
 
-        ResponseEntity<String> res=restTemplate.postForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_USER,httpEntity,String.class);
+    }catch (HttpStatusCodeException e){
+        if (e.getStatusCode().value()==CodeStatus.CONFLICT.getCode()){
+            throw new DejaInscritException();
+        }
+    }
 
         User userInsc=objectMapper.readValue(res.getBody(), User.class);
         return userInsc;

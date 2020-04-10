@@ -31,7 +31,7 @@ public class ConnexionControleur {
         loginView.show("Login");
     }
 
-    public void loginCntrl(String login,String pwd){
+    public void loginCntrl(String login,String pwd) throws MdpIncorrectOuNonInscritException, DejaConnecteException {
         try {
             User user=user = userService.connexion(login, pwd);
             VariablesGlobales.setUser(user);
@@ -40,21 +40,16 @@ public class ConnexionControleur {
         catch (JsonProcessingException e) {
             loginView.showMessage("Erreur Json", Alert.AlertType.ERROR);
         }
-        catch (HttpStatusCodeException e) {
-            loginView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
-        }
     }
 
-    public void inscrireCntrl(String login,String password) throws InscriptionException, DejaInscritException {
+    public void inscrireCntrl(String login,String password) throws  DejaInscritException {
         try {
             userService.insciption(login, password);
         }
         catch (JsonProcessingException e) {
             loginView.showMessage("Erreur Json", Alert.AlertType.ERROR);
         }
-        catch (HttpStatusCodeException e) {
-            loginView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
-        }
+
     }
 
     private void goToMenu(Stage menuStage) {

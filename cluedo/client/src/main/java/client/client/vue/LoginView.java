@@ -38,7 +38,13 @@ public class LoginView extends View<ConnexionControleur>   {
             this.showMessage("Veuillez remplire les champs svp", Alert.AlertType.INFORMATION);
         }
         else {
-            this.getControleur().loginCntrl(user.getText(), password.getText());
+            try {
+                this.getControleur().loginCntrl(user.getText(), password.getText());
+            } catch (MdpIncorrectOuNonInscritException e) {
+                showMessage("Non inscrit ou mdp incorect !", Alert.AlertType.WARNING);
+            } catch (DejaConnecteException e) {
+                showMessage("deja connecté §", Alert.AlertType.WARNING);
+            }
         }
     }
 
@@ -52,7 +58,7 @@ public class LoginView extends View<ConnexionControleur>   {
             getControleur().inscrireCntrl(user.getText(),password.getText());
             showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
         }
-        catch (InscriptionException | DejaInscritException e) {
+        catch ( DejaInscritException e) {
             showMessage(e.getMessage(), Alert.AlertType.ERROR);
         }
     }

@@ -138,9 +138,9 @@ public class PlateauControleur {
         }
         Lieu l = ((LieuPlace) place).getRoom();
         new HypotheseControleur(l, partie);
-    /*    Lieu l = Lieu.HALL;
+    /*
+        Lieu l = Lieu.HALL;
         new HypotheseControleur(l, partie);
-
      */
 
     }
@@ -156,16 +156,19 @@ public class PlateauControleur {
     public void createCharacters() {
         this.characters = new ArrayList<>();
 
-        // creer joueur
-        Joueur j = partie.getJoueurs().get(VariablesGlobales.getUser().getId());
-        Personnage perso = (Personnage) j.getPersonnage();
-        Position p = j.getPosition();
-        this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
-
-        this.characters.add(
-                this.player
-        );
-        //attention distinguer les autres players
+        for (Joueur j : partie.getJoueurs().values()){
+            //recup personnage
+            Personnage perso = (Personnage) j.getPersonnage();
+            //recup position
+            Position p = j.getPosition();
+            if (j.getUser().getId()==VariablesGlobales.getUser().getId()){
+                this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
+                this.characters.add( this.player );
+            }else {
+                Player adversaire =new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
+                this.characters.add( adversaire );
+            }
+        }
 
         for(Place[] places : this.getCluedoBoard().getGrid()) {
             for(Place place : places) {

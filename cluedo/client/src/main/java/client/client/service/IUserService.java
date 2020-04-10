@@ -1,5 +1,8 @@
 package client.client.service;
 
+import client.client.exception.connexionException.DejaConnecteException;
+import client.client.exception.connexionException.DejaInscritException;
+import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,11 +17,11 @@ public interface IUserService {
 
     public User[] getAllUsersWithFiltre(String filtre)throws HttpStatusCodeException, JsonProcessingException;
 
-    public User connexion(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException;
+    public User connexion(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaConnecteException, MdpIncorrectOuNonInscritException;
 
     public void deconnexion(String id) throws HttpStatusCodeException, JsonProcessingException;
 
-    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException;
+    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException;
 
     public void desinscrition() throws HttpStatusCodeException, JsonProcessingException;
 

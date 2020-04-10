@@ -1,10 +1,7 @@
 package webservice_v2.facade;
 
 import webservice_v2.exception.*;
-import webservice_v2.exception.partie.ActionNonAutoriseeException;
-import webservice_v2.exception.partie.DeplacementNonAutoriseException;
-import webservice_v2.exception.partie.PasJoueurActifException;
-import webservice_v2.exception.partie.PasJoueurCourantException;
+import webservice_v2.exception.partie.*;
 import webservice_v2.modele.entite.*;
 import webservice_v2.modele.entite.carte.ICarte;
 import webservice_v2.modele.entite.carte.TypeCarte;
@@ -331,6 +328,14 @@ public class Facade {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), partie);
+        else throw new JoueurPasDansLaPartieException();
+    }
+
+    // tirer une carte indice
+    public void tirerIndice(String idP, String idJ, List<Integer> des) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, PiocherIndiceNonAutoriseException {
+        Partie partie = findPartie(idP);
+
+        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.tirerIndice(findUser(idJ), des, partie);
         else throw new JoueurPasDansLaPartieException();
     }
 

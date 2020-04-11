@@ -201,7 +201,7 @@ public class ControlJoueur {
     }
 
     // récupérer les données de l'hypothèse et les transmettre à la facade
-    @PutMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE)
+    @PutMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE)
     public ResponseEntity<?> revelerCarte(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ, @RequestBody ICarte carte)  {
         try {
             facade.revelerCarte(idP, idJ, carte);

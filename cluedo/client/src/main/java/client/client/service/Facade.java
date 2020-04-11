@@ -407,9 +407,12 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
 
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_CARTE);
+        String uri = builder.build(params).toString();
+
         HttpEntity<String> httpEntity=buildHttpEntity(carte);
 
-        restTemplate.put(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_HYPOTHESE, httpEntity, String.class, params);
+        restTemplate.put(uri, httpEntity, String.class, params);
     }
 
     @Override

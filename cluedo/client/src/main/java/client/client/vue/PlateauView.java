@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -67,6 +68,12 @@ public class PlateauView extends View<PlateauControleur> {
         for (Character character: getControleur().getCharacters()){
             Circle c = new Circle();
             c.setRadius(Math.min(board.getGrid()[0][0].getWidth(), board.getGrid()[0][0].getHeight())/1.66);
+          /*  DropShadow dropShadow = new DropShadow();
+            dropShadow.setOffsetX(6.0);
+            dropShadow.setOffsetY(4.0);
+            c.setEffect(dropShadow);
+
+           */
             c.setFill(character.getPersonnage().getColor());
             c.setVisible(true);
             Label nomCharacter = new Label(character.getPersonnage().getNom());

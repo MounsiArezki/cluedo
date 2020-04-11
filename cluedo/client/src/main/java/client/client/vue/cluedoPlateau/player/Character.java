@@ -7,6 +7,7 @@ import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -57,6 +58,10 @@ public abstract class Character extends Circle {
             display();
         }
         this.actPlace = departPlace;
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(6.0);
+        dropShadow.setOffsetY(4.0);
+        this.setEffect(dropShadow);
         this.setCenterX(actPlace.getCenter().getX());
         this.setCenterY(actPlace.getCenter().getY());
         departPlace.setOccupied(true);
@@ -163,7 +168,7 @@ public abstract class Character extends Circle {
 
     private void display() {
         Board board = this.plateau.getControleur().getCluedoBoard();
-        this.setRadius(Math.min(board.getGrid()[0][0].getWidth(), board.getGrid()[0][0].getHeight())/1.66);
+        this.setRadius(Math.min(board.getGrid()[0][0].getWidth()-6, board.getGrid()[0][0].getHeight())/1.66);
         this.setFill(personnage.getColor());
         this.setVisible(true);
     }

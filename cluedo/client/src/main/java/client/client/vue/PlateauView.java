@@ -1,9 +1,13 @@
 package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
+import client.client.modele.entite.Joueur;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Partie;
+import client.client.modele.entite.carte.Arme;
 import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.Lieu;
+import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.etat_partie.Actions;
 import client.client.modele.entite.etat_partie.EnAttenteDesJoueurs;
 import client.client.modele.entite.etat_partie.IEtatPartie;
@@ -18,16 +22,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class PlateauView extends View<PlateauControleur> {
 
     @FXML
     public HBox cartes;
     public HBox cartesIndices;
-    public Accordion feuilleDetective;
+    public VBox qui;
+    public VBox avecQuoi;
+    public VBox ou;
     public ImageView iconeJoueur;
     public Label nomJoueurJ;
     public TextField desResultat;
@@ -54,6 +63,7 @@ public class PlateauView extends View<PlateauControleur> {
         for(ICarte carte : listeCartes){
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             Button buttonImg = new Button();
+            buttonImg.setUserData(carte);
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(67);
             imageView.setFitWidth(69);
@@ -61,10 +71,7 @@ public class PlateauView extends View<PlateauControleur> {
             buttonImg.setId(carte.getNom());
 
             buttonImg.addEventHandler(
-                    MouseEvent.MOUSE_CLICKED, (event) -> getControleur().getPlayer()
-                            .passCard(
-                                    event.getPickResult().getIntersectedNode().getId()
-                            )
+                    MouseEvent.MOUSE_CLICKED, (event) -> getControleur().revelerCarte(carte)
             );
             observableListCard.add(buttonImg);
         }
@@ -95,9 +102,7 @@ public class PlateauView extends View<PlateauControleur> {
 
     public void piocherIndiceAction(ActionEvent actionEvent) {
         System.out.println(getControleur().getPartie().getEtatPartie());
-        System.out.println("avant pioche");
         List<ICarte> indices = getControleur().piocherIndice();
-        System.out.println("après pioche");
         for (ICarte c : indices){
             ImageView img = new ImageView(ImagePath.getImagePath(c.getNom()));
             img.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -130,12 +135,69 @@ public class PlateauView extends View<PlateauControleur> {
         }
         getControleur().gestionAction();
         etatPartieLabel.setText(etat.obtenirTexte());
+        refreshFicheDetective();
     }
 
     public void drawCluedoBoard(){
         board.initializeGrid();
         board.calcAdjacent();
         board.draw();
+    }
+
+    private void refreshFicheDetective(){
+        Map<ICarte, Joueur> fiche = getControleur().getFicheDetective();
+        qui.getChildren().clear();
+        avecQuoi.getChildren().clear();
+        ou.getChildren().clear();
+        for (ICarte c : Personnage.values()){
+            HBox ligneFiche = new HBox();
+
+            Label nomCarte = new Label();
+            nomCarte.setText(c.getNom());
+            nomCarte.setPrefWidth(75);
+            nomCarte.setFont(new Font(10));
+
+            Label joueurCarte = new Label();
+            joueurCarte.setPrefWidth(75);
+            joueurCarte.setFont(new Font(10));
+            /*joueurCarte.setText(fiche.get(c).getPersonnage().getNom());*/
+
+            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
+            qui.getChildren().add(ligneFiche);
+        }
+        for (ICarte c : Arme.values()){
+            HBox ligneFiche = new HBox();
+
+            Label nomCarte = new Label();
+            nomCarte.setPrefWidth(75);
+            nomCarte.setFont(new Font(10));
+            nomCarte.setText(c.getNom());
+
+            Label joueurCarte = new Label();
+            joueurCarte.setPrefWidth(75);
+            joueurCarte.setFont(new Font(10));
+            /*joueurCarte.setText(fiche.get(c).getPersonnage().getNom());*/
+
+            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
+            avecQuoi.getChildren().add(ligneFiche);
+        }
+        for (ICarte c : Lieu.values()){
+            HBox ligneFiche = new HBox();
+
+            Label nomCarte = new Label();
+            nomCarte.setPrefWidth(75);
+            nomCarte.setFont(new Font(10));
+            nomCarte.setText(c.getNom());
+
+            Label joueurCarte = new Label();
+            joueurCarte.setPrefWidth(75);
+            joueurCarte.setFont(new Font(10));
+            /*joueurCarte.setText(fiche.get(c).getPersonnage().getNom());*/
+
+            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
+            ou.getChildren().add(ligneFiche);
+        }
+
     }
 
     public CluedoBoard getBoard() {
@@ -145,7 +207,11 @@ public class PlateauView extends View<PlateauControleur> {
     public void disableDes(boolean ok){ lancerDesButton.setDisable(ok); }
     public void disableHypothese(boolean ok){ hypotheseButton.setDisable(ok); }
     public void disableAccusation(boolean ok){ accusationButton.setDisable(ok); }
-    public void disableCartes(Boolean ok){ cartes.setDisable(ok); }
+    public void disableCartes(Boolean ok){
+        for (Button b : getObservableListCard()){
+            b.setDisable(ok);
+        }
+    }
     public void disablePasser(Boolean ok){ passerButton.setDisable(ok); }
     public void disablePiocheIndice(Boolean ok){ piocherIndiceButton.setDisable(ok); }
     public void disableCartesIndice(Boolean ok){ cartesIndices.setDisable(ok); }

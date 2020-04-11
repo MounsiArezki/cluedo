@@ -78,6 +78,7 @@ public class CreerPartieControleur {
         Platform.runLater( () ->{
             if (users != null) {
                 usersCo=new ArrayList<>(List.of(users));
+                usersCo.remove(VariablesGlobales.getUser());
                 creerPartieView.refresh();
             }
         });

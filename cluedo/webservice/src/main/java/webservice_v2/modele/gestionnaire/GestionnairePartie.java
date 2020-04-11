@@ -80,24 +80,29 @@ public class GestionnairePartie {
     }
 
     private static Joueur getJoueurActifSuivant(Partie partie){
+        Joueur joueurActif = null;
         try{
-            Joueur joueurActif=partie.getEtatPartie().obtenirJoueurAtif();
-            int ordreActif=partie.getOrdreByJoueur().get(joueurActif.getUser().getId());
-            int ordreActifSuivant= (ordreActif+1) % partie.getJoueurs().size();
-            String idSuivant=partie.getJoueurByOrdre().get(ordreActifSuivant);
-
-            Joueur joueurActifSuivant=null;
-
-            //check que le joueur courant ne soit pas le prochain joueur actif
-            Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
-            if(!idSuivant.equals(joueurCourant.getUser().getId())){
-                joueurActifSuivant=partie.getJoueurs().get(idSuivant);
-            }
-            return joueurActifSuivant;
+            joueurActif=partie.getEtatPartie().obtenirJoueurAtif();
         }
         catch (UnsupportedOperationException e){
-            return null;
+            try{
+                joueurActif = partie.getEtatPartie().obtenirJoueurCourant();
+            } catch (UnsupportedOperationException e2){
+                return null;
+            }
         }
+        int ordreActif=partie.getOrdreByJoueur().get(joueurActif.getUser().getId());
+        int ordreActifSuivant= (ordreActif % partie.getJoueurs().size())+1;
+        String idSuivant=partie.getJoueurByOrdre().get(ordreActifSuivant);
+
+        Joueur joueurActifSuivant=null;
+
+        //check que le joueur courant ne soit pas le prochain joueur actif
+        Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
+        if(!idSuivant.equals(joueurCourant.getUser().getId())){
+            joueurActifSuivant=partie.getJoueurs().get(idSuivant);
+        }
+        return joueurActifSuivant;
     }
 
     // vérifier si la distance du déplacement égal le nombre des dés
@@ -403,8 +408,6 @@ public class GestionnairePartie {
         }
 
         Joueur suivant=getJoueurSuivant(partie);
-        System.out.println("joueur courant "+partie.getEtatPartie().obtenirJoueurCourant());
-        System.out.println("joueur suivant "+suivant);
         partie.setEtatPartie(
                 partie.getEtatPartie().debuterTour(suivant)
         );
@@ -424,7 +427,7 @@ public class GestionnairePartie {
         }
 
         partie.setEtatPartie(
-                partie.getEtatPartie().faireHypothese(partie.getJoueurs().get(user.getId()), hypothese)
+                partie.getEtatPartie().faireHypothese(getJoueurActifSuivant(partie), hypothese)
         );
     }
 
@@ -448,6 +451,9 @@ public class GestionnairePartie {
             );
         }
         else {
+            Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
+            Joueur joueurActif=partie.getEtatPartie().obtenirJoueurAtif();
+            joueurCourant.getFicheEnquete().put(carte, joueurActif);
             partie.setEtatPartie(
                     partie.getEtatPartie().resoudreHypothese()
             );

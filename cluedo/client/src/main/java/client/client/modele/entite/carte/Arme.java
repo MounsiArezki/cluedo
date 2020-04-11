@@ -9,8 +9,8 @@ public enum  Arme implements ICarte {
     CHANDELIER("CHANDELIER"),
     REVOLVER("REVOLVER"),
     CORDE("CORDE"),
-    TUYAU_DE_PLOMB("TUYAU_EN_PLOMB"),
-    CLE_ANGLAISE("CLE");
+    TUYAU_DE_PLOMB("TUYAU_DE_PLOMB"),
+    CLE_ANGLAISE("CLE_ANGLAISE");
 
     private String nom;
 

@@ -43,9 +43,14 @@ public class ControlJoueur {
 
     // récupération fiche joueur
     @GetMapping(value = ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<ICarte, Joueur>> getJoueurFiche(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
+    public ResponseEntity<Map<String, Joueur>> getJoueurFiche(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
         try {
-            return ResponseEntity.ok(facade.getJoueurFiche(idP, idJ));
+            Map<ICarte, Joueur> ficheCarte = facade.getJoueurFiche(idP, idJ);
+            Map<String, Joueur> ficheString = new HashMap<>();
+            for (ICarte c : ficheCarte.keySet()){
+                ficheString.put(c.getNom(), ficheCarte.get(c));
+            }
+            return ResponseEntity.ok(ficheString);
         } catch (JoueurPasDansLaPartieException e) {
             System.out.println("200 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -168,13 +173,10 @@ public class ControlJoueur {
             Map<TypeCarte, ICarte> mapCartes = new HashMap<>();
             for (String carte : mc){
                 if (Arme.getCarteByNom(carte) != null){
-                    System.out.println("ici");
                     mapCartes.put(TypeCarte.ARME, Arme.getCarteByNom(carte));
                 } else if (Personnage.getCarteByNom(carte) != null){
-                    System.out.println("là");
                     mapCartes.put(TypeCarte.PERSONNAGE, Personnage.getCarteByNom(carte));
                 } else if (Lieu.getCarteByNom(carte) != null){
-                    System.out.println("oups");
                     mapCartes.put(TypeCarte.LIEU, Lieu.getCarteByNom(carte));
                 } else {
                     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

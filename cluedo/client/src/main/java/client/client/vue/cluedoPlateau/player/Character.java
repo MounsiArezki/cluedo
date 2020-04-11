@@ -133,7 +133,7 @@ public abstract class Character extends Circle {
     public Set<Place> calcPosMoves() {return this.calcPosMoves(this.getActPlace(), this.getLancerNum());}
 
     public Set<Place> calcPosMoves(Place loc, int distance) {
-        return this.calcPosMoves(loc, distance, distance+8);
+        return this.calcPosMoves(loc, distance, distance);
     }
 
     public Set<Place> calcPosMoves(Place loc, int distance, int maxSp) {

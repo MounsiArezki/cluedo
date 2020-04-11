@@ -148,6 +148,12 @@ public abstract class Character extends Circle {
             moves.addAll(calcPosMoves(place, distance - place.getMoveCost(), maxSp-1));
             moves.add(place);
         }
+        for (Place p : moves){
+
+
+
+        }
+
         return moves;
     }
 

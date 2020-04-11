@@ -191,14 +191,25 @@ public class PlateauControleur {
             for(Place place : places) {
                 place.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
                 {
+                    boolean erreur =false;
                     Place placeTo =(Place) event.getTarget();
-                    this.getPlayer().moveTo(placeTo);
+
                     try {
                         System.out.println("deppppppppppp"+placeTo.getPositionOnGrid());
+
                         joueurService.seDeplacer(getPartie().getId(), placeTo.getPositionOnGrid());
+
+
                     } catch (JsonProcessingException e) {
                         getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
+                        erreur =true;
 
+                    }catch (HttpStatusCodeException e){
+                        getPlateauView().showMessage("deplacement non  valide ! faite tout le dep !", Alert.AlertType.WARNING);
+                        erreur =true;
+                    }
+                    if (!erreur){
+                        this.getPlayer().moveTo(placeTo);
                     }
 
                 }

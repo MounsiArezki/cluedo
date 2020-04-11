@@ -110,6 +110,7 @@ public class GestionnairePartie {
         return dRes == diff;
 
 
+
     }
 
     //

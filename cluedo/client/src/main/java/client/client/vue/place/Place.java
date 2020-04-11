@@ -20,7 +20,7 @@ public class Place extends Rectangle {
     private boolean isOccupied;
     private final boolean isReachable;
     private Place[] adjacent;
-    private static final int MAX_SP = 12;
+    private static final int MAX_SP = 15;
     private final DirectionKey direction;
     private final int moveCost;
 

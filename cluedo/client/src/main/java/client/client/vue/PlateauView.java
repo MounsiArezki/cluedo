@@ -13,16 +13,20 @@ import client.client.modele.entite.etat_partie.EnAttenteDesJoueurs;
 import client.client.modele.entite.etat_partie.IEtatPartie;
 import client.client.modele.entite.io.ImagePath;
 import client.client.vue.cluedoPlateau.plateau.CluedoBoard;
+import client.client.vue.cluedoPlateau.player.Character;
+import client.client.vue.cluedoPlateau.player.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
 import java.util.Collection;
@@ -47,6 +51,7 @@ public class PlateauView extends View<PlateauControleur> {
     public Button lancerDesButton;
     public Button passerButton;
     public Button piocherIndiceButton;
+    public VBox listPlayersPartieVBox;
 
     private boolean init=false;
 
@@ -55,11 +60,29 @@ public class PlateauView extends View<PlateauControleur> {
     }
 
     ObservableList<Button> observableListCard=FXCollections.observableArrayList();
+    ObservableList<HBox> observableListJoueursPartie=FXCollections.observableArrayList();
+
+
+    public void playerListOnBoard(){
+        for (Character character: getControleur().getCharacters()){
+            Circle c = new Circle();
+            c.setRadius(Math.min(board.getGrid()[0][0].getWidth(), board.getGrid()[0][0].getHeight())/1.66);
+            c.setFill(character.getPersonnage().getColor());
+            c.setVisible(true);
+            Label nomCharacter = new Label(character.getPersonnage().getNom());
+            HBox h = new HBox();
+            h.getChildren().addAll(c,nomCharacter);
+            h.setAlignment(Pos.CENTER_LEFT);
+            observableListJoueursPartie.add(h);
+
+        }
+        listPlayersPartieVBox.getChildren().addAll(observableListJoueursPartie);
+    }
 
 
     public void distribuerCartes(){
-        Collection<ICarte> listeCartes = getControleur().getMyCard();
 
+        Collection<ICarte> listeCartes = getControleur().getMyCard();
         for(ICarte carte : listeCartes){
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             Button buttonImg = new Button();
@@ -129,6 +152,7 @@ public class PlateauView extends View<PlateauControleur> {
             if(!(etat instanceof EnAttenteDesJoueurs)){
                 distribuerCartes();
                 getControleur().createCharacters();
+                playerListOnBoard();
                 nomJoueurJ.setText(getControleur().getPlayer().getPersonnage().getNom()+" ("+ VariablesGlobales.getUser().getPseudo()+" )");
                 init=true;
             }

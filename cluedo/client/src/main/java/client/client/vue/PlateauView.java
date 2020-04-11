@@ -1,6 +1,7 @@
 package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
+import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.etat_partie.Actions;
@@ -123,6 +124,7 @@ public class PlateauView extends View<PlateauControleur> {
             if(!(etat instanceof EnAttenteDesJoueurs)){
                 distribuerCartes();
                 getControleur().createCharacters();
+                nomJoueurJ.setText(getControleur().getPlayer().getPersonnage().getNom()+" ("+ VariablesGlobales.getUser().getPseudo()+" )");
                 init=true;
             }
         }

@@ -14,6 +14,7 @@ import webservice_v2.modele.entite.Joueur;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.*;
+import webservice_v2.modele.gestionnaire.GestionnairePartie;
 
 import java.util.HashMap;
 import java.util.List;
@@ -224,6 +225,7 @@ public class ControlJoueur {
     public ResponseEntity<?> passer(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ)  {
         try {
             facade.passer(idP, idJ);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (PasJoueurCourantException e) {
             System.out.println("401 ws ce n'est pas le tour de ce joueur");

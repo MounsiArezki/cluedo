@@ -1,7 +1,6 @@
 package client.client.vue;
 
 import client.client.controleur.PlateauControleur;
-import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Partie;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.etat_partie.Actions;
@@ -20,25 +19,26 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.Collection;
+import java.util.List;
 
 public class PlateauView extends View<PlateauControleur> {
 
-
     @FXML
-    public HBox Cartes;
+    public HBox cartes;
+    public HBox cartesIndices;
     public Accordion feuilleDetective;
-    public ImageView IconejoueurJ;
+    public ImageView iconeJoueur;
     public Label nomJoueurJ;
     public TextField desResultat;
-    public Button accusBtn;
-    public Button hypoBtn;
+    public Button accusationButton;
+    public Button hypotheseButton;
     public CluedoBoard board;
     public Label etatPartieLabel;
-    public Button lancerBtn;
-    public Button passerBtn;
+    public Button lancerDesButton;
+    public Button passerButton;
+    public Button piocherIndiceButton;
 
     private boolean init=false;
-
 
     public ObservableList<Button> getObservableListCard() {
         return observableListCard;
@@ -65,12 +65,10 @@ public class PlateauView extends View<PlateauControleur> {
                                     event.getPickResult().getIntersectedNode().getId()
                             )
             );
-
             observableListCard.add(buttonImg);
         }
-
-        Cartes.getChildren().removeAll();
-        Cartes.getChildren().addAll(observableListCard);
+        cartes.getChildren().removeAll();
+        cartes.getChildren().addAll(observableListCard);
     }
 
 
@@ -94,6 +92,19 @@ public class PlateauView extends View<PlateauControleur> {
         getControleur().passerTour();
     }
 
+    public void piocherIndiceAction(ActionEvent actionEvent) {
+        System.out.println(getControleur().getPartie().getEtatPartie());
+        System.out.println("avant pioche");
+        List<ICarte> indices = getControleur().piocherIndice();
+        System.out.println("après pioche");
+        for (ICarte c : indices){
+            ImageView img = new ImageView(ImagePath.getImagePath(c.getNom()));
+            img.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    (event) -> cartesIndices.getChildren().remove(img));
+            cartesIndices.getChildren().add(img);
+        }
+    }
+
     public void fermerAction(ActionEvent actionEvent){
         getControleur().retourMenu();
     }
@@ -114,45 +125,10 @@ public class PlateauView extends View<PlateauControleur> {
                 getControleur().createCharacters();
                 init=true;
             }
-
         }
-
-
         getControleur().gestionAction();
         etatPartieLabel.setText(etat.obtenirTexte());
     }
-
-    private void activerActions(Partie partie){
-        for(Actions actions: partie.getEtatPartie().obtenirActionsPossibles()){
-            switch (actions){
-                case PASSER:
-                    disablePasser(false);
-                    break;
-                case ACCUSER:
-                    disableAccusation(false);
-                    break;
-                case DEPLACER:
-                    break;
-                case LANCER_DES:
-                    disableDes(false);
-                    break;
-                case JOUER_INDICE:
-                    break;
-                case REVELER_CARTE:
-                    disableCartes(false);
-                    break;
-                case PIOCHER_INDICE:
-                    break;
-                case EMETTRE_HYPOTHESE:
-                    disableHypothese(false);
-                    break;
-            }
-        }
-    }
-
-
-
-
 
     public void drawCluedoBoard(){
         board.initializeGrid();
@@ -163,18 +139,24 @@ public class PlateauView extends View<PlateauControleur> {
     public CluedoBoard getBoard() {
         return board;
     }
-    public void disableDes(boolean ok){lancerBtn.setDisable(ok);}
-    public void disableHypothese(boolean ok){ hypoBtn.setDisable(ok);}
-    public void disableAccusation(boolean ok){ accusBtn.setDisable(ok); }
-    public void disableCartes(Boolean ok){Cartes.setDisable(ok);}
-    public void disablePasser(Boolean ok){passerBtn.setDisable(ok);}
+
+    public void disableDes(boolean ok){ lancerDesButton.setDisable(ok); }
+    public void disableHypothese(boolean ok){ hypotheseButton.setDisable(ok); }
+    public void disableAccusation(boolean ok){ accusationButton.setDisable(ok); }
+    public void disableCartes(Boolean ok){ cartes.setDisable(ok); }
+    public void disablePasser(Boolean ok){ passerButton.setDisable(ok); }
+    public void disablePiocheIndice(Boolean ok){ piocherIndiceButton.setDisable(ok); }
+    public void disableCartesIndice(Boolean ok){ cartesIndices.setDisable(ok); }
 
     public  void disableAll(boolean ok ){
-        lancerBtn.setDisable(ok);
-        hypoBtn.setDisable(ok);
-        accusBtn.setDisable(ok);
-        Cartes.setDisable(ok);
-        passerBtn.setDisable(ok);
+        disableDes(ok);
+        disableHypothese(ok);
+        disableAccusation(ok);
+        disableCartes(ok);
+        disablePasser(ok);
+        disablePiocheIndice(ok);
+        disableCartesIndice(ok);
+
     }
 
 }

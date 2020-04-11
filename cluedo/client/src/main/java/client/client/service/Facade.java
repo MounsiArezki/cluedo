@@ -390,7 +390,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
         restTemplate.put(uri, params);
     }
-/*
+
     @Override
     public void seDeplacer(String idPartie, Position position) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
@@ -406,8 +406,8 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
         ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
     }
-*/
-@Override
+
+/*@Override
 public void seDeplacer(String idPartie, Position position) throws HttpStatusCodeException, JsonProcessingException {
     User user=VariablesGlobales.getUser();
 
@@ -421,7 +421,7 @@ public void seDeplacer(String idPartie, Position position) throws HttpStatusCode
     HttpEntity<String> httpEntity=buildHttpEntity(position);
 
     ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
-}
+}*/
 
     @Override
     public void revelerCarte(String idPartie, ICarte carte) throws HttpStatusCodeException, JsonProcessingException {

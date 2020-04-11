@@ -13,12 +13,12 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0">
                <children>
-                  <Button fx:id="passerBtn" mnemonicParsing="false" onAction="#passerAction" text="Passer">
+                  <Button fx:id="passerButton" mnemonicParsing="false" onAction="#passerAction" text="Passer">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
                </children></HBox>
-            <HBox fx:id="Cartes" alignment="CENTER" prefHeight="100.0" prefWidth="753.0" />
+            <HBox fx:id="cartes" alignment="CENTER" prefHeight="100.0" prefWidth="753.0" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="182.0">
                <children>
                   <Button mnemonicParsing="false" text="Fermer" onAction="#fermerAction">
@@ -40,7 +40,7 @@
                         <TextField fx:id="desResultat" alignment="CENTER" prefHeight="25.0" prefWidth="53.0" />
                      </children>
                   </HBox>
-                  <Button id="desBtn" fx:id="lancerBtn" mnemonicParsing="false" onAction="#lancerDesAction" prefHeight="34.0" prefWidth="47.0">
+                  <Button id="desBtn" fx:id="lancerDesButton" mnemonicParsing="false" onAction="#lancerDesAction" prefHeight="34.0" prefWidth="47.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -50,8 +50,8 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
-                  <Button id="hypotheseBouton" fx:id="hypoBtn" text="Emettre une hypothèse" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="47.0"></Button>
-                  <Button id="accusationBouton" fx:id="accusBtn" text="Accuser" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="47.0"></Button>
+                  <Button id="hypotheseBouton" fx:id="hypotheseButton" text="Emettre une hypothèse" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="47.0"></Button>
+                  <Button id="accusationBouton" fx:id="accusationButton" text="Accuser" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="47.0"></Button>
                </children>
             </VBox>
          </children>
@@ -78,7 +78,9 @@
                      </content></TitledPane>
                </panes>
             </Accordion>
-            <ImageView fx:id="IconejoueurJ" fitHeight="44.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="piocherIndiceButton" text="Piocher un indice" onAction="#piocherIndiceAction"></Button>
+            <HBox fx:id="cartesIndices"></HBox>
+            <ImageView fx:id="iconeJoueur" fitHeight="44.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="nomJoueurJ" text="Nom J" />
          </children>
       </VBox>

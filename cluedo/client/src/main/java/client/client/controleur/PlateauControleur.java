@@ -10,6 +10,7 @@ import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.etat_partie.Actions;
 import client.client.modele.entite.etat_partie.IEtatPartie;
 import client.client.modele.entite.io.FxmlPath;
+import client.client.modele.entite.io.ImagePath;
 import client.client.service.Facade;
 import client.client.service.IJoueurService;
 import client.client.service.IPartieService;
@@ -20,13 +21,14 @@ import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.LieuPlace;
 import client.client.vue.place.Place;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class PlateauControleur {
@@ -44,8 +46,6 @@ public class PlateauControleur {
     }
 
     List<Character> characters;
-    //simulation get autres joueurs partie
-    Collection<Joueur> joueursPartie;
 
     public PlateauControleur(Stage plateauStage, String idPartie) {
         this.plateauStage = plateauStage;
@@ -156,6 +156,17 @@ public class PlateauControleur {
         }
     }
 
+    public List<ICarte> piocherIndice(){
+        List<ICarte> indices = new ArrayList<>();
+        try {
+            indices = joueurService.piocherIndices(partie.getId());
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+            plateauView.showMessage("Erreur lors de la pioche d'indice", Alert.AlertType.ERROR);
+        }
+        return indices;
+    }
+
     public void createCharacters() {
         this.characters = new ArrayList<>();
 
@@ -165,9 +176,11 @@ public class PlateauControleur {
             //recup position
             Position p = j.getPosition();
             if (j.getUser().getId().equals(VariablesGlobales.getUser().getId())){
-
                 this.player = new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
                 this.characters.add( this.player );
+                System.out.println(j.getPersonnage().getNom());
+                this.plateauView.iconeJoueur.setImage(new Image(ImagePath.getImagePath(j.getPersonnage().getNom())));
+                System.out.println(ImagePath.getImagePath(j.getPersonnage().getNom()));
             }else {
                 Player adversaire =new Player( this.plateauView, perso, getCluedoBoard().getItemFromCoordinate(p));
                 this.characters.add( adversaire );
@@ -182,7 +195,7 @@ public class PlateauControleur {
                     this.getPlayer().moveTo(placeTo);
                     try {
                         System.out.println("deppppppppppp"+placeTo.getPositionOnGrid());
-                        joueurService.seDeplacer(getPartie().getId(),placeTo.getPositionOnGrid());
+                        joueurService.seDeplacer(getPartie().getId(), placeTo.getPositionOnGrid());
                     } catch (JsonProcessingException e) {
                         getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
 
@@ -232,31 +245,34 @@ public class PlateauControleur {
             System.out.println(e.getMessage());
         }
         if (isActif || isCourant){
+            System.out.println("actif "+isActif);
+            System.out.println("courant "+isCourant);
             List<Actions> actionsList = etat.obtenirActionsPossibles();
             for (Actions action : actionsList){
                 System.out.println(action);
                 switch (action){
                     case PASSER:
-                        this.plateauView.disablePasser(false);
+                        this.plateauView.disablePasser(!(isCourant||isActif));
                         break;
                     case ACCUSER:
-                        this.plateauView.disableAccusation(false);
+                        this.plateauView.disableAccusation(!isCourant);
                         break;
                     case DEPLACER:
                         break;
                     case LANCER_DES:
-                        this.plateauView.disableDes(false);
-                        // activer les bouttons
+                        this.plateauView.disableDes(!isCourant);
                         break;
                     case JOUER_INDICE:
+                        this.plateauView.disableCartesIndice(!isCourant);
                         break;
                     case REVELER_CARTE:
-                        this.plateauView.disableCartes(false);
+                        this.plateauView.disableCartes(!isActif);
                         break;
                     case PIOCHER_INDICE:
+                        this.plateauView.disablePiocheIndice(!isCourant);
                         break;
                     case EMETTRE_HYPOTHESE:
-                        this.plateauView.disableHypothese(false);
+                        this.plateauView.disableHypothese(!isCourant);
                         break;
                 }
             }
@@ -266,11 +282,6 @@ public class PlateauControleur {
         }
 
     }
-
-
-
-
-
 
     public Integer roll() {
         Integer res = 0;

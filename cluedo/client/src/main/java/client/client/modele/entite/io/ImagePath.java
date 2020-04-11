@@ -1,7 +1,6 @@
 package client.client.modele.entite.io;
 
 import client.client.modele.entite.carte.Arme;
-import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.Lieu;
 import client.client.modele.entite.carte.Personnage;
 

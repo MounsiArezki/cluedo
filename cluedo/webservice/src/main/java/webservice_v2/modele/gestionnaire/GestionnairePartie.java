@@ -66,11 +66,15 @@ public class GestionnairePartie {
         try{
             Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
             int ordreCourant=partie.getOrdreByJoueur().get(joueurCourant.getUser().getId());
-            int ordreSuivant= (ordreCourant+1) % partie.getJoueurs().size();
+            System.out.println("ordre courant "+ordreCourant);
+            int ordreSuivant= (ordreCourant % partie.getJoueurs().size())+1;
+            System.out.println("ordre suivant "+ordreSuivant);
             String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
+            System.out.println("id suivant "+idSuivant);
             return partie.getJoueurs().get(idSuivant);
         }
         catch (UnsupportedOperationException e){
+            System.out.println("Erreur dans la récupération du joueur suivant");
             return null;
         }
     }
@@ -103,7 +107,6 @@ public class GestionnairePartie {
         int dRes = des.get(0) + des.get(1); // résultat des deux dés
         int diff = Math.abs(pInitiale.getX() - dest.getX()) + Math.abs(pInitiale.getY() - dest.getY());
 
-        System.out.println("nouvelle pos init "+pInitiale.getX()+" , " +pInitiale.getY()+" =>" + dest.getX()+" , "+dest.getY());
         return dRes == diff;
 
 
@@ -143,7 +146,6 @@ public class GestionnairePartie {
         //transitionne vers l'état Debut Tour du P1
         String id = partie.getJoueurByOrdre().get(1);
         Joueur p1= partie.getJoueurs().get(id);
-        System.out.println("coucou "+p1.getPersonnage());
         partie.setEtatPartie(
                 partie.getEtatPartie().debuterTour(p1)
         );
@@ -279,7 +281,7 @@ public class GestionnairePartie {
 
         joueur.setPosition(position);
         if (!des.contains(1)) partie.setEtatPartie(partie.getEtatPartie().deplacer());
-        else partie.setEtatPartie(partie.getEtatPartie().attentePiocheIndice(joueur, des));
+        else partie.setEtatPartie(partie.getEtatPartie().deplacer());
     }
 
     //PIOCHER_INDICE
@@ -291,7 +293,7 @@ public class GestionnairePartie {
 
         //check si etat = attente pioche indice
         IEtatPartie etatPartie=partie.getEtatPartie();
-        if(!(etatPartie instanceof AttentePiocheIndice)){
+        if(!(etatPartie instanceof ResolutionDes)){
             throw new ActionNonAutoriseeException();
         }
 
@@ -400,6 +402,8 @@ public class GestionnairePartie {
         }
 
         Joueur suivant=getJoueurSuivant(partie);
+        System.out.println("joueur courant "+partie.getEtatPartie().obtenirJoueurCourant());
+        System.out.println("joueur suivant "+suivant);
         partie.setEtatPartie(
                 partie.getEtatPartie().debuterTour(suivant)
         );

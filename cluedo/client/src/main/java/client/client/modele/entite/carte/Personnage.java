@@ -4,12 +4,12 @@ import client.client.modele.entite.io.ImagePath;
 import javafx.scene.paint.Color;
 
 public enum Personnage implements ICarte{
-    MOUTARDE("Moutarde", Color.ORANGE),
-    ROSE("Rose", Color.RED),
-    PERVENCHE("Pervenche", Color.BLUE),
-    OLIVE("Olive", Color.GREEN),
-    VIOLET("Violet", Color.PURPLE),
-    ORCHIDEE("Orchidée", Color.WHITE);
+    MOUTARDE("MOUTARDE", Color.ORANGE),
+    ROSE("ROSE", Color.RED),
+    PERVENCHE("PERVENCHE", Color.BLUE),
+    OLIVE("OLIVE", Color.GREEN),
+    VIOLET("VIOLET", Color.PURPLE),
+    ORCHIDEE("ORCHIDEE", Color.WHITE);
 
     private String nom;
     private Color color;

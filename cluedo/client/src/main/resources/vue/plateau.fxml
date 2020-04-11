@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import client.client.vue.cluedoPlateau.*?>
+<?import client.client.vue.cluedoPlateau.plateau.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import client.client.vue.cluedoPlateau.plateau.CluedoBoard?>
 <BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
@@ -21,7 +20,7 @@
             <HBox fx:id="cartes" alignment="CENTER" prefHeight="100.0" prefWidth="753.0" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="182.0">
                <children>
-                  <Button mnemonicParsing="false" text="Fermer" onAction="#fermerAction">
+                  <Button mnemonicParsing="false" onAction="#fermerAction" text="Fermer">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
@@ -50,8 +49,8 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
-                  <Button id="hypotheseBouton" fx:id="hypotheseButton" text="Emettre une hypothèse" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="47.0"></Button>
-                  <Button id="accusationBouton" fx:id="accusationButton" text="Accuser" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="47.0"></Button>
+                  <Button id="hypotheseBouton" fx:id="hypotheseButton" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="47.0" text="Emettre une hypothèse" />
+                  <Button id="accusationBouton" fx:id="accusationButton" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="47.0" text="Accuser" />
                </children>
             </VBox>
          </children>
@@ -60,26 +59,55 @@
    <right>
       <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Accordion fx:id="feuilleDetective" prefHeight="214.0" prefWidth="168.0">
-               <panes>
-                  <TitledPane animated="false" text="Suspects">
-                     <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0" />
-                     </content>
-                  </TitledPane>
-                  <TitledPane animated="false" text="Armes">
-                     <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0" />
-                     </content>
-                  </TitledPane>
-                  <TitledPane animated="false" prefHeight="420.0" prefWidth="171.0" text="Lieux">
-                     <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0" />
-                     </content></TitledPane>
-               </panes>
-            </Accordion>
-            <Button fx:id="piocherIndiceButton" text="Piocher un indice" onAction="#piocherIndiceAction"></Button>
-            <HBox fx:id="cartesIndices"></HBox>
+            <VBox id="feuilleDetective" prefHeight="214.0" prefWidth="168.0">
+                  <VBox >
+                     <HBox>
+                        <Label prefWidth="75.0" text="Qui ?">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label prefWidth="75.0" text="Joueur">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </HBox>
+                     <VBox fx:id="qui"/>
+                  </VBox>
+                  <VBox>
+                     <HBox>
+                        <Label prefWidth="75.0" text="Avec quoi ?">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label prefWidth="75.0" text="Joueur">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </HBox>
+                     <VBox fx:id="avecQuoi"/>
+                  </VBox>
+                  <VBox>
+                     <HBox>
+                        <Label prefWidth="75.0" text="Où ?">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label prefWidth="75.0" text="Joueur">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </HBox>
+                     <VBox fx:id="ou"/>
+                  </VBox>
+            </VBox>
+            <Button fx:id="piocherIndiceButton" onAction="#piocherIndiceAction" text="Piocher un indice" />
+            <HBox fx:id="cartesIndices" />
             <ImageView fx:id="iconeJoueur" fitHeight="44.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="nomJoueurJ" text="Nom J" />
          </children>

@@ -7,6 +7,7 @@ import client.client.exception.connexionException.DejaInscritException;
 import client.client.exception.connexionException.MdpIncorrectOuNonInscritException;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.*;
+import client.client.modele.entite.carte.DicoCartes;
 import client.client.modele.entite.carte.ICarte;
 import client.client.modele.entite.carte.TypeCarte;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -303,36 +304,27 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public void subscribeFluxFichePartie(String idPartie, Consumer<Map<ICarte, Joueur>> consumer) throws HttpStatusCodeException, JsonProcessingException {
+    public Map<ICarte, Joueur> getFicheDetective(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
         params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
 
-        TypeReference<HashMap<ICarte,Joueur>> typeReference=new TypeReference<HashMap<ICarte, Joueur>>() {};
+        ResponseEntity<String> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE, String.class,params);
 
-        Flux<Map<ICarte,Joueur>> events = webClient
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .scheme(ServiceConfig.SCHEME)
-                        .host(ServiceConfig.HOST)
-                        .port(ServiceConfig.PORT)
-                        .path(ServiceConfig.BASE_API+ServiceConfig.URL_PARTIE_ID_JOUEUR_FICHE)
-                        .build(params)
-                )
-                .retrieve()
-                .bodyToFlux(String.class)
-                .map(string -> {
-                    try {
-                        return objectMapper.readValue(string, typeReference);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                        return new HashMap<>();
-                    }
-                });
+        TypeReference<HashMap<String, Joueur>> typeRef = new TypeReference<HashMap<String, Joueur>>() {
+        };
 
-        events.subscribe( consumer , Throwable::printStackTrace);
+        Map<String, Joueur> fiche = objectMapper.readValue(res.getBody(),typeRef);
+
+        Map<ICarte, Joueur> ficheDetective = new HashMap<>();
+        for (String s : fiche.keySet()){
+            ficheDetective.put(DicoCartes.get(s), fiche.get(s));
+        }
+
+        return ficheDetective;
+
     }
 
     @Override
@@ -406,22 +398,6 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
 
         ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
     }
-
-/*@Override
-public void seDeplacer(String idPartie, Position position) throws HttpStatusCodeException, JsonProcessingException {
-    User user=VariablesGlobales.getUser();
-
-    Map<String, String> params = new HashMap<String, String>();
-    params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
-    params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
-
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_SE_DEPLACER);
-    String uri = builder.build(params).toString();
-
-    HttpEntity<String> httpEntity=buildHttpEntity(position);
-
-    ResponseEntity<String> res=restTemplate.postForEntity(uri, httpEntity, String.class, params);
-}*/
 
     @Override
     public void revelerCarte(String idPartie, ICarte carte) throws HttpStatusCodeException, JsonProcessingException {

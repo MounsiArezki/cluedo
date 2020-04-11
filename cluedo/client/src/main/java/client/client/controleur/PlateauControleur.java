@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -133,15 +134,21 @@ public class PlateauControleur {
         }
         Lieu l = ((LieuPlace) place).getRoom();
         new HypotheseControleur(l, partie);
-    /*    Lieu l = Lieu.HALL;
-        new HypotheseControleur(l, partie);
-
-     */
+/*        Lieu l = Lieu.HALL;
+        new HypotheseControleur(l, partie);*/
 
     }
 
     public void goToAccusation(){
         new AccusationControleur(partie);
+    }
+
+    public void revelerCarte(ICarte carte){
+        try {
+            joueurService.revelerCarte(partie.getId(), carte);
+        } catch (JsonProcessingException e) {
+            plateauView.showMessage("Vous ne pouvez pas révéler cette carte", Alert.AlertType.ERROR);
+        }
     }
 
     public void retourMenu(){
@@ -242,15 +249,15 @@ public class PlateauControleur {
         boolean isCourant = false;
         updatePlayersPosition();
         IEtatPartie etat = this.partie.getEtatPartie();
-     //   Joueur j = etat.obtenirJoueurCourant();
+        Joueur j = this.partie.getJoueurs().get(VariablesGlobales.getUser().getId());
         getPlateauView().disableAll(true);
         try{
-            isActif = this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()).equals(etat.obtenirJoueurAtif());
+            isActif = j.equals(etat.obtenirJoueurAtif());
         } catch (UnsupportedOperationException e){
             System.out.println(e.getMessage());
         }
         try{
-            isCourant = this.partie.getJoueurs().get(VariablesGlobales.getUser().getId()).equals(etat.obtenirJoueurCourant());
+            isCourant = j.equals(etat.obtenirJoueurCourant());
             getPlayer().setMY_TURN(isCourant);
         } catch (UnsupportedOperationException e){
             System.out.println(e.getMessage());
@@ -277,21 +284,23 @@ public class PlateauControleur {
                         this.plateauView.disableCartesIndice(!isCourant);
                         break;
                     case REVELER_CARTE:
-                        this.plateauView.disableCartes(!isActif);
+                        for (Button b : plateauView.getObservableListCard()){
+                            if (partie.getEtatPartie().obtenirHypothese().containsValue(b.getUserData())){
+                                System.out.println("bite");
+                                b.setDisable(false);
+                            }
+                        }
                         break;
                     case PIOCHER_INDICE:
                         this.plateauView.disablePiocheIndice(!isCourant);
                         break;
                     case EMETTRE_HYPOTHESE:
+                        Place p = getCluedoBoard().getItemFromCoordinate(j.getPosition());
                         this.plateauView.disableHypothese(!isCourant);
                         break;
                 }
             }
-
-
-
         }
-
     }
 
     public Integer roll() {
@@ -305,6 +314,16 @@ public class PlateauControleur {
             e.printStackTrace();
         }
         return this.player.lancerDes(res);
+    }
+
+    public Map<ICarte, Joueur> getFicheDetective(){
+        Map<ICarte, Joueur> res = new HashMap<>();
+        try {
+            res = joueurService.getFicheDetective(partie.getId());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public void consumeFluxPartie(Partie partie){

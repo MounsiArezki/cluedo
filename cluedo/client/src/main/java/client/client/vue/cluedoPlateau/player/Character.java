@@ -73,6 +73,7 @@ public abstract class Character extends Circle {
          */
 
         this.lancerNum = num;
+        delHighlightPosMoves();
         this.posMoves = calcPosMoves();
       //  posMoves.stream().forEach(x-> x.addHighlight(Color.DARKGREEN));
         delHighlightPosMoves();
@@ -123,9 +124,8 @@ public abstract class Character extends Circle {
             this.setCenterY(position.getY());
             place.setOccupied(true);
             this.toFront();
-
             // Calc new possible moves
-            this.posMoves = calcPosMoves();
+        //    this.posMoves = calcPosMoves();
         }
 
     }
@@ -148,11 +148,7 @@ public abstract class Character extends Circle {
             moves.addAll(calcPosMoves(place, distance - place.getMoveCost(), maxSp-1));
             moves.add(place);
         }
-        for (Place p : moves){
 
-
-
-        }
 
         return moves;
     }
@@ -173,7 +169,7 @@ public abstract class Character extends Circle {
     }
     protected void highlightPosMoves() {
         for(Place place : posMoves) {
-            place.addHighlight(Color.GREEN);
+            place.addHighlight(this.getPersonnage().getColor());
         }
     }
 

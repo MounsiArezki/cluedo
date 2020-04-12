@@ -125,7 +125,7 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException {
+    public User inscription(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException {
         User user=new User(login, pwd);
         HttpEntity<String> httpEntity=buildHttpEntity(user);
         ResponseEntity<String> res = null;
@@ -143,14 +143,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public void desinscrition() throws HttpStatusCodeException, JsonProcessingException {
+    public void desinscription() throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
-        HttpEntity<String> httpEntity=buildHttpEntity(user);
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
 
-        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_ID, httpEntity, params);
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_ID, params);
     }
 
     @Override

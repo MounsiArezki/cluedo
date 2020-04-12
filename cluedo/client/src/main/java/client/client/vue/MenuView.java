@@ -58,11 +58,16 @@ public class MenuView extends View<MenuControleur> {
         Callback<TableColumn<Invitation, Void>, TableCell<Invitation, Void>> cellFactoryRejoindre = new Callback<>() {
             @Override
             public TableCell<Invitation, Void> call(final TableColumn<Invitation, Void> param) {
+                Button btn = new Button("rejoindre");
                 final TableCell<Invitation, Void> cell = new TableCell<>() {
 
-                    private final Button btn = new Button("rejoindre");
+
+
 
                     {
+
+                        btn.setStyle("-fx-background-color: #5cb85c; ");
+
                         btn.setOnAction((ActionEvent event) -> {
                             Invitation invitation = getTableView().getItems().get(getIndex());
                             getControleur().rejoindrePartie(invitation);
@@ -88,11 +93,14 @@ public class MenuView extends View<MenuControleur> {
         Callback<TableColumn<Invitation, Void>, TableCell<Invitation, Void>> cellFactoryRefuser = new Callback<>() {
             @Override
             public TableCell<Invitation, Void> call(final TableColumn<Invitation, Void> param) {
+                final Button btn = new Button("refuser");
                 final TableCell<Invitation, Void> cell = new TableCell<>() {
 
-                    private final Button btn = new Button("refuser");
 
                     {
+
+                        btn.setStyle("-fx-background-color: #d9534f; ");
+
                         btn.setOnAction((ActionEvent event) -> {
                             Invitation invitation = getTableView().getItems().get(getIndex());
                             getControleur().refuserInvitation(invitation);
@@ -142,11 +150,11 @@ public class MenuView extends View<MenuControleur> {
     @Override
     public void refresh() {
         List<Invitation> invitationsRecues = this.getControleur().getInvitationsRecues();
+
         drawTable(invitationsRecues);
     }
 
     public void fermerAction(ActionEvent actionEvent) {
-        this.getControleur().deconnexion();
-        this.close();
+
     }
 }

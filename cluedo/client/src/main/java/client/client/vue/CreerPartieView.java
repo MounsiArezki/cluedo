@@ -72,13 +72,16 @@ public class CreerPartieView extends View<CreerPartieControleur> {
         TableColumn<User, Void> colBtnInviter = new TableColumn(" ");
 
         Callback<TableColumn<User, Void>, TableCell<User, Void>> cellFactoryRejoindre = new Callback<>() {
+
             @Override
             public TableCell<User, Void> call(final TableColumn<User, Void> param) {
+                final Button btn = new Button("inviter");
                 final TableCell<User, Void> cell = new TableCell<>() {
 
-                    private final Button btn = new Button("inviter");
+
 
                     {
+                        btn.setStyle("-fx-background-color: #5cb85c; ");
                         btn.setOnAction((ActionEvent event) -> {
                             User user = getTableView().getItems().get(getIndex());
                             if(joueursInvitesList.size()<5){
@@ -114,11 +117,13 @@ public class CreerPartieView extends View<CreerPartieControleur> {
         Callback<TableColumn<User, Void>, TableCell<User, Void>> cellFactoryRejoindre = new Callback<>() {
             @Override
             public TableCell<User, Void> call(final TableColumn<User, Void> param) {
+                final Button btn = new Button("annuler");
+
                 final TableCell<User, Void> cell = new TableCell<>() {
 
-                    private final Button btn = new Button("annuler");
 
                     {
+                        btn.setStyle("-fx-background-color: #d9534f; ");
                         btn.setOnAction((ActionEvent event) -> {
                             User user = getTableView().getItems().get(getIndex());
                             joueursInvitesList.remove(user);

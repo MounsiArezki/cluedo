@@ -155,7 +155,7 @@ public class GestionnairePartie {
         partie.setEtatPartie(
                 partie.getEtatPartie().debuterTour(p1)
         );
-        System.out.println(partie.getCombinaisonGagante());
+        System.out.println("combinaison gagnante: "+partie.getCombinaisonGagante());
     }
 
     private static void repartirPersonnages(Partie partie){

@@ -386,7 +386,7 @@ public class Facade {
             try {
                 GestionnairePartie.quitterPartie(findUser(idJ), partie);
             } catch (PlusPersonneDansPartieException e) {
-                e.printStackTrace();
+                System.out.println("Plus personne dans la partie");
             }
         }
         else throw new JoueurPasDansLaPartieException();

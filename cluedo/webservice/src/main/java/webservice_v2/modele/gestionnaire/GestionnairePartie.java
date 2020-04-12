@@ -357,6 +357,9 @@ public class GestionnairePartie {
                     new PartieFinie(gagnant, partie.getCombinaisonGagante())
             );
         }
+        else if(partie.getJoueurs().size() <2){
+            throw new PlusPersonneDansPartieException();
+        }
         else {
 
             Joueur joueur = partie.getJoueurs().get(user.getId());

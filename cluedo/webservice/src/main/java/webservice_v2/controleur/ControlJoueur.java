@@ -241,6 +241,9 @@ public class ControlJoueur {
         } catch (PartieInexistanteException e) {
             System.out.println("200 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (PasJoueurActifException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

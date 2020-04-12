@@ -155,6 +155,7 @@ public class GestionnairePartie {
         partie.setEtatPartie(
                 partie.getEtatPartie().debuterTour(p1)
         );
+        System.out.println(partie.getCombinaisonGagante());
     }
 
     private static void repartirPersonnages(Partie partie){
@@ -395,22 +396,39 @@ public class GestionnairePartie {
     }
 
     //PASSER
-    public static void passer(User user, Partie partie)throws PasJoueurCourantException, ActionNonAutoriseeException{
-        boolean isJoueurCourant=isJoueurCourant(user, partie);
-        if(!isJoueurCourant){
-            throw new PasJoueurCourantException();
-        }
-
-        //check si etat = supputation ou fin tour
+    public static void passer(User user, Partie partie) throws PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
         IEtatPartie etatPartie=partie.getEtatPartie();
-        if(!(etatPartie instanceof Supputation || etatPartie instanceof FinTour)){
+
+        if(etatPartie instanceof Hypothese){
+            boolean isJoueurActif=isJoueurActif(user, partie);
+            if(!isJoueurActif){
+                throw new PasJoueurActifException();
+            }
+            Joueur joueurActifSuivant=getJoueurActifSuivant(partie);
+            if(joueurActifSuivant==null){
+                partie.setEtatPartie(
+                        partie.getEtatPartie().resoudreHypothese()
+                );
+            }
+            else{
+                partie.setEtatPartie(
+                        partie.getEtatPartie().revelerCarte(joueurActifSuivant)
+                );
+            }
+        }
+        else if(etatPartie instanceof Supputation || etatPartie instanceof FinTour){
+            boolean isJoueurCourant=isJoueurCourant(user, partie);
+            if(!isJoueurCourant){
+                throw new PasJoueurCourantException();
+            }
+            Joueur suivant=getJoueurSuivant(partie);
+            partie.setEtatPartie(
+                    partie.getEtatPartie().debuterTour(suivant)
+            );
+        }
+        else{
             throw new ActionNonAutoriseeException();
         }
-
-        Joueur suivant=getJoueurSuivant(partie);
-        partie.setEtatPartie(
-                partie.getEtatPartie().debuterTour(suivant)
-        );
     }
 
     //EMETTRE_HYPOTHESE

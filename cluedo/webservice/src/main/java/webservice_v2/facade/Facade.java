@@ -372,7 +372,7 @@ public class Facade {
     }
 
     // finir son tour (lors de la fin du tour et/ou sans avoir émis d'hypothèse/accusation)
-    public void passer(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+    public void passer(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, PasJoueurActifException {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.passer(findUser(idJ), partie);

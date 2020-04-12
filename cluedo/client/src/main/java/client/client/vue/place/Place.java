@@ -47,11 +47,13 @@ public class Place extends Rectangle {
     public DirectionKey getDirection() {return direction; }
 
     public void addHighlight(Paint fill) {
-        addHighlight(fill, 0.4);
+        addHighlight(fill, 0.6);
     }
+
     public void delHighlight() {
         this.opacityProperty().set(0);
     }
+
     public void addHighlight(Paint fill, double opacity) {
         this.opacityProperty().set(opacity);
         this.setFill(fill);

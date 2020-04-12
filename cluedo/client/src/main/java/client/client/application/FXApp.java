@@ -1,6 +1,8 @@
 package client.client.application;
 
 import client.client.controleur.ConnexionControleur;
+import client.client.global.VariablesGlobales;
+import client.client.service.Facade;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -25,6 +27,14 @@ public class FXApp extends Application {
 
     @Override
     public void stop() throws Exception {
+        Facade facade=new Facade();
+        if(VariablesGlobales.getIdPartie()!=null){
+            facade.quitterPartie(VariablesGlobales.getIdPartie());
+        }
+        if(VariablesGlobales.getUser()!=null){
+            facade.deconnexion(VariablesGlobales.getUser().getId());
+        }
         super.stop();
+
     }
 }

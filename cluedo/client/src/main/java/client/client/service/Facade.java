@@ -430,6 +430,17 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         return new ArrayList<>(List.of(res.getBody()));
     }
 
+    @Override
+    public void quitterPartie(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_JOUEUR_ID,params);
+    }
+
     public void subscribeToTest(Consumer<String> fct) throws IOException {
 
         Flux<String> events = WebClient

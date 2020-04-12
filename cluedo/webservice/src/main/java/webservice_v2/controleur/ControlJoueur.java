@@ -247,4 +247,18 @@ public class ControlJoueur {
         }
     }
 
+    @DeleteMapping(value = ServiceConfig.URL_JOUEUR_ID)
+    public ResponseEntity<?> quitter(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
+        try {
+            facade.quitter(idP, idJ);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (PartieInexistanteException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (JoueurPasDansLaPartieException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
 }

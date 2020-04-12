@@ -49,6 +49,7 @@ public class PlateauControleur {
         this.joueurService = Facade.getInstance();
         partie=new Partie();
 
+        VariablesGlobales.setIdPartie(idPartie);
         try {
             partieService.subscribeFluxPartie(idPartie, this::consumeFluxPartie);
         }
@@ -150,6 +151,13 @@ public class PlateauControleur {
     }
 
     public void retourMenu(){
+
+        try {
+            joueurService.quitterPartie(partie.getId());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        VariablesGlobales.setIdPartie(null);
         new MenuControleur(plateauStage);
     }
 

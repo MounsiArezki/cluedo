@@ -144,4 +144,9 @@ public class MenuView extends View<MenuControleur> {
         List<Invitation> invitationsRecues = this.getControleur().getInvitationsRecues();
         drawTable(invitationsRecues);
     }
+
+    public void fermerAction(ActionEvent actionEvent) {
+        this.getControleur().deconnexion();
+        this.close();
+    }
 }

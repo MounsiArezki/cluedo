@@ -150,6 +150,9 @@ public class GestionnairePartie {
         //init la pile indice
         aleatoirePileIndice(partie);
 
+        //remplit les fiches indices
+        remplirFichesIndices(partie);
+
         //transitionne vers l'état Debut Tour du P1
         String id = partie.getJoueurByOrdre().get(1);
         Joueur p1= partie.getJoueurs().get(id);
@@ -238,6 +241,14 @@ public class GestionnairePartie {
         Collections.shuffle(indices);
 
         partie.setIndices(indices);
+    }
+
+    private static void remplirFichesIndices(Partie partie){
+        for(Joueur joueur: partie.getJoueurs().values()){
+            for(ICarte carte : joueur.getListeCartes()){
+                joueur.getFicheEnquete().put(carte, joueur);
+            }
+        }
     }
 
     //

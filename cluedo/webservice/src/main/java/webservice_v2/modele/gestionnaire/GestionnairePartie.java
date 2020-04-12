@@ -366,23 +366,24 @@ public class GestionnairePartie {
                     new PartieFinie(gagnant, partie.getCombinaisonGagante())
             );
         }
-        List<ICarte> persos=new ArrayList<>();
-        List<ICarte> armes=new ArrayList<>();
-        List<ICarte> lieux=new ArrayList<>();
+        else{
+            List<ICarte> persos=new ArrayList<>();
+            List<ICarte> armes=new ArrayList<>();
+            List<ICarte> lieux=new ArrayList<>();
 
-        for(ICarte carte : cartes){
-            if(carte instanceof Personnage){
-                persos.add(carte);
+            for(ICarte carte : cartes){
+                if(carte instanceof Personnage){
+                    persos.add(carte);
+                }
+                else if(carte instanceof Arme){
+                    armes.add(carte);
+                }
+                else{
+                    lieux.add(carte);
+                }
             }
-            else if(carte instanceof Arme){
-                armes.add(carte);
-            }
-            else{
-                lieux.add(carte);
-            }
+            distributionCartes(partie, persos, armes, lieux);
         }
-        distributionCartes(partie, persos, armes, lieux);
-
     }
 
     //ACCUSER

@@ -77,11 +77,11 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="42.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#lancerPartieAction" prefHeight="25.0" prefWidth="103.0" text="Lancer">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#lancerPartieAction" prefHeight="25.0" prefWidth="103.0" text="Inviter">
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deconnectionAction" prefHeight="27.0" prefWidth="112.0" text="Deconnection">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deconnectionAction" prefHeight="27.0" prefWidth="112.0" text="Deconnexion">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
+<BorderPane fx:id="root" prefHeight="800.0" prefWidth="1240.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
@@ -19,13 +19,19 @@
                      </font></Button>
                </children></HBox>
             <HBox fx:id="cartes" alignment="CENTER" prefHeight="100.0" prefWidth="753.0" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="182.0">
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="182.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#fermerAction" text="Fermer">
+                  <Button mnemonicParsing="false" onAction="#fermerAction" prefWidth="125.0" text="Fermer">
                      <font>
                         <Font name="System Bold" size="16.0" />
-                     </font></Button>
-               </children></HBox>
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#sauvegarderAction" prefWidth="125.0" text="Sauvegarder">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children></VBox>
          </children>
       </HBox>
    </bottom>
@@ -119,10 +125,19 @@
                      <VBox fx:id="ou" />
                   </VBox>
             </VBox>
-            <Button fx:id="piocherIndiceButton" onAction="#piocherIndiceAction" text="Piocher un indice" />
+            <Button fx:id="piocherIndiceButton" onAction="#piocherIndiceAction" text="Piocher un indice">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
             <HBox fx:id="cartesIndices" />
-            <ImageView fx:id="iconeJoueur" fitHeight="44.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="nomJoueurJ" text="Nom J" />
+            <ImageView fx:id="iconeJoueur" fitHeight="44.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></ImageView>
+            <Label fx:id="nomJoueurJ" text="Nom J">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
    </right>

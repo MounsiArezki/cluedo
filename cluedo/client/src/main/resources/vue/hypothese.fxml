@@ -4,17 +4,17 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.HypotheseView">
+<AnchorPane fx:id="root" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.HypotheseView">
 
-    <Label text="Qui ?" layoutY="10.00"/>
-    <HBox fx:id="personnages" layoutY="50.00" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
-    <Label text="Avec quoi ?" layoutY="125.00"/>
-    <HBox fx:id="armes" layoutY="150.0" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
-    <Label text="Où ?" layoutY="225.00"/>
-    <HBox fx:id="lieux" layoutY="250.0" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
-    <Label text="Votre hypothèse :" layoutY="325.00"/>
-    <HBox fx:id="hypotheseEnCours" layoutY="350.00" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="10.00" text="Qui ?" />
+    <HBox fx:id="personnages" layoutY="50.00" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="175.0" text="Avec quoi ?" />
+    <HBox fx:id="armes" layoutY="200.0" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="325.0" text="Où ?" />
+    <HBox fx:id="lieux" layoutY="350.0" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="475.0" text="Votre hypothèse :" />
+    <HBox fx:id="accusationEnCours" layoutY="500.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
 
-    <Button onAction="#emettreHypotheseAction" text="Valider l'hypothèse" layoutY="550.0"></Button>
+    <Button onAction="#emettreHypotheseAction" text="Valider l'hypothèse" layoutY="625.0"></Button>
 
 </AnchorPane>

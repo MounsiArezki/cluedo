@@ -156,6 +156,7 @@ public class CreerPartieView extends View<CreerPartieControleur> {
     @Override
     public void refresh() {
         List<User> listUsers= (List<User>) getControleur().getAllUsers(recherche.getText());
+        listUsers.removeAll(joueursInvitesList);
         drawTableJoueur(listUsers);
         drawTableJoueurInvite(joueursInvitesList);
     }

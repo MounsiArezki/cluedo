@@ -337,48 +337,48 @@ public class GestionnairePartie {
     }
 
     //QUITTER
-    public static void quitterPartie(User user, Partie partie){
-        Joueur joueur= partie.getJoueurs().get(user.getId());
-
-        //Check si le joueur est courant ou actif et modifie etat partie
-        boolean isJoueurCourant=isJoueurCourant(user, partie);
-        boolean isJoueurActif=isJoueurActif(user, partie);
-
-        if(isJoueurCourant){
-            Joueur suivant=getJoueurSuivant(partie);
-            partie.setEtatPartie(
-                    new DebutTour(suivant)
-            );
-        }
-        else if(isJoueurActif){
-            Joueur actifSuivant=getJoueurActifSuivant(partie);
-            partie.getEtatPartie().changerJoueurActif(actifSuivant);
-        }
-
-        //Distribution des cartes joueur aux autres
-        List<ICarte> cartes=joueur.getListeCartes();
-
-        //Suppression du joueur AVANT distribution de ses cartes
-        partie.getJoueurs().remove(user.getId());
-        if(partie.getJoueurs().size()<2){
-            Joueur gagnant= (Joueur) partie.getJoueurs().values().toArray()[0];
+    public static void quitterPartie(User user, Partie partie) {
+        if (partie.getJoueurs().size() < 3) {
+            partie.getJoueurs().remove(user.getId());
+            Joueur gagnant = (Joueur) partie.getJoueurs().values().toArray()[0];
             partie.setEtatPartie(
                     new PartieFinie(gagnant, partie.getCombinaisonGagante())
             );
         }
-        else{
-            List<ICarte> persos=new ArrayList<>();
-            List<ICarte> armes=new ArrayList<>();
-            List<ICarte> lieux=new ArrayList<>();
+        else {
 
-            for(ICarte carte : cartes){
-                if(carte instanceof Personnage){
+            Joueur joueur = partie.getJoueurs().get(user.getId());
+
+            //Check si le joueur est courant ou actif et modifie etat partie
+            boolean isJoueurCourant = isJoueurCourant(user, partie);
+            boolean isJoueurActif = isJoueurActif(user, partie);
+
+            if (isJoueurCourant) {
+                Joueur suivant = getJoueurSuivant(partie);
+                partie.setEtatPartie(
+                        new DebutTour(suivant)
+                );
+            } else if (isJoueurActif) {
+                Joueur actifSuivant = getJoueurActifSuivant(partie);
+                partie.getEtatPartie().changerJoueurActif(actifSuivant);
+            }
+
+            //Distribution des cartes joueur aux autres
+            List<ICarte> cartes = joueur.getListeCartes();
+
+            //Suppression du joueur AVANT distribution de ses cartes
+            partie.getJoueurs().remove(user.getId());
+
+            List<ICarte> persos = new ArrayList<>();
+            List<ICarte> armes = new ArrayList<>();
+            List<ICarte> lieux = new ArrayList<>();
+
+            for (ICarte carte : cartes) {
+                if (carte instanceof Personnage) {
                     persos.add(carte);
-                }
-                else if(carte instanceof Arme){
+                } else if (carte instanceof Arme) {
                     armes.add(carte);
-                }
-                else{
+                } else {
                     lieux.add(carte);
                 }
             }

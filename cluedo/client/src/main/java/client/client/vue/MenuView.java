@@ -155,6 +155,7 @@ public class MenuView extends View<MenuControleur> {
     }
 
     public void fermerAction(ActionEvent actionEvent) {
-
+        this.getControleur().deconnexion();
+        this.close();
     }
 }

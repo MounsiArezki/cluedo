@@ -1,0 +1,66 @@
+package client.client.modele.entite.etat_partie;
+
+
+import client.client.modele.entite.Joueur;
+import client.client.modele.entite.carte.ICarte;
+import client.client.modele.entite.carte.TypeCarte;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Supputation implements IEtatPartie {
+
+    private Joueur joueurCourant;
+
+    public Supputation() {
+    }
+
+    public Supputation(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
+    }
+
+    public Joueur getJoueurCourant() {
+        return joueurCourant;
+    }
+
+    public void setJoueurCourant(Joueur joueurCourant) {
+        this.joueurCourant = joueurCourant;
+    }
+
+
+    @Override
+    public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
+        return joueurCourant;
+    }
+
+    @Override
+    public Joueur obtenirJoueurAtif() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Map<TypeCarte, ICarte> obtenirHypothese() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Integer> obtenirDes() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<ICarte> obtenirIndices() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String obtenirTexte() {
+        return "Tour de "+joueurCourant.toString();
+    }
+
+    @Override
+    public List<Actions> obtenirActionsPossibles() {
+        return new ArrayList<>(List.of(Actions.ACCUSER, Actions.EMETTRE_HYPOTHESE, Actions.PASSER));
+    }
+}

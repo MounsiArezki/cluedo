@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane id="background" fx:id="root" prefHeight="550.0" prefWidth="600.0" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.MenuView">
+   <center>
+            <GridPane>
+                <children>
+            <Button mnemonicParsing="false" onAction="#creerPartieAction" prefHeight="27.0" prefWidth="235.0" text="Creer Partie">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" onAction="#restaurerPartieAction" prefHeight="39.0" prefWidth="235.0" text="Restaurer Partie" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Button>
+            <TableView fx:id="table" prefHeight="314.0" prefWidth="600.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+
+               <GridPane.margin>
+                  <Insets top="20.0" />
+               </GridPane.margin>
+            </TableView>
+
+                      </children>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="109.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="189.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="47.0" minHeight="0.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="368.0" minHeight="10.0" prefHeight="348.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+         <BorderPane.margin>
+            <Insets bottom="30.0" />
+         </BorderPane.margin>
+            </GridPane>
+   </center>
+   <bottom>
+      <HBox prefHeight="48.0" prefWidth="693.0" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+               <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#deconnexionAction" prefHeight="21.0" prefWidth="117.0" style="-fx-background-color: #5cb85c;" text="Déconnexion">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+                   <effect>
+                       <Blend />
+                   </effect>
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </Button>
+
+             <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#desinscrireAction" prefHeight="31.0" prefWidth="124.0" style="-fx-background-color: #d9534f;" text="Désinscription">
+                 <font>
+                     <Font size="15.0" />
+                 </font>
+                 <HBox.margin>
+                     <Insets left="50.0" />
+                 </HBox.margin>
+             </Button>
+
+             <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#fermerAction" prefHeight="21.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="Fermer">
+                 <font>
+                     <Font size="15.0" />
+                 </font>
+                 <HBox.margin>
+                     <Insets left="50.0" />
+                 </HBox.margin>
+             </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <top>
+      <HBox prefHeight="48.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>

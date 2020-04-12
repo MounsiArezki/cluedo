@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.HypotheseView">
+
+    <Label layoutY="10.00" text="Qui ?" />
+    <HBox fx:id="personnages" layoutY="50.00" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="175.0" text="Avec quoi ?" />
+    <HBox fx:id="armes" layoutY="200.0" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="325.0" text="Où ?" />
+    <HBox fx:id="lieux" layoutY="350.0" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+    <Label layoutY="475.0" text="Votre hypothèse :" />
+    <HBox fx:id="hypotheseEnCours" layoutY="500.0" prefWidth="600.0" BorderPane.alignment="CENTER_RIGHT" />
+
+    <Button layoutY="625.0" onAction="#emettreHypotheseAction" prefHeight="33.0" prefWidth="153.0" style="-fx-background-color: #5cb85c;" text="Valider l'hypothèse">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font></Button>
+
+</AnchorPane>

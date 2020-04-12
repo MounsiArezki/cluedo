@@ -53,6 +53,7 @@ public class PlateauView extends View<PlateauControleur> {
     public Button passerButton;
     public Button piocherIndiceButton;
     public VBox listPlayersPartieVBox;
+    public Button sauvegarderButton;
 
     private boolean init=false;
 
@@ -95,8 +96,8 @@ public class PlateauView extends View<PlateauControleur> {
             Button buttonImg = new Button();
             buttonImg.setUserData(carte);
             ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(67);
-            imageView.setFitWidth(69);
+            imageView.setFitHeight(80);
+            imageView.setFitWidth(80);
             buttonImg.setGraphic(imageView);
             buttonImg.setId(carte.getNom());
 
@@ -143,6 +144,10 @@ public class PlateauView extends View<PlateauControleur> {
 
     public void fermerAction(ActionEvent actionEvent){
         getControleur().retourMenu();
+    }
+
+    public void sauvegarderAction(){
+        showMessage("To be implemented", Alert.AlertType.INFORMATION);
     }
 
     @Override

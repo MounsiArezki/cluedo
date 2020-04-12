@@ -382,7 +382,13 @@ public class Facade {
     public void quitter(String idP, String idJ) throws PartieInexistanteException, JoueurPasDansLaPartieException {
         Partie partie = findPartie(idP);
 
-        if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.quitterPartie(findUser(idJ), partie);
+        if (partie.getJoueurs().containsKey(idJ)) {
+            try {
+                GestionnairePartie.quitterPartie(findUser(idJ), partie);
+            } catch (PlusPersonneDansPartieException e) {
+                e.printStackTrace();
+            }
+        }
         else throw new JoueurPasDansLaPartieException();
     }
 }

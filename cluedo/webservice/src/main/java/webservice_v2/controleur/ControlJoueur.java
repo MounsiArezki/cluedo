@@ -249,8 +249,10 @@ public class ControlJoueur {
 
     @DeleteMapping(value = ServiceConfig.URL_JOUEUR_ID)
     public ResponseEntity<?> quitter(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
+        System.out.println("quitter partie");
         try {
             facade.quitter(idP, idJ);
+            GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package webservice_v2.modele.gestionnaire;
 
+import webservice_v2.exception.PlusPersonneDansPartieException;
 import webservice_v2.exception.partie.*;
 import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.Arme;
@@ -349,7 +350,10 @@ public class GestionnairePartie {
     }
 
     //QUITTER
-    public static void quitterPartie(User user, Partie partie) {
+    public static void quitterPartie(User user, Partie partie) throws PlusPersonneDansPartieException {
+        if(partie.getJoueurs().size()<2){
+            throw new PlusPersonneDansPartieException();
+        }
         if (partie.getJoueurs().size() < 3) {
             partie.getJoueurs().remove(user.getId());
             Joueur gagnant = (Joueur) partie.getJoueurs().values().toArray()[0];

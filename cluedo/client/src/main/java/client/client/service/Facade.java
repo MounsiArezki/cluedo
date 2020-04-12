@@ -119,6 +119,8 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, id);
 
+
+
         restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_DECONNEXION,params);
     }
 

@@ -69,12 +69,14 @@ public class GestionnairePartie {
             int ordreCourant=partie.getOrdreByJoueur().get(joueurCourant.getUser().getId());
             boolean trouve=false;
             int ordreSuivant= (ordreCourant % partie.getJoueurs().size())+1;
+
             Joueur joueurSuivant=null;
+
             while(!trouve && ordreSuivant!=ordreCourant){
                 String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
                 joueurSuivant=partie.getJoueurs().get(idSuivant);
                 if(joueurSuivant.isElimine()){
-                    ordreSuivant=((ordreSuivant+1) % partie.getJoueurs().size())+1;
+                    ordreSuivant=((ordreSuivant) % partie.getJoueurs().size())+1;
                     joueurSuivant=null;
                 }
                 else{

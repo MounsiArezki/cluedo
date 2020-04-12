@@ -27,6 +27,7 @@ public class CreerPartieView extends View<CreerPartieControleur> {
     @FXML
     public TableView joueurTable;
 
+    private List<User> joueursAInvites=new ArrayList<>();
     private List<User> joueursInvitesList=new ArrayList<>();
 
     ObservableList<User> observableListJoueurs=FXCollections.observableArrayList();
@@ -121,8 +122,7 @@ public class CreerPartieView extends View<CreerPartieControleur> {
                         btn.setOnAction((ActionEvent event) -> {
                             User user = getTableView().getItems().get(getIndex());
                             joueursInvitesList.remove(user);
-
-                                refresh();
+                            refresh();
 
                         });
                     }
@@ -155,9 +155,9 @@ public class CreerPartieView extends View<CreerPartieControleur> {
 
     @Override
     public void refresh() {
-        List<User> listUsers= (List<User>) getControleur().getAllUsers(recherche.getText());
-        listUsers.removeAll(joueursInvitesList);
-        drawTableJoueur(listUsers);
+        joueursAInvites = new ArrayList<>(getControleur().getAllUsers(recherche.getText()));
+        joueursAInvites.removeAll(joueursInvitesList);
+        drawTableJoueur(joueursAInvites);
         drawTableJoueurInvite(joueursInvitesList);
     }
 }

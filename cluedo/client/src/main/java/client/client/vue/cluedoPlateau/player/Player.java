@@ -19,6 +19,7 @@ public class Player extends Character {
         if(!posMoves.contains(place ) || !moveAuthorisation   ) {
 
                 plateau.showMessage("impossible move !", Alert.AlertType.WARNING);
+                
             throw new ImpossibleDeplacementException();
         }
         System.out.println("not move excep");

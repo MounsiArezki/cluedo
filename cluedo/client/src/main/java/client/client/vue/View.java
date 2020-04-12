@@ -75,14 +75,12 @@ public abstract class View<T> {
     }
     public void showMessage(String message, Alert.AlertType type){
         Alert a=new Alert(type,message, ButtonType.OK);
-        a.show();
+        a.showAndWait();
     }
 
     public void deconnectionAction(ActionEvent actionEvent) {
     }
 
-    public void fermerAction(ActionEvent actionEvent) {
-    }
 
     public abstract void refresh() throws IOException, InterruptedException;
 

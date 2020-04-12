@@ -75,6 +75,7 @@ public class GestionnairePartie {
                 joueurSuivant=partie.getJoueurs().get(idSuivant);
                 if(joueurSuivant.isElimine()){
                     ordreSuivant=((ordreSuivant+1) % partie.getJoueurs().size())+1;
+                    joueurSuivant=null;
                 }
                 else{
                     trouve=true;

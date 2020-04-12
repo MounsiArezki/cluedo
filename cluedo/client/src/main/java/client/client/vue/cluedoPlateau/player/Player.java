@@ -13,17 +13,15 @@ public class Player extends Character {
     }
 
 
-    public void moveTo(Place place) {
+    public void moveTo(Place place) throws ImpossibleDeplacementException {
 
         // If move is impossible, send impossible move message
-        if(!posMoves.contains(place )  ) {
+        if(!posMoves.contains(place ) || !moveAuthorisation   ) {
+            System.out.println("move excep");
                 plateau.showMessage("impossible move !", Alert.AlertType.WARNING);
-            return;
-        }else if (!isMY_TURN() ){
-            plateau.showMessage("NOT YOUR TURN", Alert.AlertType.WARNING);
-            return;
+            throw new ImpossibleDeplacementException();
         }
-
+        System.out.println("not move excep");
         super.moveTo(place);
         delHighlightPosMoves();
     //    highlightPosMoves();
@@ -32,8 +30,8 @@ public class Player extends Character {
     }
 
     @Override
-    public void moveFromServer(Place place ) {
-            super.moveTo(place);
+    public void moveFromServer(Place place )  {
+            super.moveFromServer(place);
     }
 
     public void guess(){

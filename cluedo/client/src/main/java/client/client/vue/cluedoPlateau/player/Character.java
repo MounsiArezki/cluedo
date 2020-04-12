@@ -5,6 +5,7 @@ import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.Position;
 import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
+import client.client.vue.place.LieuPlace;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
 import javafx.scene.effect.DropShadow;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 public abstract class Character extends Circle {
 
-    private static final int  DES_NUM =1;
+   // private static final int  DES_NUM =1;
 
 
     public int getLancerNum() {
@@ -48,6 +49,15 @@ public abstract class Character extends Circle {
 
     protected Place actPlace;
     protected Set<Place> posMoves = new HashSet<>();
+    boolean moveAuthorisation ;
+    public boolean isMoveAuthorisation() {
+        return moveAuthorisation;
+    }
+
+    public void setMoveAuthorisation(boolean moveAuthorisation) {
+        this.moveAuthorisation = moveAuthorisation;
+    }
+
 
     protected Character(PlateauView plat, Personnage personnage, Place departPlace) {
         this.plateau = plat;
@@ -83,6 +93,7 @@ public abstract class Character extends Circle {
       //  posMoves.stream().forEach(x-> x.addHighlight(Color.DARKGREEN));
         delHighlightPosMoves();
         highlightPosMoves();
+        this.setMoveAuthorisation(true);
         return lancerNum;
     }
 
@@ -98,10 +109,10 @@ public abstract class Character extends Circle {
         this.toFront();
     }
 
-    public void moveTo(Place place) {
+    public void moveTo(Place place) throws ImpossibleDeplacementException {
         this.moveTo(place, false);
     }
-    public void moveFromServer(Place place) {
+    public void moveFromServer(Place place)  {
         this.moveTo(place, false);
     }
 
@@ -146,7 +157,7 @@ public abstract class Character extends Circle {
             return new HashSet<>();
         Set<Place> moves = new HashSet<>();
         for(Place place : loc.getAdjacent()) {
-            if(place == null || place.isOccupied())
+            if(place == null || place.isOccupied()  )
                 continue;
             if(distance - place.getMoveCost() < 0)
                 continue;
@@ -168,7 +179,7 @@ public abstract class Character extends Circle {
 
     private void display() {
         Board board = this.plateau.getControleur().getCluedoBoard();
-        this.setRadius(Math.min(board.getGrid()[0][0].getWidth()-6, board.getGrid()[0][0].getHeight())/1.66);
+        this.setRadius(Math.min(board.getGrid()[0][0].getWidth()-8, board.getGrid()[0][0].getHeight())/1.66);
         this.setFill(personnage.getColor());
         this.setVisible(true);
     }

@@ -53,6 +53,9 @@ public class PlateauView extends View<PlateauControleur> {
     public Button passerButton;
     public Button piocherIndiceButton;
     public VBox listPlayersPartieVBox;
+    public Button sauvegarderButton;
+
+    private int nbJoueurs=0;
 
     private boolean init=false;
 
@@ -90,13 +93,14 @@ public class PlateauView extends View<PlateauControleur> {
     public void distribuerCartes(){
 
         Collection<ICarte> listeCartes = getControleur().getMyCard();
+        observableListCard=FXCollections.observableArrayList();
         for(ICarte carte : listeCartes){
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             Button buttonImg = new Button();
             buttonImg.setUserData(carte);
             ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(67);
-            imageView.setFitWidth(69);
+            imageView.setFitHeight(80);
+            imageView.setFitWidth(80);
             buttonImg.setGraphic(imageView);
             buttonImg.setId(carte.getNom());
 
@@ -105,8 +109,7 @@ public class PlateauView extends View<PlateauControleur> {
             );
             observableListCard.add(buttonImg);
         }
-        cartes.getChildren().removeAll();
-        cartes.getChildren().addAll(observableListCard);
+        cartes.getChildren().setAll(observableListCard);
     }
 
 
@@ -145,6 +148,10 @@ public class PlateauView extends View<PlateauControleur> {
         getControleur().retourMenu();
     }
 
+    public void sauvegarderAction(){
+        showMessage("To be implemented", Alert.AlertType.INFORMATION);
+    }
+
     @Override
     public void refresh() {
         //desactive les boutons sauf le bouton quitter
@@ -153,16 +160,21 @@ public class PlateauView extends View<PlateauControleur> {
         Partie partie= getControleur().getPartie();
         IEtatPartie etat = partie.getEtatPartie();
         System.out.println(etat);
-
+        int nbJoueursDansPartie=partie.getJoueurs().size();
         if(!init){
 
             if(!(etat instanceof EnAttenteDesJoueurs)){
+                nbJoueurs=nbJoueursDansPartie;
                 distribuerCartes();
                 getControleur().createCharacters();
                 playerListOnBoard();
                 nomJoueurJ.setText(getControleur().getPlayer().getPersonnage().getNom()+" ("+ VariablesGlobales.getUser().getPseudo()+" )");
                 init=true;
             }
+        }
+        else if(nbJoueurs!=nbJoueursDansPartie){
+            nbJoueurs=nbJoueursDansPartie;
+            distribuerCartes();
         }
         getControleur().gestionAction();
         etatPartieLabel.setText(etat.obtenirTexte());

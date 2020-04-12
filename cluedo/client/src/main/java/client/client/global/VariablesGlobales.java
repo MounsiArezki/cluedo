@@ -8,6 +8,8 @@ public class VariablesGlobales {
 
     private static User user;
 
+    private static String idPartie;
+
     public static User getUser() {
         return user;
     }
@@ -16,14 +18,11 @@ public class VariablesGlobales {
         VariablesGlobales.user = user;
     }
 
-
-    private static IProxyV2 proxyV2;
-
-    public static IProxyV2 getProxyV2() {
-        if (proxyV2 ==null){
-            return new ProxyV2();
-        }
-        return proxyV2;
+    public static String getIdPartie() {
+        return idPartie;
     }
 
+    public static void setIdPartie(String idPartie) {
+        VariablesGlobales.idPartie = idPartie;
+    }
 }

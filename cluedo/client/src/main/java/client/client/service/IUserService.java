@@ -21,9 +21,9 @@ public interface IUserService {
 
     public void deconnexion(String id) throws HttpStatusCodeException, JsonProcessingException;
 
-    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException;
+    public User inscription(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException;
 
-    public void desinscrition() throws HttpStatusCodeException, JsonProcessingException;
+    public void desinscription() throws HttpStatusCodeException, JsonProcessingException;
 
     public void subscribeFluxInvitationsRecues(String idUser, Consumer<Invitation> consumer)throws HttpStatusCodeException, JsonProcessingException;
 

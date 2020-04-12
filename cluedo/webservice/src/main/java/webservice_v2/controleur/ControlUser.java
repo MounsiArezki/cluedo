@@ -106,8 +106,9 @@ public class ControlUser {
 
     // déconnecter un utilisateur
     @DeleteMapping(value = ServiceConfig.URL_USER_DECONNEXION)
-    public ResponseEntity<String> deconnectUser(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id, @RequestBody String pseudo) {
+    public ResponseEntity<String> deconnectUser(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
         try {
+            String pseudo=facade.findUser(id).getPseudo();
             facade.deconnexion(pseudo);
             connectedUsersNotification.onNext(facade.getConnectedUsers());
         } catch (PasConnecteException e) {

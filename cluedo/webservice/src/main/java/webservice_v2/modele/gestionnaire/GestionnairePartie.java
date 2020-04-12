@@ -1,5 +1,6 @@
 package webservice_v2.modele.gestionnaire;
 
+import webservice_v2.exception.PlusPersonneDansPartieException;
 import webservice_v2.exception.partie.*;
 import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.Arme;
@@ -67,12 +68,24 @@ public class GestionnairePartie {
         try{
             Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
             int ordreCourant=partie.getOrdreByJoueur().get(joueurCourant.getUser().getId());
-            System.out.println("ordre courant "+ordreCourant);
+            boolean trouve=false;
             int ordreSuivant= (ordreCourant % partie.getJoueurs().size())+1;
-            System.out.println("ordre suivant "+ordreSuivant);
-            String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
-            System.out.println("id suivant "+idSuivant);
-            return partie.getJoueurs().get(idSuivant);
+
+            Joueur joueurSuivant=null;
+
+            while(!trouve && ordreSuivant!=ordreCourant){
+                String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
+                joueurSuivant=partie.getJoueurs().get(idSuivant);
+                if(joueurSuivant.isElimine()){
+                    ordreSuivant=((ordreSuivant) % partie.getJoueurs().size())+1;
+                    joueurSuivant=null;
+                }
+                else{
+                    trouve=true;
+                }
+            }
+
+            return joueurSuivant;
         }
         catch (UnsupportedOperationException e){
             System.out.println("Erreur dans la récupération du joueur suivant");
@@ -113,9 +126,8 @@ public class GestionnairePartie {
         int dRes = des.get(0) + des.get(1); // résultat des deux dés
         int diff = Math.abs(pInitiale.getX() - dest.getX()) + Math.abs(pInitiale.getY() - dest.getY());
 
-        return dRes >= diff;
-
-
+      //  return dRes >= diff;
+        return true;
 
     }
 
@@ -337,46 +349,49 @@ public class GestionnairePartie {
     }
 
     //QUITTER
-    public static void quitterPartie(User user, Partie partie){
-        Joueur joueur= partie.getJoueurs().get(user.getId());
-
-        //Check si le joueur est courant ou actif et modifie etat partie
-        boolean isJoueurCourant=isJoueurCourant(user, partie);
-        boolean isJoueurActif=isJoueurActif(user, partie);
-
-        if(isJoueurCourant){
-            Joueur suivant=getJoueurSuivant(partie);
+    public static void quitterPartie(User user, Partie partie) throws PlusPersonneDansPartieException {
+        if (partie.getJoueurs().size() == 2) {
+            partie.getJoueurs().remove(user.getId());
+            Joueur gagnant = (Joueur) partie.getJoueurs().values().toArray()[0];
             partie.setEtatPartie(
-                    new DebutTour(suivant)
+                    new PartieFinie(gagnant, partie.getCombinaisonGagante())
             );
         }
-        else if(isJoueurActif){
-            Joueur actifSuivant=getJoueurActifSuivant(partie);
-            partie.getEtatPartie().changerJoueurActif(actifSuivant);
+        else if(partie.getJoueurs().size() <2){
+            throw new PlusPersonneDansPartieException();
         }
+        else {
 
-        //Distribution des cartes joueur aux autres
-        List<ICarte> cartes=joueur.getListeCartes();
+            Joueur joueur = partie.getJoueurs().get(user.getId());
 
-        //Suppression du joueur AVANT distribution de ses cartes
-        partie.getJoueurs().remove(user.getId());
-        List<ICarte> persos=new ArrayList<>();
-        List<ICarte> armes=new ArrayList<>();
-        List<ICarte> lieux=new ArrayList<>();
+            //Check si le joueur est courant ou actif et modifie etat partie
+            boolean isJoueurCourant = isJoueurCourant(user, partie);
+            boolean isJoueurActif = isJoueurActif(user, partie);
 
-        for(ICarte carte : cartes){
-            if(carte instanceof Personnage){
-                persos.add(carte);
+            if (isJoueurCourant) {
+                Joueur suivant = getJoueurSuivant(partie);
+                partie.setEtatPartie(
+                        new DebutTour(suivant)
+                );
+            } else if (isJoueurActif) {
+                Joueur actifSuivant = getJoueurActifSuivant(partie);
+                partie.getEtatPartie().changerJoueurActif(actifSuivant);
             }
-            else if(carte instanceof Arme){
-                armes.add(carte);
-            }
-            else{
-                lieux.add(carte);
+
+            //Distribution des cartes joueur aux autres
+            List<ICarte> yaBesoinQueDeCa =joueur.getListeCartes();
+            List<ICarte> armes = new ArrayList<>();
+            List<ICarte> lieux = new ArrayList<>();
+
+            //Suppression du joueur AVANT distribution de ses cartes
+            partie.getJoueurs().remove(user.getId());
+
+            distributionCartes(partie, yaBesoinQueDeCa, armes, lieux);
+
+            for(Joueur j : partie.getJoueurs().values()){
+                System.out.println(j.getListeCartes());
             }
         }
-        distributionCartes(partie, persos, armes, lieux);
-
     }
 
     //ACCUSER
@@ -403,7 +418,19 @@ public class GestionnairePartie {
             );
         }
         else{
-            quitterPartie(user, partie);
+            etatPartie.obtenirJoueurCourant().setElimine(true);
+            if (partie.getJoueurs().size() < 3) {
+                Joueur gagnant = (Joueur) partie.getJoueurs().values().stream().filter(j -> !j.getUser().getId().equals(user.getId())).collect(Collectors.toList()).get(0);
+                partie.setEtatPartie(
+                        new PartieFinie(gagnant, partie.getCombinaisonGagante())
+                );
+            }
+            else{
+                Joueur suivant = getJoueurSuivant(partie);
+                partie.setEtatPartie(
+                        new DebutTour(suivant)
+                );
+            }
         }
     }
 

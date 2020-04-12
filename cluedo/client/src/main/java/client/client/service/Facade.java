@@ -119,11 +119,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, id);
 
+
+
         restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_DECONNEXION,params);
     }
 
     @Override
-    public User insciption(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException {
+    public User inscription(String login, String pwd) throws HttpStatusCodeException, JsonProcessingException, DejaInscritException {
         User user=new User(login, pwd);
         HttpEntity<String> httpEntity=buildHttpEntity(user);
         ResponseEntity<String> res = null;
@@ -141,14 +143,13 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
     }
 
     @Override
-    public void desinscrition() throws HttpStatusCodeException, JsonProcessingException {
+    public void desinscription() throws HttpStatusCodeException, JsonProcessingException {
         User user=VariablesGlobales.getUser();
-        HttpEntity<String> httpEntity=buildHttpEntity(user);
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(ServiceConfig.USER_ID_PARAM, user.getId());
 
-        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_ID, httpEntity, params);
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_USER_ID, params);
     }
 
     @Override
@@ -426,6 +427,17 @@ public class Facade implements IUserService, IInvitationService, IPartieService,
         ResponseEntity<ICarte[]> res=restTemplate.getForEntity(ServiceConfig.BASE_URL+ServiceConfig.URL_PARTIE_ID_JOUEUR_PIOCHER_INDICES, ICarte[].class, params);
 
         return new ArrayList<>(List.of(res.getBody()));
+    }
+
+    @Override
+    public void quitterPartie(String idPartie) throws HttpStatusCodeException, JsonProcessingException {
+        User user=VariablesGlobales.getUser();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(ServiceConfig.JOUEUR_ID_PARAM, user.getId());
+        params.put(ServiceConfig.PARTIE_ID_PARAM, idPartie);
+
+        restTemplate.delete(ServiceConfig.BASE_URL+ServiceConfig.URL_JOUEUR_ID,params);
     }
 
     public void subscribeToTest(Consumer<String> fct) throws IOException {

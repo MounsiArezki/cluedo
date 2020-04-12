@@ -17,6 +17,7 @@ import client.client.service.IPartieService;
 import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
 import client.client.vue.cluedoPlateau.player.Character;
+import client.client.vue.cluedoPlateau.player.ImpossibleDeplacementException;
 import client.client.vue.cluedoPlateau.player.Player;
 import client.client.vue.place.LieuPlace;
 import client.client.vue.place.Place;
@@ -49,6 +50,7 @@ public class PlateauControleur {
         this.joueurService = Facade.getInstance();
         partie=new Partie();
 
+        VariablesGlobales.setIdPartie(idPartie);
         try {
             partieService.subscribeFluxPartie(idPartie, this::consumeFluxPartie);
         }
@@ -150,6 +152,13 @@ public class PlateauControleur {
     }
 
     public void retourMenu(){
+
+        try {
+            joueurService.quitterPartie(partie.getId());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        VariablesGlobales.setIdPartie(null);
         new MenuControleur(plateauStage);
     }
 
@@ -191,7 +200,35 @@ public class PlateauControleur {
                 this.characters.add( adversaire );
             }
         }
+        for(Place[] places : this.getCluedoBoard().getGrid()) {
+            for(Place place : places) {
+                place.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                        {
+                            boolean erreur =false;
+                            Place placeTo =(Place) event.getTarget();
 
+                            try {
+                                this.getPlayer().moveTo(placeTo);
+                            } catch (ImpossibleDeplacementException e) {
+                                erreur=true;
+                            }
+                            if (!erreur){
+                                try {
+                                    joueurService.seDeplacer(getPartie().getId(), placeTo.getPositionOnGrid());
+                                    getPlayer().setMoveAuthorisation(false);
+                                } catch (JsonProcessingException e) {
+                                    getPlateauView().showMessage("erreur dep serveur", Alert.AlertType.WARNING);
+                                }
+                            }
+
+                        }
+                );
+            }
+        }
+
+
+
+        /*
         for(Place[] places : this.getCluedoBoard().getGrid()) {
             for(Place place : places) {
                 place.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
@@ -213,6 +250,8 @@ public class PlateauControleur {
                 );
             }
         }
+
+         */
     }
 
     public void updatePlayersPosition(){
@@ -223,8 +262,8 @@ public class PlateauControleur {
            {
                if(player.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
                    System.out.println("moving :"+J.getUser().getPseudo()+"to "+J.getPosition() );
+                   player.moveFromServer(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
 
-                 player.moveFromServer(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
                }
 
            });

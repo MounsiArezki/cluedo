@@ -28,4 +28,6 @@ public interface IJoueurService {
     public void revelerCarte(String idPartie, ICarte carte) throws HttpStatusCodeException, JsonProcessingException;
 
     public List<ICarte> piocherIndices(String idPartie) throws HttpStatusCodeException, JsonProcessingException;
+
+    public void quitterPartie(String idPartie) throws HttpStatusCodeException, JsonProcessingException;
 }

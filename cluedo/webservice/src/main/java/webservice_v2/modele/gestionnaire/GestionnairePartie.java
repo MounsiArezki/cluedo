@@ -360,6 +360,12 @@ public class GestionnairePartie {
 
         //Suppression du joueur AVANT distribution de ses cartes
         partie.getJoueurs().remove(user.getId());
+        if(partie.getJoueurs().size()<2){
+            Joueur gagnant= (Joueur) partie.getJoueurs().values().toArray()[0];
+            partie.setEtatPartie(
+                    new PartieFinie(gagnant, partie.getCombinaisonGagante())
+            );
+        }
         List<ICarte> persos=new ArrayList<>();
         List<ICarte> armes=new ArrayList<>();
         List<ICarte> lieux=new ArrayList<>();

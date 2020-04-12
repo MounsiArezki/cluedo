@@ -13,6 +13,7 @@ import webservice_v2.modele.entite.etat_partie.*;
 import webservice_v2.modele.fabrique.FactoryCarte;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GestionnairePartie {
 
@@ -404,6 +405,16 @@ public class GestionnairePartie {
             if(!isJoueurActif){
                 throw new PasJoueurActifException();
             }
+
+            //check si le joueur actif a une carte de l'hypothese
+            List<ICarte> cartesHypotheseDuJoueurActif = partie.getJoueurs().get(user.getId()).getListeCartes()
+                    .stream()
+                    .filter( c ->  etatPartie.obtenirHypothese().containsValue(c))
+                    .collect(Collectors.toList());
+            if(cartesHypotheseDuJoueurActif.size()>0){
+                throw new ActionNonAutoriseeException();
+            }
+
             Joueur joueurActifSuivant=getJoueurActifSuivant(partie);
             if(joueurActifSuivant==null){
                 partie.setEtatPartie(

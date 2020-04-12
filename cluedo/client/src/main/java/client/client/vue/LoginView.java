@@ -38,13 +38,7 @@ public class LoginView extends View<ConnexionControleur>   {
             this.showMessage("Veuillez renseigner les deux champs", Alert.AlertType.INFORMATION);
         }
         else {
-            try {
-                this.getControleur().loginCntrl(user.getText(), password.getText());
-            } catch (MdpIncorrectOuNonInscritException e) {
-                showMessage("Les informations renseignées sont erronées ou vous n'êtes pas encore inscrit", Alert.AlertType.WARNING);
-            } catch (DejaConnecteException e) {
-                showMessage("L'utilisateur est déjà connecté", Alert.AlertType.WARNING);
-            }
+            this.getControleur().loginCntrl(user.getText(), password.getText());
         }
     }
 
@@ -54,12 +48,7 @@ public class LoginView extends View<ConnexionControleur>   {
         if (user.getText().isEmpty() || user.getText().isEmpty()){
             this.showMessage("Veuillez renseigner les deux champs", Alert.AlertType.INFORMATION);
         } else {
-            try {
-                getControleur().inscrireCntrl(user.getText(), password.getText());
-                showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
-            } catch (DejaInscritException e) {
-                showMessage(e.getMessage(), Alert.AlertType.ERROR);
-            }
+            getControleur().inscrireCntrl(user.getText(), password.getText());
         }
     }
 

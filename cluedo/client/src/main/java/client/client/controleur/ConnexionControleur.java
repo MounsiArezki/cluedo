@@ -27,23 +27,32 @@ public class ConnexionControleur {
         loginView.show("Login");
     }
 
-    public void loginCntrl(String login,String pwd) throws MdpIncorrectOuNonInscritException, DejaConnecteException {
+    public void loginCntrl(String login,String pwd) {
         try {
-            User user=user = userService.connexion(login, pwd);
+            User user = userService.connexion(login, pwd);
             VariablesGlobales.setUser(user);
             goToMenu(connexionStage);
         }
         catch (JsonProcessingException e) {
             loginView.showMessage("Erreur Json", Alert.AlertType.ERROR);
         }
+        catch (DejaConnecteException dejaConnecteE) {
+            loginView.showMessage("L'utilisateur est déjà connecté", Alert.AlertType.WARNING);
+        }
+        catch (MdpIncorrectOuNonInscritException infoIncoherenteE){
+            loginView.showMessage("Les informations renseignées sont erronées ou vous n'êtes pas encore inscrit", Alert.AlertType.WARNING);
+        }
     }
 
-    public void inscrireCntrl(String login,String password) throws  DejaInscritException {
+    public void inscrireCntrl(String login,String password) {
         try {
                 userService.inscription(login, password);
+                loginView.showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
             } catch (JsonProcessingException e) {
                 loginView.showMessage("Erreur lors de votre inscription", Alert.AlertType.ERROR);
-            }
+            } catch (DejaInscritException dejaInscritE){
+                loginView.showMessage("Les informations renseignées correspondent déjà à un utilisateur inscrit", Alert.AlertType.WARNING);
+        }
 
     }
 

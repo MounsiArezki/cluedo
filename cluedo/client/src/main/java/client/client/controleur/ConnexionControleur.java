@@ -9,12 +9,8 @@ import client.client.service.IUserService;
 import client.client.vue.LoginView;
 import client.client.vue.View;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import org.springframework.web.client.HttpStatusCodeException;
-
-import java.util.List;
 
 public class ConnexionControleur {
 
@@ -44,7 +40,7 @@ public class ConnexionControleur {
 
     public void inscrireCntrl(String login,String password) throws  DejaInscritException {
         try {
-            userService.insciption(login, password);
+            userService.inscription(login, password);
         }
         catch (JsonProcessingException e) {
             loginView.showMessage("Erreur Json", Alert.AlertType.ERROR);

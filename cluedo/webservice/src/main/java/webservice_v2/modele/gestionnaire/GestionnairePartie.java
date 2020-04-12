@@ -410,7 +410,18 @@ public class GestionnairePartie {
             );
         }
         else{
-            quitterPartie(user, partie);
+            if (partie.getJoueurs().size() < 3) {
+                Joueur gagnant = (Joueur) partie.getJoueurs().values().stream().filter(j -> !j.getUser().getId().equals(user.getId())).collect(Collectors.toList()).get(0);
+                partie.setEtatPartie(
+                        new PartieFinie(gagnant, partie.getCombinaisonGagante())
+                );
+            }
+            else{
+                Joueur suivant = getJoueurSuivant(partie);
+                partie.setEtatPartie(
+                        new DebutTour(suivant)
+                );
+            }
         }
     }
 

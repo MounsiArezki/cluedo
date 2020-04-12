@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import client.client.vue.cluedoPlateau.plateau.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import client.client.vue.cluedoPlateau.plateau.CluedoBoard?>
-<BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
+<BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
@@ -54,8 +50,20 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
-                  <Button id="hypotheseBouton" fx:id="hypotheseButton" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="47.0" text="Emettre une hypothèse" />
-                  <Button id="accusationBouton" fx:id="accusationButton" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="47.0" text="Accuser" />
+                  <Button id="hypotheseBouton" fx:id="hypotheseButton" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="90.0" text="Hypothèse">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
+                  <Button id="accusationBouton" fx:id="accusationButton" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="90.0" text="Accuser">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin></Button>
                </children>
             </VBox>
          </children>
@@ -127,6 +135,9 @@
 
    </center>
    <top>
-      <Label fx:id="etatPartieLabel" prefHeight="32.0" prefWidth="441.0" BorderPane.alignment="CENTER" />
+      <Label fx:id="etatPartieLabel" prefHeight="32.0" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
    </top>
 </BorderPane>

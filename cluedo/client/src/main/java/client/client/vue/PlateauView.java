@@ -175,62 +175,6 @@ public class PlateauView extends View<PlateauControleur> {
         board.draw();
     }
 
-    private void refreshFicheDetective(){
-        Map<ICarte, Joueur> fiche = getControleur().getFicheDetective();
-        qui.getChildren().clear();
-        avecQuoi.getChildren().clear();
-        ou.getChildren().clear();
-        for (ICarte c : Personnage.values()){
-            HBox ligneFiche = new HBox();
-
-            Label nomCarte = new Label();
-            nomCarte.setText(c.getNom());
-            nomCarte.setPrefWidth(75);
-            nomCarte.setFont(new Font(10));
-
-            Label joueurCarte = new Label();
-            joueurCarte.setPrefWidth(75);
-            joueurCarte.setFont(new Font(10));
-            /*joueurCarte.setText(fiche.get(c).getPersonnage().getNom());*/
-
-            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
-            qui.getChildren().add(ligneFiche);
-        }
-        for (ICarte c : Arme.values()){
-            HBox ligneFiche = new HBox();
-
-            Label nomCarte = new Label();
-            nomCarte.setPrefWidth(75);
-            nomCarte.setFont(new Font(10));
-            nomCarte.setText(c.getNom());
-
-            Label joueurCarte = new Label();
-            joueurCarte.setPrefWidth(75);
-            joueurCarte.setFont(new Font(10));
-            /*joueurCarte.setText(fiche.get(c).getPersonnage().getNom());*/
-
-            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
-            avecQuoi.getChildren().add(ligneFiche);
-        }
-        for (ICarte c : Lieu.values()){
-            HBox ligneFiche = new HBox();
-
-            Label nomCarte = new Label();
-            nomCarte.setPrefWidth(75);
-            nomCarte.setFont(new Font(10));
-            nomCarte.setText(c.getNom());
-
-            Label joueurCarte = new Label();
-            joueurCarte.setPrefWidth(75);
-            joueurCarte.setFont(new Font(10));
-            /*joueurCarte.setText(fiche.get(c).getPersonnage().getNom());*/
-
-            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
-            ou.getChildren().add(ligneFiche);
-        }
-
-    }
-
     public CluedoBoard getBoard() {
         return board;
     }
@@ -255,6 +199,67 @@ public class PlateauView extends View<PlateauControleur> {
         disablePasser(ok);
         disablePiocheIndice(ok);
         disableCartesIndice(ok);
+    }
+
+    private void refreshFicheDetective(){
+        Map<ICarte, Joueur> fiche = getControleur().getFicheDetective();
+        qui.getChildren().clear();
+        avecQuoi.getChildren().clear();
+        ou.getChildren().clear();
+        for (ICarte c : Personnage.values()){
+            HBox ligneFiche = new HBox();
+
+            Label nomCarte = new Label();
+            nomCarte.setText(c.getNom());
+            nomCarte.setPrefWidth(75);
+            nomCarte.setFont(new Font(10));
+
+            Label joueurCarte = new Label();
+            joueurCarte.setPrefWidth(75);
+            joueurCarte.setFont(new Font(10));
+            if( fiche.get(c) != null ){
+                joueurCarte.setText(fiche.get(c).getPersonnage().getNom());
+            }
+
+            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
+            qui.getChildren().add(ligneFiche);
+        }
+        for (ICarte c : Arme.values()){
+            HBox ligneFiche = new HBox();
+
+            Label nomCarte = new Label();
+            nomCarte.setPrefWidth(75);
+            nomCarte.setFont(new Font(10));
+            nomCarte.setText(c.getNom());
+
+            Label joueurCarte = new Label();
+            joueurCarte.setPrefWidth(75);
+            joueurCarte.setFont(new Font(10));
+            if( fiche.get(c) != null ) {
+                joueurCarte.setText(fiche.get(c).getPersonnage().getNom());
+            }
+
+            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
+            avecQuoi.getChildren().add(ligneFiche);
+        }
+        for (ICarte c : Lieu.values()){
+            HBox ligneFiche = new HBox();
+
+            Label nomCarte = new Label();
+            nomCarte.setPrefWidth(75);
+            nomCarte.setFont(new Font(10));
+            nomCarte.setText(c.getNom());
+
+            Label joueurCarte = new Label();
+            joueurCarte.setPrefWidth(75);
+            joueurCarte.setFont(new Font(10));
+            if( fiche.get(c) != null ) {
+                joueurCarte.setText(fiche.get(c).getPersonnage().getNom());
+            }
+
+            ligneFiche.getChildren().addAll(nomCarte, joueurCarte);
+            ou.getChildren().add(ligneFiche);
+        }
 
     }
 

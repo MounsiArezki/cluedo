@@ -47,7 +47,7 @@ public class Place extends Rectangle {
     public DirectionKey getDirection() {return direction; }
 
     public void addHighlight(Paint fill) {
-        addHighlight(fill, 0.6);
+        addHighlight(fill, 0.7);
     }
 
     public void delHighlight() {

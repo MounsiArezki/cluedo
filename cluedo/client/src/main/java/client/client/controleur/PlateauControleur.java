@@ -43,8 +43,6 @@ public class PlateauControleur {
     IPartieService partieService;
     IJoueurService joueurService;
 
-
-
     public PlateauControleur(Stage plateauStage, String idPartie) {
         this.plateauStage = plateauStage;
         this.partieService = Facade.getInstance();
@@ -66,7 +64,6 @@ public class PlateauControleur {
         plateauView.drawCluedoBoard();
         plateauView.show("plateau");
     }
-
 
 
     public Collection<ICarte> getMyCard(){
@@ -201,27 +198,18 @@ public class PlateauControleur {
                 {
                     boolean erreur =false;
                     Place placeTo =(Place) event.getTarget();
-
                     try {
-                        System.out.println("deppppppppppp"+placeTo.getPositionOnGrid());
-
                         joueurService.seDeplacer(getPartie().getId(), placeTo.getPositionOnGrid());
-
-
                     } catch (JsonProcessingException e) {
-                        getPlateauView().showMessage("erreur parsing ", Alert.AlertType.WARNING);
+                        getPlateauView().showMessage("Erreur JSON", Alert.AlertType.WARNING);
                         erreur =true;
-
                     }catch (HttpStatusCodeException e){
-                        getPlateauView().showMessage("deplacement non  valide ! faite tout le dep !", Alert.AlertType.WARNING);
                         erreur =true;
                     }
                     if (!erreur){
                         this.getPlayer().moveTo(placeTo);
                     }
-
                 }
-
                 );
             }
         }
@@ -271,7 +259,7 @@ public class PlateauControleur {
                 System.out.println(action);
                 switch (action){
                     case PASSER:
-                        this.plateauView.disablePasser(!(isCourant||isActif));
+                        this.plateauView.disablePasser(false);
                         break;
                     case ACCUSER:
                         this.plateauView.disableAccusation(!isCourant);
@@ -282,18 +270,20 @@ public class PlateauControleur {
                         this.plateauView.disableDes(!isCourant);
                         break;
                     case JOUER_INDICE:
-                        this.plateauView.disableCartesIndice(!isCourant);
+                        //désactivé en attendant implémentation des cartes indices
+                        /*this.plateauView.disableCartesIndice(!isCourant);*/
                         break;
                     case REVELER_CARTE:
                         for (Button b : plateauView.getObservableListCard()){
                             if (partie.getEtatPartie().obtenirHypothese().containsValue(b.getUserData())){
-                                System.out.println("bite");
+                                System.out.println("Carte reconnue "+b.getUserData());
                                 b.setDisable(false);
                             }
                         }
                         break;
                     case PIOCHER_INDICE:
-                        this.plateauView.disablePiocheIndice(!isCourant);
+                        //désactivé en attendant implémentation des cartes indices
+                        /*this.plateauView.disablePiocheIndice(!isCourant);*/
                         break;
                     case EMETTRE_HYPOTHESE:
                         Place p = getCluedoBoard().getItemFromCoordinate(j.getPosition());

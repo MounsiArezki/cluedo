@@ -80,6 +80,6 @@ public class Hypothese implements IEtatPartie {
 
     @Override
     public List<Actions> obtenirActionsPossibles() {
-        return new ArrayList<>(List.of(Actions.REVELER_CARTE));
+        return new ArrayList<>(List.of(Actions.REVELER_CARTE, Actions.PASSER));
     }
 }

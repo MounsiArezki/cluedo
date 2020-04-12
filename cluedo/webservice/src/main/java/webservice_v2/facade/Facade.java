@@ -61,6 +61,11 @@ public class Facade {
         return listeUsersConnectes.values();
     }
 
+    // récupérer tous les utilisateurs connectés qui ne sont pas dans une partie
+    public Collection<User> getAvailableUsers() {
+        return listeUsersConnectes.values();
+    }
+
     // ajouter un utilisateur
     public User addUser(String pseudo, String pwd) throws DejaInscritException {
         User test=new User(pseudo);
@@ -111,10 +116,13 @@ public class Facade {
     }
 
     // connexion (vérification pwd saisi = pwd utilisateur)
-    public User connexion(String ps, String pwd) throws MdpIncorrectException, NonInscritException {
+    public User connexion(String ps, String pwd) throws MdpIncorrectException, NonInscritException, DejaCoException {
         User u = findUserByLogin(ps);
         if (u == null) {
             throw new NonInscritException();
+        }
+        if (listeUsersConnectes.containsValue(u)) { //si l'utilisateur est déjà connecté
+            throw new DejaCoException();
         }
         if (!u.getPwd().equals(pwd)){ //mdp incorrect
             throw new MdpIncorrectException();

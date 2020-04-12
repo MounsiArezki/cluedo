@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import webservice_v2.config.ServiceConfig;
-import webservice_v2.exception.DejaInscritException;
-import webservice_v2.exception.MdpIncorrectException;
-import webservice_v2.exception.NonInscritException;
-import webservice_v2.exception.PasConnecteException;
+import webservice_v2.exception.*;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
@@ -102,6 +99,8 @@ public class ControlUser {
         }
         catch (MdpIncorrectException | NonInscritException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (DejaCoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 

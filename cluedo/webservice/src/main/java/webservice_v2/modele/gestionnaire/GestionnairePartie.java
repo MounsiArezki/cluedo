@@ -351,10 +351,7 @@ public class GestionnairePartie {
 
     //QUITTER
     public static void quitterPartie(User user, Partie partie) throws PlusPersonneDansPartieException {
-        if(partie.getJoueurs().size()<2){
-            throw new PlusPersonneDansPartieException();
-        }
-        if (partie.getJoueurs().size() < 3) {
+        if (partie.getJoueurs().size() == 2) {
             partie.getJoueurs().remove(user.getId());
             Joueur gagnant = (Joueur) partie.getJoueurs().values().toArray()[0];
             partie.setEtatPartie(
@@ -380,25 +377,18 @@ public class GestionnairePartie {
             }
 
             //Distribution des cartes joueur aux autres
-            List<ICarte> cartes = joueur.getListeCartes();
+            List<ICarte> yaBesoinQueDeCa =joueur.getListeCartes();
+            List<ICarte> armes = new ArrayList<>();
+            List<ICarte> lieux = new ArrayList<>();
 
             //Suppression du joueur AVANT distribution de ses cartes
             partie.getJoueurs().remove(user.getId());
 
-            List<ICarte> persos = new ArrayList<>();
-            List<ICarte> armes = new ArrayList<>();
-            List<ICarte> lieux = new ArrayList<>();
+            distributionCartes(partie, yaBesoinQueDeCa, armes, lieux);
 
-            for (ICarte carte : cartes) {
-                if (carte instanceof Personnage) {
-                    persos.add(carte);
-                } else if (carte instanceof Arme) {
-                    armes.add(carte);
-                } else {
-                    lieux.add(carte);
-                }
+            for(Joueur j : partie.getJoueurs().values()){
+                System.out.println(j.getListeCartes());
             }
-            distributionCartes(partie, persos, armes, lieux);
         }
     }
 

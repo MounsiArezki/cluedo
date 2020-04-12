@@ -55,6 +55,8 @@ public class PlateauView extends View<PlateauControleur> {
     public VBox listPlayersPartieVBox;
     public Button sauvegarderButton;
 
+    private int nbJoueurs=0;
+
     private boolean init=false;
 
     public ObservableList<Button> getObservableListCard() {
@@ -91,6 +93,7 @@ public class PlateauView extends View<PlateauControleur> {
     public void distribuerCartes(){
 
         Collection<ICarte> listeCartes = getControleur().getMyCard();
+        observableListCard=FXCollections.observableArrayList();
         for(ICarte carte : listeCartes){
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             Button buttonImg = new Button();
@@ -106,8 +109,7 @@ public class PlateauView extends View<PlateauControleur> {
             );
             observableListCard.add(buttonImg);
         }
-        cartes.getChildren().removeAll();
-        cartes.getChildren().addAll(observableListCard);
+        cartes.getChildren().setAll(observableListCard);
     }
 
 
@@ -158,16 +160,21 @@ public class PlateauView extends View<PlateauControleur> {
         Partie partie= getControleur().getPartie();
         IEtatPartie etat = partie.getEtatPartie();
         System.out.println(etat);
-
+        int nbJoueursDansPartie=partie.getJoueurs().size();
         if(!init){
 
             if(!(etat instanceof EnAttenteDesJoueurs)){
+                nbJoueurs=nbJoueursDansPartie;
                 distribuerCartes();
                 getControleur().createCharacters();
                 playerListOnBoard();
                 nomJoueurJ.setText(getControleur().getPlayer().getPersonnage().getNom()+" ("+ VariablesGlobales.getUser().getPseudo()+" )");
                 init=true;
             }
+        }
+        else if(nbJoueurs!=nbJoueursDansPartie){
+            nbJoueurs=nbJoueursDansPartie;
+            distribuerCartes();
         }
         getControleur().gestionAction();
         etatPartieLabel.setText(etat.obtenirTexte());

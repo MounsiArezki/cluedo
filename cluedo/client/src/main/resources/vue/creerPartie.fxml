@@ -33,10 +33,13 @@
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="recherche" prefHeight="25.0" prefWidth="191.0" />
-                  <Button mnemonicParsing="false" text="Rechercher">
+                  <Button mnemonicParsing="false" style="-fx-background-color: #5cb85c;" text="Rechercher">
                      <HBox.margin>
                         <Insets left="15.0" />
-                     </HBox.margin></Button>
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Button>
                </children>
             </HBox>
             <TableView fx:id="joueurTable" prefHeight="139.0" prefWidth="447.0" GridPane.rowIndex="2">
@@ -77,22 +80,28 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="42.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#lancerPartieAction" prefHeight="25.0" prefWidth="103.0" text="Inviter">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#lancerPartieAction" prefHeight="35.0" prefWidth="114.0" style="-fx-background-color: #5cb85c;" text="Inviter">
                <font>
-                  <Font size="15.0" />
+                  <Font name="System Bold" size="15.0" />
                </font></Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deconnectionAction" prefHeight="27.0" prefWidth="112.0" text="Deconnexion">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deconnectionAction" prefHeight="34.0" prefWidth="118.0" style="-fx-background-color: #d9534f;" text="Deconnexion">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <font>
                   <Font size="15.0" />
                </font>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#retourAction" prefHeight="25.0" prefWidth="78.0" text="Retour">
+            <Button mnemonicParsing="false" onAction="#retourAction" prefHeight="36.0" prefWidth="78.0" style="-fx-background-color: #d9534f;" text="Retour">
                <font>
                   <Font size="15.0" />
                </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
             </Button>
          </children>
       </HBox>

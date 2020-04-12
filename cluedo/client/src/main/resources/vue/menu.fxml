@@ -55,7 +55,7 @@
                </HBox.margin>
             </Button>
 
-             <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#desinscrireAction" prefHeight="21.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="Désinscription">
+             <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#desinscrireAction" prefHeight="31.0" prefWidth="124.0" style="-fx-background-color: #d9534f;" text="Désinscription">
                  <font>
                      <Font size="15.0" />
                  </font>

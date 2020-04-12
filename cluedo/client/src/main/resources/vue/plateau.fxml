@@ -13,7 +13,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0">
                <children>
-                  <Button fx:id="passerButton" mnemonicParsing="false" onAction="#passerAction" text="Passer">
+                  <Button fx:id="passerButton" mnemonicParsing="false" onAction="#passerAction" prefHeight="43.0" prefWidth="81.0" style="-fx-background-color: #5cb85c;" text="Passer">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
@@ -21,12 +21,15 @@
             <HBox fx:id="cartes" alignment="CENTER" prefHeight="100.0" prefWidth="753.0" />
             <VBox alignment="CENTER" prefHeight="100.0" prefWidth="182.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#fermerAction" prefWidth="125.0" text="Fermer">
+                  <Button mnemonicParsing="false" onAction="#fermerAction" prefWidth="125.0" style="-fx-background-color: #d9534f;" text="Fermer">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#sauvegarderAction" prefWidth="125.0" text="Sauvegarder">
+                  <Button mnemonicParsing="false" onAction="#sauvegarderAction" prefWidth="125.0" style="-fx-background-color: #d9534f;" text="Sauvegarder">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -56,16 +59,16 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
-                  <Button id="hypotheseBouton" fx:id="hypotheseButton" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="90.0" text="Hypothèse">
+                  <Button id="hypotheseBouton" fx:id="hypotheseButton" mnemonicParsing="false" onAction="#goHypotheseAction" prefHeight="34.0" prefWidth="96.0" style="-fx-background-color: #5cb85c;" text="Hypothèse">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin></Button>
-                  <Button id="accusationBouton" fx:id="accusationButton" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="90.0" text="Accuser">
+                  <Button id="accusationBouton" fx:id="accusationButton" mnemonicParsing="false" onAction="#goAccusationAction" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #f0ad4e;" text="Accuser">
                      <font>
-                        <Font name="System Bold" size="12.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -125,19 +128,25 @@
                      <VBox fx:id="ou" />
                   </VBox>
             </VBox>
-            <Button fx:id="piocherIndiceButton" onAction="#piocherIndiceAction" text="Piocher un indice">
+            <Button fx:id="piocherIndiceButton" onAction="#piocherIndiceAction" style="-fx-background-color: #5cb85c;" text="Piocher un indice">
                <VBox.margin>
                   <Insets top="10.0" />
-               </VBox.margin></Button>
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Button>
             <HBox fx:id="cartesIndices" />
             <ImageView fx:id="iconeJoueur" fitHeight="44.0" fitWidth="68.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin></ImageView>
-            <Label fx:id="nomJoueurJ" text="Nom J">
+            <Label fx:id="nomJoueurJ" prefHeight="20.0" prefWidth="120.0" text="Nom J">
                <VBox.margin>
                   <Insets top="10.0" />
-               </VBox.margin></Label>
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
          </children>
       </VBox>
    </right>
@@ -145,14 +154,13 @@
   <AnchorPane BorderPane.alignment="CENTER">
          <children>
             <CluedoBoard id="plateauP" fx:id="board" />
+            <Label fx:id="etatPartieLabel" layoutX="302.0" layoutY="168.0" prefHeight="32.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
 
    </center>
-   <top>
-      <Label fx:id="etatPartieLabel" prefHeight="32.0" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Label>
-   </top>
 </BorderPane>

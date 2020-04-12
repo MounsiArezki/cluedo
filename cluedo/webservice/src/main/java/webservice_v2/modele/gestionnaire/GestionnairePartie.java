@@ -67,12 +67,21 @@ public class GestionnairePartie {
         try{
             Joueur joueurCourant=partie.getEtatPartie().obtenirJoueurCourant();
             int ordreCourant=partie.getOrdreByJoueur().get(joueurCourant.getUser().getId());
-            System.out.println("ordre courant "+ordreCourant);
+            boolean trouve=false;
             int ordreSuivant= (ordreCourant % partie.getJoueurs().size())+1;
-            System.out.println("ordre suivant "+ordreSuivant);
-            String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
-            System.out.println("id suivant "+idSuivant);
-            return partie.getJoueurs().get(idSuivant);
+            Joueur joueurSuivant=null;
+            while(!trouve && ordreSuivant!=ordreCourant){
+                String idSuivant=partie.getJoueurByOrdre().get(ordreSuivant);
+                joueurSuivant=partie.getJoueurs().get(idSuivant);
+                if(joueurSuivant.isElimine()){
+                    ordreSuivant=((ordreSuivant+1) % partie.getJoueurs().size())+1;
+                }
+                else{
+                    trouve=true;
+                }
+            }
+
+            return joueurSuivant;
         }
         catch (UnsupportedOperationException e){
             System.out.println("Erreur dans la récupération du joueur suivant");
@@ -410,6 +419,7 @@ public class GestionnairePartie {
             );
         }
         else{
+            etatPartie.obtenirJoueurCourant().setElimine(true);
             if (partie.getJoueurs().size() < 3) {
                 Joueur gagnant = (Joueur) partie.getJoueurs().values().stream().filter(j -> !j.getUser().getId().equals(user.getId())).collect(Collectors.toList()).get(0);
                 partie.setEtatPartie(

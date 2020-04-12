@@ -18,6 +18,9 @@ public class Joueur {
     @JsonIgnore
     Map<ICarte, Joueur> ficheEnquete;
 
+    @JsonIgnore
+    boolean elimine;
+
     public Joueur() {
     }
 
@@ -25,6 +28,7 @@ public class Joueur {
         this.user = user;
         listeCartes=new ArrayList<>();
         ficheEnquete=new HashMap<>();
+        elimine=false;
     }
 
     public User getUser() {
@@ -71,7 +75,13 @@ public class Joueur {
         this.ficheEnquete = ficheEnquete;
     }
 
+    public boolean isElimine() {
+        return elimine;
+    }
 
+    public void setElimine(boolean elimine) {
+        this.elimine = elimine;
+    }
 
     @Override
     public boolean equals(Object o) {

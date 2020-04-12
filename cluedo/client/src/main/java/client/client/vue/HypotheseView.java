@@ -54,8 +54,8 @@ public class HypotheseView extends View<HypotheseControleur> {
         for(ICarte carte : liste){
             Image image = new Image(ImagePath.getImagePath(carte.getNom()));
             ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(67);
-            imageView.setFitWidth(69);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
             Button buttonImg = new Button();
             buttonImg.setGraphic(imageView);
             buttonImg.setId(carte.getNom());

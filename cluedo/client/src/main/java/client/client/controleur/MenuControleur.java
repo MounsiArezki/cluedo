@@ -1,6 +1,5 @@
 package client.client.controleur;
 
-import client.client.exception.connexionException.NonInscritException;
 import client.client.global.VariablesGlobales;
 import client.client.modele.entite.Invitation;
 import client.client.modele.entite.io.FxmlPath;
@@ -94,10 +93,20 @@ public class MenuControleur  {
             new ConnexionControleur(menuStage);
         }
         catch (JsonProcessingException e) {
-            menuView.showMessage("Erreur Json", Alert.AlertType.ERROR);
+            menuView.showMessage("Erreur lors de la déconnexion, veuillez réessayer", Alert.AlertType.ERROR);
         }
         catch (HttpStatusCodeException e) {
             menuView.showMessage("Erreur "+e.getStatusCode(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public void desinscription(){
+        try {
+            userService.desinscription();
+            VariablesGlobales.setUser(null);
+            new ConnexionControleur(menuStage);
+        } catch (JsonProcessingException e) {
+            menuView.showMessage("Erreur lors de la désinscription, veuillez réessayer", Alert.AlertType.ERROR);
         }
     }
 

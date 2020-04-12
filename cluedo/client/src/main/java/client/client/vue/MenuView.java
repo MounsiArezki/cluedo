@@ -135,6 +135,10 @@ public class MenuView extends View<MenuControleur> {
         this.getControleur().deconnexion();
     }
 
+    public void desinscrireAction(){
+        this.getControleur().desinscription();
+    }
+
     @Override
     public void refresh() {
         List<Invitation> invitationsRecues = this.getControleur().getInvitationsRecues();

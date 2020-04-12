@@ -35,15 +35,15 @@ public class LoginView extends View<ConnexionControleur>   {
     @FXML
     public void loginAction(ActionEvent event){
         if (user.getText().isEmpty() || user.getText().isEmpty()){
-            this.showMessage("Veuillez remplire les champs svp", Alert.AlertType.INFORMATION);
+            this.showMessage("Veuillez renseigner les deux champs", Alert.AlertType.INFORMATION);
         }
         else {
             try {
                 this.getControleur().loginCntrl(user.getText(), password.getText());
             } catch (MdpIncorrectOuNonInscritException e) {
-                showMessage("Non inscrit ou mdp incorect !", Alert.AlertType.WARNING);
+                showMessage("Les informations renseignées sont erronées ou vous n'êtes pas encore inscrit", Alert.AlertType.WARNING);
             } catch (DejaConnecteException e) {
-                showMessage("deja connecté §", Alert.AlertType.WARNING);
+                showMessage("L'utilisateur est déjà connecté", Alert.AlertType.WARNING);
             }
         }
     }
@@ -52,14 +52,14 @@ public class LoginView extends View<ConnexionControleur>   {
     @FXML
     public void inscrireAction(ActionEvent event){
         if (user.getText().isEmpty() || user.getText().isEmpty()){
-            this.showMessage("Veuillez remplire les champs svp", Alert.AlertType.INFORMATION);
-        }
-        try {
-            getControleur().inscrireCntrl(user.getText(),password.getText());
-            showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
-        }
-        catch ( DejaInscritException e) {
-            showMessage(e.getMessage(), Alert.AlertType.ERROR);
+            this.showMessage("Veuillez renseigner les deux champs", Alert.AlertType.INFORMATION);
+        } else {
+            try {
+                getControleur().inscrireCntrl(user.getText(), password.getText());
+                showMessage("Inscription réussie, vous pouvez vous connecter", Alert.AlertType.INFORMATION);
+            } catch (DejaInscritException e) {
+                showMessage(e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
     }
 

@@ -43,14 +43,6 @@
    <bottom>
       <HBox prefHeight="48.0" prefWidth="693.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-               <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#fermerAction" prefHeight="21.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="Fermer">
-                   <font>
-                       <Font size="15.0" />
-                   </font>
-               <HBox.margin>
-                  <Insets left="50.0" />
-               </HBox.margin>
-            </Button>
                <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#deconnexionAction" prefHeight="21.0" prefWidth="117.0" style="-fx-background-color: #5cb85c;" text="Déconnexion">
                    <font>
                        <Font size="15.0" />
@@ -62,6 +54,24 @@
                   <Insets left="50.0" />
                </HBox.margin>
             </Button>
+
+             <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#desinscrireAction" prefHeight="21.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="Désinscription">
+                 <font>
+                     <Font size="15.0" />
+                 </font>
+                 <HBox.margin>
+                     <Insets left="50.0" />
+                 </HBox.margin>
+             </Button>
+
+             <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#fermerAction" prefHeight="21.0" prefWidth="80.0" style="-fx-background-color: #d9534f;" text="Fermer">
+                 <font>
+                     <Font size="15.0" />
+                 </font>
+                 <HBox.margin>
+                     <Insets left="50.0" />
+                 </HBox.margin>
+             </Button>
          </children>
          <BorderPane.margin>
             <Insets />

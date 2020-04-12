@@ -46,7 +46,6 @@ public class Hypothese implements IEtatPartie {
         this.hypothese = hypothese;
     }
 
-
     @Override
     public Joueur obtenirJoueurCourant() throws UnsupportedOperationException {
         return joueurCourant;

@@ -260,7 +260,7 @@ public class PlateauControleur {
            characters.stream().forEach(player->
            {
                if(player.getPersonnage().getNom().equals(J.getPersonnage().getNom())){
-                   System.out.println("moving :"+J.getUser().getPseudo()+"to "+J.getPosition() );
+               //    System.out.println("moving :"+J.getUser().getPseudo()+"to "+J.getPosition() );
                    player.moveFromServer(getCluedoBoard().getItemFromCoordinate(J.getPosition()));
 
                }

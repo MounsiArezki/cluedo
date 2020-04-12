@@ -1,15 +1,13 @@
 package client.client.vue.cluedoPlateau.player;
 
-import client.client.modele.entite.Joueur;
 import client.client.modele.entite.carte.Personnage;
 import client.client.modele.entite.Position;
 import client.client.vue.PlateauView;
 import client.client.vue.cluedoPlateau.plateau.Board;
-import client.client.vue.place.LieuPlace;
+import client.client.vue.cluedoPlateau.player.PlayerException.ImpossibleDeplacementException;
 import client.client.vue.place.Place;
 import client.client.vue.place.Teleportable;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.HashSet;

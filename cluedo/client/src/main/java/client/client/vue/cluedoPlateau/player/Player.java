@@ -2,7 +2,7 @@ package client.client.vue.cluedoPlateau.player;
 
 import client.client.modele.entite.carte.Personnage;
 import client.client.vue.PlateauView;
-import client.client.vue.place.LieuPlace;
+import client.client.vue.cluedoPlateau.player.PlayerException.ImpossibleDeplacementException;
 import client.client.vue.place.Place;
 import javafx.scene.control.Alert;
 

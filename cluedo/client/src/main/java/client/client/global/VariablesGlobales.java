@@ -1,8 +1,6 @@
 package client.client.global;
 
 import client.client.modele.entite.User;
-import client.client.service.IProxyV2;
-import client.client.service.ProxyV2;
 
 public class VariablesGlobales {
 

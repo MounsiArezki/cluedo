@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import client.client.vue.cluedoPlateau.plateau.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
+<?import client.client.vue.cluedoPlateau.plateau.CluedoBoard?>
+<BorderPane fx:id="root" prefHeight="584.0" prefWidth="1065.0" stylesheets="@../css/plateau.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.vue.PlateauView">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
@@ -31,7 +36,7 @@
    <left>
       <VBox prefHeight="470.0" prefWidth="131.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="276.0" prefWidth="131.0" />
+            <VBox fx:id="listPlayersPartieVBox" prefHeight="276.0" prefWidth="131.0" />
             <VBox alignment="TOP_CENTER" prefHeight="228.0" prefWidth="131.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="38.0" prefWidth="131.0">
@@ -60,7 +65,7 @@
       <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
          <children>
             <VBox id="feuilleDetective" prefHeight="214.0" prefWidth="168.0">
-                  <VBox >
+                  <VBox>
                      <HBox>
                         <Label prefWidth="75.0" text="Qui ?">
                            <font>
@@ -73,7 +78,7 @@
                            </font>
                         </Label>
                      </HBox>
-                     <VBox fx:id="qui"/>
+                     <VBox fx:id="qui" />
                   </VBox>
                   <VBox>
                      <HBox>
@@ -88,7 +93,7 @@
                            </font>
                         </Label>
                      </HBox>
-                     <VBox fx:id="avecQuoi"/>
+                     <VBox fx:id="avecQuoi" />
                   </VBox>
                   <VBox>
                      <HBox>
@@ -103,7 +108,7 @@
                            </font>
                         </Label>
                      </HBox>
-                     <VBox fx:id="ou"/>
+                     <VBox fx:id="ou" />
                   </VBox>
             </VBox>
             <Button fx:id="piocherIndiceButton" onAction="#piocherIndiceAction" text="Piocher un indice" />

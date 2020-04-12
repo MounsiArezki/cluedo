@@ -38,15 +38,12 @@ public class PlateauControleur {
     PlateauView plateauView;
     Partie partie;
     Player player;
+    List<Character> characters;
 
     IPartieService partieService;
     IJoueurService joueurService;
 
-    public Player getPlayer() {
-        return player;
-    }
 
-    List<Character> characters;
 
     public PlateauControleur(Stage plateauStage, String idPartie) {
         this.plateauStage = plateauStage;
@@ -70,9 +67,7 @@ public class PlateauControleur {
         plateauView.show("plateau");
     }
 
-    public void afficherListeJoueurs(){
 
-    }
 
     public Collection<ICarte> getMyCard(){
         Collection<ICarte> cartesJ= new ArrayList<>();
@@ -124,6 +119,12 @@ public class PlateauControleur {
     public Board<Place> getCluedoBoard(){
         return plateauView.getBoard();
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Character> getCharacters() {return characters;}
 
     public void goToHypothese(){
         Position p = partie.getJoueurs().get(VariablesGlobales.getUser().getId()).getPosition();

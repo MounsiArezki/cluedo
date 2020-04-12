@@ -1,8 +1,10 @@
 package client.client.modele.entite.carte;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 

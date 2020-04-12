@@ -40,11 +40,10 @@ public class ConnexionControleur {
 
     public void inscrireCntrl(String login,String password) throws  DejaInscritException {
         try {
-            userService.inscription(login, password);
-        }
-        catch (JsonProcessingException e) {
-            loginView.showMessage("Erreur Json", Alert.AlertType.ERROR);
-        }
+                userService.inscription(login, password);
+            } catch (JsonProcessingException e) {
+                loginView.showMessage("Erreur lors de votre inscription", Alert.AlertType.ERROR);
+            }
 
     }
 

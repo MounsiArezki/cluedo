@@ -5,7 +5,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import webservice_v2.exception.*;
 import webservice_v2.facade.Facade;
+import webservice_v2.modele.entite.Invitation;
+import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class FacadeUnit {
 
@@ -105,9 +110,145 @@ public class FacadeUnit {
     }
 
     // ------------------------------------------------------------------------
+    // test l'ajout d'une invitation
+    // ------------------------------------------------------------------------
+
+    @Test // Création d'une invitation "normale"
+    public void addInvitOK() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        Invitation i1 = fac.addInvitation(p1.getId(), co.getId(), Collections.singletonList(u2)); // création de l'invitation
+        Assert.assertEquals(u1.getId(), i1.getHote().getId());
+    }
+
+    // Création d'une invitation sans que l'hôte soit connecté
+    @Test (expected = PasConnecteException.class)
+    public void addInvitPCE() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        fac.addInvitation(p1.getId(), u1.getId(), Collections.singletonList(u2)); // création de l'invitation
+    }
+
+    // Création d'une invitation sans invité (mais avec une liste)
+    @Test (expected = InvitationInvalideException.class)
+    public void addInvitIIE() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        fac.addInvitation(p1.getId(), co.getId(), Collections.emptyList()); // création de l'invitation
+    }
+
+    // Création d'une invitation sans invité (liste NULL)
+    @Test (expected = InvitationInvalideException.class)
+    public void addInvitKO1() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        fac.addInvitation(p1.getId(), co.getId(), null); // création de l'invitation
+    }
+
+    // Création d'une invitation sans idPartie
+    @Test (expected = PartieInexistanteException.class)
+    public void addInvitKO2() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        fac.addInvitation(null, co.getId(), Collections.singletonList(u2)); // création de l'invitation
+    }
+
+    // Création d'une invitation sans idHote
+    @Test (expected = PasConnecteException.class) // null n'est pas co ... faudrait peut-être une exception à part ?
+    public void addInvitKO3() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        fac.addInvitation(p1.getId(), null, Collections.singletonList(u2)); // création de l'invitation
+    }
+
+    // ------------------------------------------------------------------------
+    // test l'acceptation d'une invitation
+    // ------------------------------------------------------------------------
+
+    @Test // Acceptation d'une invitation "normale"
+    public void acceptInvitOK() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        Invitation i1 = fac.addInvitation(p1.getId(), co.getId(), new ArrayList<>(Collections.singletonList(u2))); // création de l'invitation (avec liste mutable)
+        Assert.assertTrue(fac.accepterInvitation(i1.getId(), u2.getId()));
+    }
+
+    // Acceptation d'une invitation sur une partie inexistante
+    @Test (expected = PartieInexistanteException.class)
+    public void acceptInvitPIE() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, PartieInexistanteException, NonInscritException, DejaCoException, MdpIncorrectException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Invitation i1 = fac.addInvitation(null, co.getId(), Collections.singletonList(u2)); // création de l'invitation
+        fac.accepterInvitation(i1.getId(), u2.getId());
+    }
+
+    // Acceptation d'une invitation sur d'un joueur inexistant
+    @Test (expected = NonInscritException.class)
+    public void acceptInvitNIE() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, PartieInexistanteException, NonInscritException, DejaCoException, MdpIncorrectException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        Invitation i1 = fac.addInvitation(p1.getId(), co.getId(), Collections.singletonList(u2)); // création de l'invitation
+        fac.accepterInvitation(i1.getId(), null);
+    }
+
+    // ------------------------------------------------------------------------
+    // test le refus d'une invitation
+    // ------------------------------------------------------------------------
+
+    @Test // Refuser une invitation "normale"
+    public void refusInvitOK() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        Invitation i1 = fac.addInvitation(p1.getId(), co.getId(), new ArrayList<>(Collections.singletonList(u2))); // création de l'invitation (avec liste mutable)
+        Assert.assertTrue(fac.refuserInvitation(i1.getId(), u2.getId()));
+    }
+
+    // Refus d'une invitation sur une partie inexistante
+    @Test (expected = PartieInexistanteException.class)
+    public void refusInvitPIE() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, PartieInexistanteException, NonInscritException, DejaCoException, MdpIncorrectException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Invitation i1 = fac.addInvitation(null, co.getId(), Collections.singletonList(u2)); // création de l'invitation
+        fac.refuserInvitation(i1.getId(), u2.getId());
+    }
+
+    // Refus d'une invitation sur d'un joueur inexistant
+    @Test (expected = NonInscritException.class)
+    public void refusInvitNIE() throws DejaInscritException, InscriptionIncorrecteException, InvitationInvalideException, PasConnecteException, PartieInexistanteException, NonInscritException, DejaCoException, MdpIncorrectException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        Invitation i1 = fac.addInvitation(p1.getId(), co.getId(), Collections.singletonList(u2)); // création de l'invitation
+        fac.refuserInvitation(i1.getId(), null);
+    }
+
+    // ------------------------------------------------------------------------
     // après chaque test unitaire ...
     // ------------------------------------------------------------------------
 
-    @After // on vide la liste des utilisateurs et celle des utilisateurs connectés
-    public void clearFacade() { fac.getUsers().clear(); fac.getConnectedUsers().clear(); }
+    @After // on vide toutes les listes de la facade
+    public void clearFacade() {
+        fac.getUsers().clear();
+        fac.getConnectedUsers().clear();
+        fac.getAvailableUsers().clear();
+        fac.getInvitations().clear();
+        fac.getParties().clear();
+    }
 }

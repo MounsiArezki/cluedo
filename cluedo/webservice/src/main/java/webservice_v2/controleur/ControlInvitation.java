@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import webservice_v2.config.ServiceConfig;
-import webservice_v2.exception.InvitationInvalideException;
-import webservice_v2.exception.JoueurNonConnecteException;
-import webservice_v2.exception.PartieInexistanteException;
+import webservice_v2.exception.*;
 import webservice_v2.modele.entite.Invitation;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
@@ -51,7 +49,7 @@ public class ControlInvitation {
                     invitation.getInvites()
             );
             invitationsNotification.onNext(i);
-        } catch (InvitationInvalideException | JoueurNonConnecteException e) {
+        } catch (InvitationInvalideException | PasConnecteException | PartieInexistanteException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         URI location = ServletUriComponentsBuilder
@@ -89,6 +87,9 @@ public class ControlInvitation {
         } catch (PartieInexistanteException e) {
             System.out.println("200 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (NonInscritException e) {
+            System.out.println("200 ws joueur inexistant");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -107,6 +108,9 @@ public class ControlInvitation {
             facade.refuserInvitation(id, user.getId());
         } catch (PartieInexistanteException e) {
             System.out.println("200 ws partie non trouvée");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (NonInscritException e) {
+            System.out.println("200 joueur inexistant");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         URI location = ServletUriComponentsBuilder

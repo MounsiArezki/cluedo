@@ -156,16 +156,19 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeInvitations.values(); }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, JoueurNonConnecteException {
+    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, PasConnecteException, PartieInexistanteException {
+        if (lj == null) throw new InvitationInvalideException();
         if (lj.size() < 1) throw new InvitationInvalideException();
         User hote = findUser(idH);
         Invitation i;
+
+        if (!listeParties.containsKey(idP)) throw new PartieInexistanteException();
 
         if (listeUsersConnectes.containsKey(idH)) {
             i = facI.createInvitation(idP, hote, lj);
             listeInvitations.put(i.getId(), i);
             return i;
-        } else throw new JoueurNonConnecteException();
+        } else throw new PasConnecteException();
     }
 
     // trouver une invitation par son id
@@ -213,35 +216,38 @@ public class Facade {
     }
 
     // l'utilisateur avec idU accepte l'invitation idI
-    public boolean accepterInvitation(String idI, String idU) throws PartieInexistanteException {
+    public boolean accepterInvitation(String idI, String idU) throws PartieInexistanteException, NonInscritException {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
-        boolean res=false;
+
         if (i != null) {
             if (i.getInvites().contains(u)) { // si l'utilisateur est dans la liste des invités
                 i.getInvites().remove(u); // on le retire de la liste des invités
                 Partie partie = findPartie(i.getIdPartie());
                 GestionnairePartie.ajouterJoueur(partie, u); // on l'intègre à la partie
-                checkInvitationPartie(i,partie);
-                res= true;
+                checkInvitationPartie(i, partie);
+                return true;
             }
+            else if (u == null) { throw new NonInscritException(); }
         }
-        return res;
+        return false;
     }
 
     // l'utilisateur avec idU refuse l'invitation idI
-    public boolean refuserInvitation(String idI, String idU) throws PartieInexistanteException {
+    public boolean refuserInvitation(String idI, String idU) throws PartieInexistanteException, NonInscritException {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
 
-        boolean res=false;
         if (i != null) {
-            Partie partie = findPartie(i.getIdPartie());
-            i.getInvites().remove(u); // on le retire simplement de la liste des invités
-            checkInvitationPartie(i,partie);
-            res=true;
+            if (i.getInvites().contains(u)) {  // si l'utilisateur est dans la liste des invités
+                i.getInvites().remove(u); // on le retire simplement de la liste des invités
+                Partie partie = findPartie(i.getIdPartie());
+                checkInvitationPartie(i, partie);
+                return true;
+            }
+            else if (u == null) { throw new NonInscritException(); }
         }
-        return res;
+        return false;
     }
 
     private void checkInvitationPartie(Invitation invitation, Partie partie) {

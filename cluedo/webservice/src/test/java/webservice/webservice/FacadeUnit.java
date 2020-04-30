@@ -234,9 +234,150 @@ public class FacadeUnit {
         User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
         User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
         User u2 = fac.addUser("invite", "pwd"); // création de l'utilisateur invité
-        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie
         Invitation i1 = fac.addInvitation(p1.getId(), co.getId(), Collections.singletonList(u2)); // création de l'invitation
         fac.refuserInvitation(i1.getId(), null);
+    }
+
+    // ------------------------------------------------------------------------
+    // tests sur la création d'une partie
+    // ------------------------------------------------------------------------
+
+    @Test // Création d'une partie "normale"
+    public void addPartieOK() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie
+        Assert.assertEquals(u1.getId(), p1.getHote().getId());
+    }
+
+    // Création d'une partie sans que l'utilisateur ne soit connecté
+    @Test (expected = PasConnecteException.class)
+    public void addPartiePCE() throws DejaInscritException, InscriptionIncorrecteException, PasConnecteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        fac.addPartie(u1.getId()); // création de la partie
+    }
+
+    // Création d'une partie avec l'utilisateur null
+    @Test (expected = PasConnecteException.class)
+    public void addPartieKO() throws PasConnecteException {
+        fac.addPartie(null); // création de la partie
+    }
+
+    // ------------------------------------------------------------------------
+    // tests sur la sauvegarde d'une partie
+    // ------------------------------------------------------------------------
+
+    @Test // Sauvegarde "normale" d'une partie "normale"
+    public void savePartieOK() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException, PartieInexistanteException, PasHotePartieException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie
+        Partie psave = fac.savePartie(p1.getId(), co.getId()); // sauvegarde de la partie
+        Assert.assertEquals(u1.getId(), psave.getHote().getId());
+    }
+
+    // Sauvegarde d'une partie sans que l'utilisateur ne soit connecté
+    @Test (expected = PasConnecteException.class)
+    public void savePartiePCE() throws DejaInscritException, InscriptionIncorrecteException, PasConnecteException, PartieInexistanteException, PasHotePartieException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        Partie p1 = fac.addPartie(u1.getId()); // création de la partie
+        fac.savePartie(p1.getId(), u1.getId()); // sauvegarde de la partie
+    }
+
+    // Sauvegarde d'une partie demandé par un autre user que l'hôte
+    @Test (expected = PasHotePartieException.class)
+    public void savePartiePHPE() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException, PartieInexistanteException, PasHotePartieException {
+        User u1 = fac.addUser("hote", "pwd"); // création de l'utilisateur hôte
+        User u2 = fac.addUser("fail", "pwd"); // création d'un second utilisateur
+        User co1 = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion de l'hôte
+        User co2 = fac.connexion(u2.getPseudo(), u2.getPwd()); // connexion du 2nd utilisateur
+        Partie p1 = fac.addPartie(co1.getId()); // création de la partie par l'hôte
+        fac.savePartie(p1.getId(), co2.getId()); // sauvegarde de la partie par le 2nd utilisateur
+    }
+
+    // Sauvegarde d'une partie avec partie null + l'utilisateur null
+    @Test (expected = PartieInexistanteException.class)
+    public void savePartieKO1() throws PartieInexistanteException, PasHotePartieException {
+        fac.savePartie(null, null); // sauvegarde de la partie
+    }
+
+    // Sauvegarde d'une partie avec une partie null
+    @Test (expected = PartieInexistanteException.class)
+    public void savePartieKO2() throws PartieInexistanteException, PasHotePartieException, DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        fac.savePartie(null, co.getId()); // sauvegarde de la partie
+    }
+
+    // Sauvegarde d'une partie avec l'utilisateur null
+    @Test (expected = PasHotePartieException.class)
+    public void savePartieKO3() throws PartieInexistanteException, PasHotePartieException, DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie
+        fac.savePartie(p1.getId(), null); // sauvegarde de la partie
+    }
+
+    // ------------------------------------------------------------------------
+    // tests sur la restauration d'une partie
+    // ------------------------------------------------------------------------
+
+    @Test // Restauration "normale" d'une partie "normale"
+    public void recupPartieOK() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException, PartieInexistanteException, PasHotePartieException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie
+        Partie psave = fac.savePartie(p1.getId(), co.getId()); // sauvegarde de la partie
+        Partie pres = fac.restorePartie(psave.getId(), co.getId()); // restauration de la partie
+        Assert.assertEquals(u1.getId(), pres.getHote().getId());
+    }
+
+    // Restauration d'une partie par un autre user que l'hôte
+    @Test (expected = PasHotePartieException.class)
+    public void recupPartiePHPE() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException, PartieInexistanteException, PasHotePartieException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User u2 = fac.addUser("fail", "pwd"); // création d'un second utilisateur
+        User co1 = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion de l'hôte
+        User co2 = fac.connexion(u2.getPseudo(), u2.getPwd()); // connexion du 2nd utilisateur
+        Partie p1 = fac.addPartie(co1.getId()); // création de la partie par l'hôte
+        Partie psave = fac.savePartie(p1.getId(), co1.getId()); // sauvegarde de la partie par l'hôte
+        fac.restorePartie(psave.getId(), co2.getId()); // restauration de la partie par le 2nd utilisateur
+    }
+
+    // Restauration d'une partie non-sauvegardée
+    @Test (expected = PartieInexistanteException.class)
+    public void recupPartiePIE() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException, PasHotePartieException, PasConnecteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie 1 (qui sera sauvegardée)
+        Partie p2 = fac.addPartie(co.getId()); // création de la partie 2 (qui sera restaurée)
+        fac.savePartie(p1.getId(), co.getId()); // sauvegarde de la partie 1
+        fac.restorePartie(p2.getId(), co.getId()); // restauration de la partie 2
+    }
+
+    // Restauration d'une partie null + hôte null
+    @Test (expected = PartieInexistanteException.class)
+    public void recupPartieKO1() throws PartieInexistanteException, PasHotePartieException {
+        fac.restorePartie(null, null); // restauration de la partie
+    }
+
+    // Restauration d'une partie null
+    @Test (expected = PartieInexistanteException.class)
+    public void recupPartieKO2() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException, PasHotePartieException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        fac.restorePartie(null, co.getId()); // restauration de la partie
+    }
+
+    // Restauration d'une partie avec hôte null
+    @Test (expected = PasHotePartieException.class)
+    public void recupPartieKO3() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PartieInexistanteException, PasHotePartieException, PasConnecteException {
+        User u1 = fac.addUser("test", "pwd"); // création de l'utilisateur hôte
+        User co = fac.connexion(u1.getPseudo(), u1.getPwd()); // connexion
+        Partie p1 = fac.addPartie(co.getId()); // création de la partie
+        Partie psave = fac.savePartie(p1.getId(), co.getId()); // sauvegarde de la partie
+        fac.restorePartie(psave.getId(), null); // restauration de la partie
     }
 
     // ------------------------------------------------------------------------

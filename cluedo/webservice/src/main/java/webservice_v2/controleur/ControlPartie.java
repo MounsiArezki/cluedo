@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.PartieInexistanteException;
+import webservice_v2.exception.PasHotePartieException;
 import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.User;
 import webservice_v2.facade.Facade;
@@ -43,8 +44,11 @@ public class ControlPartie{
         try {
             facade.savePartie(id, user.getId());
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (PasHotePartieException e) {
+            System.out.println("401 ws seul l'hôte peut sauvegarder la partie");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -60,8 +64,19 @@ public class ControlPartie{
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ServiceConfig.URL_PARTIE_ID_RESTAURATION, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Partie> restorePartie(@PathVariable(name=ServiceConfig.PARTIE_ID_PARAM) String id, @RequestBody User user) {
-        Partie p = facade.restorePartie(id, user.getId());
-        return Flux.from(partieNotification).filter(p::equals);
+        Partie p;
+        try {
+            p = facade.restorePartie(id, user.getId());
+            return Flux.from(partieNotification).filter(p::equals);
+        } catch (PasHotePartieException e) {
+            System.out.println("401 ws seul l'hôte peut restaurer la partie");
+            // exception à traiter
+        } catch (PartieInexistanteException e) {
+            System.out.println("404 ws cette partie n'existe pas");
+            // exception à traiter
+        }
+        return null;
+
     }
 
 }

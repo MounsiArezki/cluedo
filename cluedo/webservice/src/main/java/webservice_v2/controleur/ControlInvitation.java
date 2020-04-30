@@ -34,7 +34,13 @@ public class ControlInvitation {
     @PostMapping(value = ServiceConfig.URL_INVITATION, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Invitation> createInv(@RequestBody Invitation invitation) {
         User hote= invitation.getHote();
-        Partie partie = facade.addPartie(hote.getId());
+        Partie partie;
+        try {
+            partie = facade.addPartie(hote.getId());
+        } catch (PasConnecteException e) {
+            System.out.println("401 ws il faut être connecté pour créer une partie");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         partieNotification.onNext(partie);
         /*ServletUriComponentsBuilder
                 .fromUriString(ServiceConfig.URL_PARTIE)
@@ -49,8 +55,15 @@ public class ControlInvitation {
                     invitation.getInvites()
             );
             invitationsNotification.onNext(i);
-        } catch (InvitationInvalideException | PasConnecteException | PartieInexistanteException e) {
+        } catch (PasConnecteException e) {
+            System.out.println("401 ws il faut être connecté pour créer une invitation");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (InvitationInvalideException e) {
+            System.out.println("400 ws l'invitation est vide");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (PartieInexistanteException e) {
+            System.out.println("404 ws partie inexistante");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

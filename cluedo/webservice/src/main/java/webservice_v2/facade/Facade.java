@@ -276,10 +276,14 @@ public class Facade {
     }
 
     // ajout d'une partie
-    public Partie addPartie(String idH) {
-        Partie p = facP.createPartie(findUser(idH));
-        listeParties.put(p.getId(),p);
-        return p;
+    public Partie addPartie(String idH) throws PasConnecteException {
+        User u = findUser(idH);
+
+        if (listeUsersConnectes.containsValue(u)) {
+            Partie p = facP.createPartie(u);
+            listeParties.put(p.getId(), p);
+            return p;
+        } else throw new PasConnecteException();
     }
 
     // trouver une partie par son id
@@ -300,22 +304,32 @@ public class Facade {
     }
 
     // sauvegarde d'une partie
-    public Partie savePartie(String idP, String idH) throws PartieInexistanteException {
+    public Partie savePartie(String idP, String idH) throws PartieInexistanteException, PasHotePartieException {
         Partie p = findPartie(idP);
-        if (idH.equals(p.getHote().getId())){
-            listePartiesMongo.put(p.getId(), p);
-            listeParties.remove(idP);
-        }
+
+        if (idH != null) {
+            if (idH.equals(p.getHote().getId())) {
+                listePartiesMongo.put(p.getId(), p);
+                listeParties.remove(idP);
+            } else throw new PasHotePartieException();
+        } else throw new PasHotePartieException();
+
         return p;
     }
 
     // restauration d'une partie
-    public Partie restorePartie(String idP, String idH) {
+    public Partie restorePartie(String idP, String idH) throws PartieInexistanteException, PasHotePartieException {
         Partie ps = listePartiesMongo.get(idP);
-        if (idH.equals(ps.getHote().getId())) {
-            listePartiesMongo.remove(idP);
-            listeParties.put(ps.getId(), ps);
-        }
+
+        if (ps == null) throw new PartieInexistanteException();
+
+        if (idH != null) {
+            if (idH.equals(ps.getHote().getId())) {
+                listePartiesMongo.remove(idP);
+                listeParties.put(ps.getId(), ps);
+            } else throw new PasHotePartieException();
+        } else throw new PasHotePartieException();
+
         return ps;
     }
 

@@ -76,22 +76,20 @@ public class Facade {
     }
 
     // ajouter un utilisateur
-    public User addUser(String pseudo, String pwd) throws DejaInscritException {
-        User test=new User(pseudo);
-        if(listeUsers.containsValue(test)){
-            throw new DejaInscritException();
+    public User addUser(String pseudo, String pwd) throws DejaInscritException, InscriptionIncorrecteException {
+        if (pseudo != null && pwd != null) { // si le pseudo et le pwd ne sont pas null
+            if (findUserByLogin(pseudo) != null) { throw new DejaInscritException(); }
+            User u = facU.createUser(pseudo, pwd); // création de l'utilisateur
+            listeUsers.put(u.getId(), u);
+            return u;
         }
-        User u = facU.createUser(pseudo, pwd); // création de l'utilisateur
-        listeUsers.put(u.getId(), u);
-        return u;
+        throw new InscriptionIncorrecteException();
     }
 
     // trouver un utilisateur par son id
     public User findUser(String id) {
-        User u=null;
-        if(listeUsers.containsKey(id)){
-            u=listeUsers.get(id);
-        }
+        User u = null;
+        if (listeUsers.containsKey(id)) { u = listeUsers.get(id); }
         return u;
     }
 
@@ -143,7 +141,7 @@ public class Facade {
     // déconnexion
     public User deconnexion(String ps) throws PasConnecteException {
         User u = findUserByLogin(ps);
-        if (u == null) {
+        if (!listeUsersConnectes.containsValue(u)) {
             throw new PasConnecteException();
         }
         listeUsersConnectes.remove(u.getId());

@@ -56,6 +56,9 @@ public class ControlUser {
         catch (DejaInscritException e) {
             System.out.println("409 ws error");
             return ResponseEntity.status(409).build();
+        } catch (InscriptionIncorrecteException e) {
+            System.out.println("409 saisie incomplète");
+            return ResponseEntity.status(409).build();
         }
 
     }

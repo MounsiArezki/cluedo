@@ -7,6 +7,7 @@ import org.junit.Test;
 import webservice_v2.exception.*;
 import webservice_v2.exception.partie.ActionNonAutoriseeException;
 import webservice_v2.exception.partie.DeplacementNonAutoriseException;
+import webservice_v2.exception.partie.PasJoueurActifException;
 import webservice_v2.exception.partie.PasJoueurCourantException;
 import webservice_v2.facade.Facade;
 import webservice_v2.modele.entite.Invitation;
@@ -366,6 +367,189 @@ public class GestPartieUnit {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(),ordre.get(1), null); // on lance une hypothèse
+    }
+
+    // ------------------------------------------------------------------------
+    // tests sur l'action 'révéler carte' (ainsi que passer dans le cas de l'hypothèse)
+    // ------------------------------------------------------------------------
+
+    @Test // Le joueur effectue l'action de façon "normale" (1 essai)
+    public void revCarteOK1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(2)).setListeCartes(Collections.singletonList(Arme.CHANDELIER)); // on "donne" cette carte au joueur d'après
+        fac.revelerCarte(partie.getId(), ordre.get(2), Arme.CHANDELIER); // le joueur d'après relève une carte
+        Assert.assertEquals(partie.getEtatPartie().getClass(), FinTour.class);
+    }
+
+    @Test // Le joueur effectue l'action de façon "normale" (2 essais)
+    public void revCarteOK2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(2)).setListeCartes(Collections.emptyList()); // on "vide" la main du joueur d'après
+        fac.passer(partie.getId(), ordre.get(2)); // le joueur suivant n'a pas une des cartes demandées (il passe)
+        partie.getJoueurs().get(ordre.get(3)).setListeCartes(Collections.singletonList(Arme.CHANDELIER)); // on "donne" cette carte au joueur d'encore après
+        fac.revelerCarte(partie.getId(), ordre.get(3), Arme.CHANDELIER); // le joueur d'encore après relève une carte
+        Assert.assertEquals(partie.getEtatPartie().getClass(), FinTour.class);
+    }
+
+    @Test // Le joueur effectue l'action de façon "normale" (personne n'a les cartes de l'hypothèse)
+    public void revCarteOK3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(2)).setListeCartes(Collections.emptyList()); // on "vide" la main du joueur d'après
+        fac.passer(partie.getId(), ordre.get(2)); // le joueur suivant n'a pas une des cartes demandées (il passe)
+        partie.getJoueurs().get(ordre.get(3)).setListeCartes(Collections.emptyList()); // on "vide" la main du joueur d'encore après
+        fac.passer(partie.getId(), ordre.get(3)); // le joueur d'encore après n'a pas une des cartes demandées (il passe)
+        Assert.assertEquals(partie.getEtatPartie().getClass(), FinTour.class);
+    }
+
+    // Action demandée sur un joueur qui n'est pas dans la partie
+    @Test (expected = JoueurPasDansLaPartieException.class)
+    public void revCarteJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        fac.revelerCarte(partie.getId(), intrus.getId(), Arme.CHANDELIER); // le joueur suivant relève une carte
+    }
+
+    // Action demandée sur un joueur qui est dans une partie inexistante
+    @Test (expected = PartieInexistanteException.class)
+    public void revCartePIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        fac.revelerCarte(null, intrus.getId(), Arme.CHANDELIER); // le joueur suivant relève une carte
+    }
+
+    // Action demandée sur un joueur que ce n'est pas le moment
+    @Test (expected = ActionNonAutoriseeException.class)
+    public void revCarteANAE1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(2)).setListeCartes(Collections.singletonList(Arme.CHANDELIER)); // on "donne" cette carte au joueur d'après
+        fac.passer(partie.getId(), ordre.get(2)); // le joueur suivant tente de passer alors qu'il a la bonne carte
+    }
+
+    // Action demandée sur un joueur alors qu'il n'a pas la carte qu'il veut relever
+    @Test (expected = ActionNonAutoriseeException.class)
+    public void revCarteANAE2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(2)).setListeCartes(Collections.singletonList(Arme.CORDE)); // on "donne" cette carte au joueur d'après
+        fac.revelerCarte(partie.getId(), ordre.get(2), Arme.CHANDELIER); // le joueur suivant relève une carte
+    }
+
+    // Action demandée sur un joueur alors que ce n'est pas à lui de relever une carte
+    @Test (expected = PasJoueurActifException.class)
+    public void revCartePJAE1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(2)).setListeCartes(Collections.singletonList(Arme.CHANDELIER)); // on "donne" cette carte au joueur d'après
+        fac.revelerCarte(partie.getId(), ordre.get(2), Arme.CHANDELIER); // le joueur d'après relève une carte
+        partie.getJoueurs().get(ordre.get(3)).setListeCartes(Collections.singletonList(Lieu.BALL_ROOM)); // on "donne" cette carte au joueur d'encore après
+        fac.revelerCarte(partie.getId(), ordre.get(3), Lieu.BALL_ROOM); // le joueur d'encore après relève une carte
+    }
+
+    // Action demandée sur un joueur alors que ce n'est pas à lui de passer
+    @Test (expected = PasJoueurActifException.class)
+    public void revCartePJAE2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        partie.getJoueurs().get(ordre.get(3)).setListeCartes(Collections.emptyList()); // on vide la main du dernier joueur
+        fac.passer(partie.getId(), ordre.get(3)); // le joueur suivant n'a pas une des cartes demandées
+    }
+
+    // Action demandée sur un joueur inexistant qui est dans une partie inexistante
+    @Test (expected = PartieInexistanteException.class)
+    public void revCarteKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        fac.revelerCarte(null, null, Arme.CHANDELIER); // le joueur suivant relève une carte
+    }
+
+    // Action demandée sur un joueur inexistant
+    @Test (expected = JoueurPasDansLaPartieException.class)
+    public void revCarteKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        fac.revelerCarte(partie.getId(), null, Arme.CHANDELIER); // le joueur suivant relève une carte
+    }
+
+    // Action demandée sur un joueur qui donne une carte inexistante
+    @Test (expected = ActionNonAutoriseeException.class)
+    public void revCarteKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
+        fac.revelerCarte(partie.getId(), ordre.get(1), null); // le joueur suivant relève une carte
+    }
+
+    // ------------------------------------------------------------------------
+    // tests sur le passage du tour (dans les autres cas que l'hypothèse)
+    // ------------------------------------------------------------------------
+
+    @Test // Le joueur finit son tour (il "passe" son tour à un autre jour)
+    public void passerOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.passer(partie.getId(), ordre.get(1)); // on passe simplement
+        Assert.assertEquals(partie.getEtatPartie().getClass(), DebutTour.class);
+    }
+
+    // Le joueur finit son tour (il "passe" son tour à un autre jour) dans une partie inexistante
+    @Test (expected = JoueurPasDansLaPartieException.class)
+    public void passerJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.passer(partie.getId(), intrus.getId()); // on passe simplement
+    }
+
+    // Le joueur finit son tour (il "passe" son tour à un autre jour) dans une partie inexistante
+    @Test (expected = PartieInexistanteException.class)
+    public void passerPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.passer(null, ordre.get(1)); // on passe simplement
+    }
+
+    // Le joueur finit son tour (il "passe" son tour à un autre jour) alors que ce n'est pas à lui
+    @Test (expected = PasJoueurCourantException.class)
+    public void passerPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.passer(partie.getId(), ordre.get(2)); // on passe simplement
+    }
+
+    // Le joueur finit son tour (il "passe" son tour à un autre jour) alors que ce n'est pas le moment
+    @Test (expected = ActionNonAutoriseeException.class)
+    public void passerANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        fac.passer(partie.getId(), ordre.get(2)); // on passe simplement
+    }
+
+    // Un joueur inexistant finit son tour (il "passe" son tour à un autre jour) dans une partie inexistante
+    @Test (expected = PartieInexistanteException.class)
+    public void passerKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.passer(null, null); // on passe simplement
+    }
+
+    // Un joueur inexistant finit son tour (il "passe" son tour à un autre jour)
+    @Test (expected = JoueurPasDansLaPartieException.class)
+    public void passerKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+        partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
+        partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
+        fac.passer(partie.getId(), null); // on passe simplement
     }
 
     // ------------------------------------------------------------------------

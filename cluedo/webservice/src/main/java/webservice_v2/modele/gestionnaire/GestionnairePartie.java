@@ -512,6 +512,10 @@ public class GestionnairePartie {
         }
 
         Joueur actifSuivant=getJoueurActifSuivant(partie);
+
+        // on vérifie si le joueur dispose bien de la carte en question
+        if (!partie.getJoueurs().get(user.getId()).getListeCartes().contains(carte)) throw new ActionNonAutoriseeException();
+
         if(carte==null && actifSuivant!=null){
             partie.setEtatPartie(
                     partie.getEtatPartie().revelerCarte(actifSuivant)

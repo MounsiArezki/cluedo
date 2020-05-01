@@ -410,6 +410,8 @@ public class Facade {
     public void revelerCarte(String idP, String idJ, ICarte carte) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurActifException {
         Partie partie = findPartie(idP);
 
+        if (carte == null) throw new ActionNonAutoriseeException(); // celle-là, forte chance qu'elle te tue l'appli :-)
+
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.revelerCarte(findUser(idJ), carte, partie);
         else throw new JoueurPasDansLaPartieException();
     }

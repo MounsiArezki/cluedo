@@ -378,6 +378,8 @@ public class Facade {
     public void deplacer(String idP, String idJ, Position pos) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, DeplacementNonAutoriseException {
         Partie partie = findPartie(idP);
 
+        if (pos == null) throw new DeplacementNonAutoriseException(); // check exception
+
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.seDeplacer(findUser(idJ), pos, partie);
         else throw new JoueurPasDansLaPartieException();
     }
@@ -386,6 +388,9 @@ public class Facade {
     public void accuser(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
         Partie partie = findPartie(idP);
 
+        if (mc == null) throw new ActionNonAutoriseeException(); // check exception
+        if (mc.isEmpty()) throw new ActionNonAutoriseeException(); // check exception
+
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.accuser(findUser(idJ), mc, partie);
         else throw new JoueurPasDansLaPartieException();
     }
@@ -393,6 +398,9 @@ public class Facade {
     // émettre une hypothèse (dans une partie donnée)
     public void hypothese(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
         Partie partie = findPartie(idP);
+
+        if (mc == null) throw new ActionNonAutoriseeException(); // check exception
+        if (mc.isEmpty()) throw new ActionNonAutoriseeException(); // check exception
 
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.emettreHypothese(findUser(idJ), mc, partie);
         else throw new JoueurPasDansLaPartieException();

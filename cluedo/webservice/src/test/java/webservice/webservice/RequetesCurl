@@ -1,0 +1,34 @@
+Requêtes curl permettant de tester le serveur REST (en curl car nous avons des flux et le client IntelliJ ne permet pas de voir les données de flux)
+
+REMARQUE :
+Les uris sont configurables/trouvables dans le fichier ServiceConfig.
+
+/////////////////////////////////////////////////////////////////////
+                    Requêtes sur les utilisateurs
+/////////////////////////////////////////////////////////////////////
+
+- Récupérer la liste des utilisateurs :
+curl -X GET localhost:8080/serv/user
+
+- Récupérer le FLUX des utilisateurs connectés (flux illimité) :
+curl -X GET localhost:8080/serv/user/connected
+
+- Ajouter un utilisateur (la première pour windows, la deuxième pour linux) :
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":null,\"pseudo\":\"test\",\"pwd\":\"test\"}" localhost:8080/serv/user
+curl -X POST -H "Content-Type:application/json" -d '{ "id": null, "pseudo": "test", "pwd": "test" }' localhost:8080/serv/user
+
+- Récupérer l'utilisateur ayant l'id donné :
+curl -X GET localhost:8080/serv/user/3
+
+- Récupérer l'utilisateur avec un pseudo commençant par 'tes' :
+curl -X GET localhost:8080/serv/user/filter/tes
+
+- Supprimer l'utilisateur avec l'id 3 :
+curl -X DELETE localhost:8080/serv/user/3
+
+- Connecter un utilisateur (la première pour windows, la deuxième pour linux) :
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":null,\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/user/connexion
+curl -X POST -H "Content-Type:application/json" -d '{ "id": null, "pseudo": "test", "pwd": "test" }' localhost:8080/serv/user/connexion
+
+- Déconnecter un utilisateur :
+curl -X DELETE localhost:8080/serv/user/connexion/2

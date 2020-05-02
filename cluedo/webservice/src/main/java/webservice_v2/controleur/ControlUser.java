@@ -72,8 +72,8 @@ public class ControlUser {
 
     // trouver un/des user(s) par le début du pseudo
     @GetMapping(value = ServiceConfig.URL_USER_FILTRE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<User>> filterUserByLogin(@PathVariable String filter) {
-        Collection<User> liste=facade.filterUserByLogin(filter);
+    public ResponseEntity<Collection<User>> filterUserByLogin(@PathVariable String filtre) {
+        Collection<User> liste=facade.filterUserByLogin(filtre);
         return ResponseEntity.ok(liste);
     }
 

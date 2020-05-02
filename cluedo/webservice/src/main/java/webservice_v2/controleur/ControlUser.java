@@ -15,6 +15,7 @@ import webservice_v2.facade.Facade;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
 
 import static webservice_v2.flux.GlobalReplayProcessor.*;
 
@@ -66,7 +67,13 @@ public class ControlUser {
     // trouver un utilisateur par son id
     @GetMapping(value = ServiceConfig.URL_USER_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> findUser(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        User user=facade.findUser(id);
+        User user;
+        try {
+            user = facade.findUser(id);
+        } catch (NonInscritException e) {
+            System.out.println("404 joueur non trouvé");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.ok(user);
     }
 
@@ -100,10 +107,15 @@ public class ControlUser {
                     .created(location)
                     .body(u);
         }
-        catch (MdpIncorrectException | NonInscritException e) {
+        catch (MdpIncorrectException e) {
+            System.out.println("401 ws mot de passe incorrect");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (DejaCoException e) {
+            System.out.println("402 ws joueur déjà connecté");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (NonInscritException e) {
+            System.out.println("404 ws joueur inexistant");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -115,7 +127,11 @@ public class ControlUser {
             facade.deconnexion(pseudo);
             connectedUsersNotification.onNext(facade.getAvailableUsers());
         } catch (PasConnecteException e) {
+            System.out.println("401 il faut être connecté pour se déconnecter");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
@@ -132,16 +148,34 @@ public class ControlUser {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ServiceConfig.URL_USER_ID_INVITATION_EMISE, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Invitation> getInvEmises(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        Collection<Invitation> li = facade.findInvitationByHost(id);
-        return Flux.from(invitationsNotification).filter(li::contains);
+        Collection<Invitation> li = Collections.emptyList();
+        try {
+            li = facade.findInvitationByHost(id);
+        } catch (NonInscritException e) {
+            System.out.println("404 joueur inexistant");
+        }
+        return Flux.from(invitationsNotification).filter(i -> {
+            User u = null;
+            try {
+                u = facade.findUser(id);
+            } catch (NonInscritException e) {
+                e.printStackTrace();
+            }
+            return i.getHote().equals(u);
+        });
     }
 
     // récupère les invitations reçues d'un user
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ServiceConfig.URL_USER_ID_INVITATION_RECU, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Invitation> getInvRecues(@PathVariable(name=ServiceConfig.USER_ID_PARAM) String id) {
-        return Flux.from(invitationsNotification).filter( i -> {
-            User u = facade.findUser(id);
+        return Flux.from(invitationsNotification).filter(i -> {
+            User u = null;
+            try {
+                u = facade.findUser(id);
+            } catch (NonInscritException e) {
+                e.printStackTrace();
+            }
             return i.getInvites().contains(u);
         });
     }

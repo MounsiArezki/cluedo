@@ -35,7 +35,7 @@ public class GestPartieUnit {
     private Map<Integer, String> ordre; // ordre de jeu [attention : pas d'indice 0]
 
     @Before // mise en place du contexte
-    public void init() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException, InvitationInvalideException, PartieInexistanteException {
+    public void init() throws DejaInscritException, InscriptionIncorrecteException, NonInscritException, DejaCoException, MdpIncorrectException, PasConnecteException, InvitationInvalideException, PartieInexistanteException, InvitationInexistanteException {
         hote = fac.addUser("hote", "pwd"); // création de l'utilisateur hôte
         fac.connexion(hote.getPseudo(), hote.getPwd()); // connexion hôte
 
@@ -121,32 +121,32 @@ public class GestPartieUnit {
     // ------------------------------------------------------------------------
 
     @Test // Le joueur lance "normalement" les dés
-    public void lancerDesOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void lancerDesOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.lancerDes(partie.getId(), ordre.get(1));
         Assert.assertEquals(partie.getEtatPartie().getClass(), ResolutionDes.class);
     }
 
     // Lancement des dés d'un joueur qui n'est pas dans la partie
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void lancerDesJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void lancerDesJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.lancerDes(partie.getId(), intrus.getId());
     }
 
     // Lancement des dés d'un joueur dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void lancerDesPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void lancerDesPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.lancerDes(null, intrus.getId());
     }
 
     // Lancement des dés d'un joueur à qui ce n'est pas le tour
     @Test (expected = PasJoueurCourantException.class)
-    public void lancerDesPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void lancerDesPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.lancerDes(partie.getId(), ordre.get(2));
     }
 
     // Lancement des dés d'un joueur alors que ce n'est pas le moment
     @Test (expected = ActionNonAutoriseeException.class)
-    public void lancerDesANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void lancerDesANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on passe à l'état suivant de la partie ("se déplacer")
         fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
@@ -154,7 +154,7 @@ public class GestPartieUnit {
 
     // Lancement des dés d'un joueur inexistante dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void lancerDesKO() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void lancerDesKO() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.lancerDes(null, null);
     }
 
@@ -163,7 +163,7 @@ public class GestPartieUnit {
     // ------------------------------------------------------------------------
 
     @Test // Le joueur effectue un déplacement "normal"
-    public void deplacementOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -173,7 +173,7 @@ public class GestPartieUnit {
 
     // Déplacement d'un joueur qui n'est pas dans la partie
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void deplacementJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -182,7 +182,7 @@ public class GestPartieUnit {
 
     // Déplacement d'un joueur dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void deplacementPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -191,7 +191,7 @@ public class GestPartieUnit {
 
     // Déplacement d'un joueur à qui ce n'est pas le tour
     @Test (expected = PasJoueurCourantException.class)
-    public void deplacementPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -200,7 +200,7 @@ public class GestPartieUnit {
 
     // Déplacement d'un joueur alors que ce n'est pas le moment
     @Test (expected = ActionNonAutoriseeException.class)
-    public void deplacementANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -211,7 +211,7 @@ public class GestPartieUnit {
     // Déplacement non-conforme (trop long) d'un joueur
     // [!] la méthode de validation renvoie toujours true (actuellement)
     @Test (expected = DeplacementNonAutoriseException.class)
-    public void deplacementDNAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementDNAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0) + 1, pi.getY() + des.get(1) + 1); // on "calcule" une position finale non rejoignable
@@ -220,7 +220,7 @@ public class GestPartieUnit {
 
     // Déplacement d'un joueur inexistant dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void deplacementKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -229,7 +229,7 @@ public class GestPartieUnit {
 
     // Déplacement d'un joueur inexistant dans une partie
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void deplacementKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         List<Integer> des = fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         Position pi = partie.getJoueurs().get(ordre.get(1)).getPosition(); // on récupère la position initiale du joueur
         Position pf = new Position(pi.getX() + des.get(0), pi.getY() + des.get(1)); // on "calcule" une position finale
@@ -238,7 +238,7 @@ public class GestPartieUnit {
 
     // Déplacement vers une position inexistante d'un joueur dans une partie
     @Test (expected = DeplacementNonAutoriseException.class)
-    public void deplacementKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException {
+    public void deplacementKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, DeplacementNonAutoriseException, NonInscritException {
         fac.lancerDes(partie.getId(), ordre.get(1)); // on effectue un lancer de dés
         fac.deplacer(partie.getId(), ordre.get(1), null); // on se déplace
     }
@@ -248,13 +248,13 @@ public class GestPartieUnit {
     // ------------------------------------------------------------------------
 
     @Test // Le joueur effectue une accusation "normale" (mauvaise accusation)
-    public void accusationOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(partie.getId(), ordre.get(1), acc); // on lance une accusation
         Assert.assertEquals(partie.getEtatPartie().getClass(), DebutTour.class); // mauvaise accusation = tour du joueur suivant
     }
 
     @Test // Le joueur effectue une accusation "normale" (accusation gagnante)
-    public void accusationOK2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationOK2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setCombinaisonGagante(acc); // on modifie la combinaison gagnante
         fac.accuser(partie.getId(), ordre.get(1), acc); // on lance une accusation
         Assert.assertEquals(partie.getEtatPartie().getClass(), PartieFinie.class); // bonne accusation = partie finie
@@ -262,44 +262,44 @@ public class GestPartieUnit {
 
     // Accusation lancée par un joueur qui n'est pas dans la partie
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void accusationJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(partie.getId(), intrus.getId(), acc); // on lance une accusation
     }
 
     // Accusation lancée par un joueur dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void accusationPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(null, ordre.get(1), acc); // on lance une accusation
     }
 
     // Accusation lancée par un joueur alors que ce n'est pas à lui
     @Test (expected = PasJoueurCourantException.class)
-    public void accusationPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(partie.getId(), ordre.get(2), acc); // on lance une accusation
     }
 
     // Accusation lancée par un joueur alors que ce n'est pas le moment
     @Test (expected = ActionNonAutoriseeException.class)
-    public void accusationANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         fac.accuser(partie.getId(), ordre.get(1), acc); // on lance une accusation
     }
 
     // Accusation lancée par un joueur inexistant dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void accusationKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(null, null, acc); // on lance une accusation
     }
 
     // Accusation lancée par un joueur inexistant
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void accusationKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(partie.getId(), null, acc); // on lance une accusation
     }
 
     // Accusation inexistant lancée par un joueur
     @Test (expected = ActionNonAutoriseeException.class)
-    public void accusationKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void accusationKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.accuser(partie.getId(), ordre.get(1), null); // on lance une accusation
     }
 
@@ -308,7 +308,7 @@ public class GestPartieUnit {
     // ------------------------------------------------------------------------
 
     @Test // Le joueur effectue une hypothèse "normale"
-    public void hypotheseOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypotheseOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -317,7 +317,7 @@ public class GestPartieUnit {
 
     // Hypothèse lancée par un joueur qui n'est pas dans la partie
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void hypotheseJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypotheseJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), intrus.getId(), acc); // on lance une hypothèse
@@ -325,7 +325,7 @@ public class GestPartieUnit {
 
     // Hypothèse lancée par un joueur qui est dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void hypothesePIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypothesePIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(null, ordre.get(1), acc); // on lance une hypothèse
@@ -333,7 +333,7 @@ public class GestPartieUnit {
 
     // Hypothèse lancée par un joueur à qui ce n'est pas le tour
     @Test (expected = PasJoueurCourantException.class)
-    public void hypothesePJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypothesePJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(2), acc); // on lance une hypothèse
@@ -341,13 +341,13 @@ public class GestPartieUnit {
 
     // Hypothèse lancée alors que ce n'est pas le moment
     @Test (expected = ActionNonAutoriseeException.class)
-    public void hypotheseANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypotheseANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
     }
 
     // Hypothèse lancée par un joueur inexistant qui est dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void hypotheseKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypotheseKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(null, null, acc); // on lance une hypothèse
@@ -355,7 +355,7 @@ public class GestPartieUnit {
 
     // Hypothèse lancée par un joueur inexistant
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void hypotheseKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypotheseKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(),null, acc); // on lance une hypothèse
@@ -363,7 +363,7 @@ public class GestPartieUnit {
 
     // Hypothèse inexistant lancée par un joueur
     @Test (expected = ActionNonAutoriseeException.class)
-    public void hypotheseKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException {
+    public void hypotheseKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(),ordre.get(1), null); // on lance une hypothèse
@@ -374,7 +374,7 @@ public class GestPartieUnit {
     // ------------------------------------------------------------------------
 
     @Test // Le joueur effectue l'action de façon "normale" (1 essai)
-    public void revCarteOK1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteOK1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -384,7 +384,7 @@ public class GestPartieUnit {
     }
 
     @Test // Le joueur effectue l'action de façon "normale" (2 essais)
-    public void revCarteOK2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteOK2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -396,7 +396,7 @@ public class GestPartieUnit {
     }
 
     @Test // Le joueur effectue l'action de façon "normale" (personne n'a les cartes de l'hypothèse)
-    public void revCarteOK3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteOK3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -409,7 +409,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur qui n'est pas dans la partie
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void revCarteJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -418,7 +418,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur qui est dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void revCartePIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCartePIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -427,7 +427,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur que ce n'est pas le moment
     @Test (expected = ActionNonAutoriseeException.class)
-    public void revCarteANAE1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteANAE1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -437,7 +437,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur alors qu'il n'a pas la carte qu'il veut relever
     @Test (expected = ActionNonAutoriseeException.class)
-    public void revCarteANAE2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteANAE2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -447,7 +447,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur alors que ce n'est pas à lui de relever une carte
     @Test (expected = PasJoueurActifException.class)
-    public void revCartePJAE1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCartePJAE1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -459,7 +459,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur alors que ce n'est pas à lui de passer
     @Test (expected = PasJoueurActifException.class)
-    public void revCartePJAE2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCartePJAE2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -469,7 +469,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur inexistant qui est dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void revCarteKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -478,7 +478,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur inexistant
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void revCarteKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -487,7 +487,7 @@ public class GestPartieUnit {
 
     // Action demandée sur un joueur qui donne une carte inexistante
     @Test (expected = ActionNonAutoriseeException.class)
-    public void revCarteKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revCarteKO3() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.hypothese(partie.getId(), ordre.get(1), acc); // on lance une hypothèse
@@ -499,7 +499,7 @@ public class GestPartieUnit {
     // ------------------------------------------------------------------------
 
     @Test // Le joueur finit son tour (il "passe" son tour à un autre jour)
-    public void passerOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerOK() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.passer(partie.getId(), ordre.get(1)); // on passe simplement
@@ -508,7 +508,7 @@ public class GestPartieUnit {
 
     // Le joueur finit son tour (il "passe" son tour à un autre jour) dans une partie inexistante
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void passerJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerJPDPE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.passer(partie.getId(), intrus.getId()); // on passe simplement
@@ -516,7 +516,7 @@ public class GestPartieUnit {
 
     // Le joueur finit son tour (il "passe" son tour à un autre jour) dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void passerPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerPIE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.passer(null, ordre.get(1)); // on passe simplement
@@ -524,7 +524,7 @@ public class GestPartieUnit {
 
     // Le joueur finit son tour (il "passe" son tour à un autre jour) alors que ce n'est pas à lui
     @Test (expected = PasJoueurCourantException.class)
-    public void passerPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerPJCE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.passer(partie.getId(), ordre.get(2)); // on passe simplement
@@ -532,13 +532,13 @@ public class GestPartieUnit {
 
     // Le joueur finit son tour (il "passe" son tour à un autre jour) alors que ce n'est pas le moment
     @Test (expected = ActionNonAutoriseeException.class)
-    public void passerANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerANAE() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         fac.passer(partie.getId(), ordre.get(2)); // on passe simplement
     }
 
     // Un joueur inexistant finit son tour (il "passe" son tour à un autre jour) dans une partie inexistante
     @Test (expected = PartieInexistanteException.class)
-    public void passerKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerKO1() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.passer(null, null); // on passe simplement
@@ -546,7 +546,7 @@ public class GestPartieUnit {
 
     // Un joueur inexistant finit son tour (il "passe" son tour à un autre jour)
     @Test (expected = JoueurPasDansLaPartieException.class)
-    public void passerKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void passerKO2() throws JoueurPasDansLaPartieException, PartieInexistanteException, PasJoueurCourantException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         partie.setEtatPartie(partie.getEtatPartie().lancerDe(Arrays.asList(2, 2))); // on simule un lancer de dés avec 2/2 comme résultat
         partie.setEtatPartie(partie.getEtatPartie().deplacer()); // on simule un déplacement
         fac.passer(partie.getId(), null); // on passe simplement

@@ -6,15 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import webservice_v2.config.ServiceConfig;
 import webservice_v2.exception.JoueurPasDansLaPartieException;
+import webservice_v2.exception.NonInscritException;
 import webservice_v2.exception.PartieInexistanteException;
 import webservice_v2.exception.partie.*;
 import webservice_v2.facade.Facade;
 import webservice_v2.flux.GlobalReplayProcessor;
 import webservice_v2.modele.entite.Joueur;
-import webservice_v2.modele.entite.Partie;
 import webservice_v2.modele.entite.Position;
 import webservice_v2.modele.entite.carte.*;
-import webservice_v2.modele.gestionnaire.GestionnairePartie;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,11 +72,11 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : ce n'est pas le moment pour lancer les dés");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé/pas dans la partie");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
@@ -98,11 +97,11 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : ce n'est pas le moment pour de piocher une carte");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
@@ -120,11 +119,11 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : ce n'est pas le moment pour de se déplacer");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (DeplacementNonAutoriseException e) {
             System.out.println("401 ws action non autorisé : ce déplacement n'est pas possible");
@@ -157,11 +156,11 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : ce n'est pas le moment pour lancer une accusation");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
@@ -191,11 +190,11 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : ce n'est pas le moment pour émettre une hypothèse");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
@@ -213,11 +212,11 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : ce n'est pas le moment pour émettre une hypothèse");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
@@ -235,31 +234,31 @@ public class ControlJoueur {
         } catch (ActionNonAutoriseeException e) {
             System.out.println("401 ws action non autorisé : vous ne pouvez pas passer à cet instant");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (JoueurPasDansLaPartieException e) {
-            System.out.println("200 ws joueur non trouvé");
+        } catch (JoueurPasDansLaPartieException | NonInscritException e) {
+            System.out.println("404 ws joueur non trouvé");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PasJoueurActifException e) {
-            e.printStackTrace();
+            System.out.println("401 ws ce joueur n'est pas actif");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
     @DeleteMapping(value = ServiceConfig.URL_JOUEUR_ID)
-    public ResponseEntity<?> quitter(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ){
+    public ResponseEntity<?> quitter(@PathVariable(name = ServiceConfig.PARTIE_ID_PARAM) String idP, @PathVariable(name=ServiceConfig.JOUEUR_ID_PARAM) String idJ) {
         System.out.println("quitter partie");
         try {
             facade.quitter(idP, idJ);
             GlobalReplayProcessor.partieNotification.onNext(facade.findPartie(idP));
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (PartieInexistanteException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            System.out.println("404 ws partie inexistante");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (JoueurPasDansLaPartieException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            System.out.println("404 joueur inexistant");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

@@ -37,8 +37,8 @@ public class ControlInvitation {
         Partie partie;
         try {
             partie = facade.addPartie(hote.getId());
-        } catch (PasConnecteException e) {
-            System.out.println("401 ws il faut être connecté pour créer une partie");
+        } catch (PasConnecteException | NonInscritException e) {
+            System.out.println("401 ws il faut être inscrit & connecté pour créer une partie");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         partieNotification.onNext(partie);
@@ -55,8 +55,8 @@ public class ControlInvitation {
                     invitation.getInvites()
             );
             invitationsNotification.onNext(i);
-        } catch (PasConnecteException e) {
-            System.out.println("401 ws il faut être connecté pour créer une invitation");
+        } catch (PasConnecteException | NonInscritException e) {
+            System.out.println("401 ws il faut être inscrit & connecté pour créer une invitation");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (InvitationInvalideException e) {
             System.out.println("400 ws l'invitation est vide");
@@ -79,8 +79,13 @@ public class ControlInvitation {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ServiceConfig.URL_INVITATION_ID, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Invitation> getInvById(@PathVariable(name=ServiceConfig.INVITATION_ID_PARAM) String id) {
-        Invitation inv = facade.findInvitation(id);
-        return Flux.from(invitationsNotification).filter(inv::equals);
+        Invitation inv = null;
+        try {
+            inv = facade.findInvitation(id);
+        } catch (InvitationInexistanteException e) {
+            e.printStackTrace();
+        }
+        return Flux.from(invitationsNotification).filter(inv::equals); // pas ouf ça
     }
 
     // supprimer une invitation
@@ -98,10 +103,13 @@ public class ControlInvitation {
             Partie p = facade.findPartie(facade.findInvitation(id).getIdPartie());
             partieNotification.onNext(p);
         } catch (PartieInexistanteException e) {
-            System.out.println("200 ws partie non trouvée");
+            System.out.println("404 ws partie non trouvée");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NonInscritException e) {
-            System.out.println("200 ws joueur inexistant");
+            System.out.println("404 ws joueur inexistant");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (InvitationInexistanteException e) {
+            System.out.println("404 ws invitation inexistante");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         URI location = ServletUriComponentsBuilder
@@ -124,6 +132,9 @@ public class ControlInvitation {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NonInscritException e) {
             System.out.println("200 joueur inexistant");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (InvitationInexistanteException e) {
+            System.out.println("404 ws invitation inexistante");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         URI location = ServletUriComponentsBuilder

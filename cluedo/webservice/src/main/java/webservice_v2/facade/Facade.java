@@ -87,9 +87,10 @@ public class Facade {
     }
 
     // trouver un utilisateur par son id
-    public User findUser(String id) {
-        User u = null;
+    public User findUser(String id) throws NonInscritException {
+        User u;
         if (listeUsers.containsKey(id)) { u = listeUsers.get(id); }
+        else throw new NonInscritException();
         return u;
     }
 
@@ -156,7 +157,7 @@ public class Facade {
     public Collection<Invitation> getInvitations() { return listeInvitations.values(); }
 
     // ajout une invitation
-    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, PasConnecteException, PartieInexistanteException {
+    public Invitation addInvitation(String idP, String idH, List<User> lj) throws InvitationInvalideException, PasConnecteException, PartieInexistanteException, NonInscritException {
         if (lj == null) throw new InvitationInvalideException();
         if (lj.size() < 1) throw new InvitationInvalideException();
         User hote = findUser(idH);
@@ -172,11 +173,10 @@ public class Facade {
     }
 
     // trouver une invitation par son id
-    public Invitation findInvitation(String id) {
-        Invitation i=null;
-        if(listeInvitations.containsKey(id)){
-            i=listeInvitations.get(id);
-        }
+    public Invitation findInvitation(String id) throws InvitationInexistanteException {
+        Invitation i;
+        if (listeInvitations.containsKey(id)) { i=listeInvitations.get(id); }
+        else throw new InvitationInexistanteException();
         return i;
     }
 
@@ -196,18 +196,18 @@ public class Facade {
     }
 
     // trouver des invitations par l'id de son Hôte (utilisateur créateur)
-    public Collection<Invitation> findInvitationByHost(String idU) {
+    public Collection<Invitation> findInvitationByHost(String idU) throws NonInscritException {
         User hote=findUser(idU);
         return listeInvitations
                 .values()
                 .stream()
-                .filter(i -> i.getHote().equals(hote))
+                .filter(i -> i.getHote().getId().equals(hote.getId()))
                 .collect(Collectors.toList());
     }
 
     // trouver des invitations par l'id d'un invité (utilisateur compris dans l'invitation)
-    public Collection<Invitation> findInvitationByGuest(String idU) {
-        User user=findUser(idU);
+    public Collection<Invitation> findInvitationByGuest(String idU) throws NonInscritException {
+        User user = findUser(idU);
         return listeInvitations
                 .values()
                 .stream()
@@ -216,7 +216,7 @@ public class Facade {
     }
 
     // l'utilisateur avec idU accepte l'invitation idI
-    public boolean accepterInvitation(String idI, String idU) throws PartieInexistanteException, NonInscritException {
+    public boolean accepterInvitation(String idI, String idU) throws PartieInexistanteException, NonInscritException, InvitationInexistanteException {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
 
@@ -234,7 +234,7 @@ public class Facade {
     }
 
     // l'utilisateur avec idU refuse l'invitation idI
-    public boolean refuserInvitation(String idI, String idU) throws PartieInexistanteException, NonInscritException {
+    public boolean refuserInvitation(String idI, String idU) throws PartieInexistanteException, NonInscritException, InvitationInexistanteException {
         User u = findUser(idU);
         Invitation i = findInvitation(idI);
 
@@ -276,7 +276,7 @@ public class Facade {
     }
 
     // ajout d'une partie
-    public Partie addPartie(String idH) throws PasConnecteException {
+    public Partie addPartie(String idH) throws PasConnecteException, NonInscritException {
         User u = findUser(idH);
 
         if (listeUsersConnectes.containsValue(u)) {
@@ -359,7 +359,7 @@ public class Facade {
     }
 
     // retourner le résultat des lancés des dés (dans une partie donnée)
-    public List<Integer> lancerDes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+    public List<Integer> lancerDes(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) return GestionnairePartie.lancerDes(findUser(idJ), partie);
@@ -367,7 +367,7 @@ public class Facade {
     }
 
     // tirer une carte indice
-    public void tirerIndice(String idP, String idJ, List<Integer> des) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, PiocherIndiceNonAutoriseException {
+    public void tirerIndice(String idP, String idJ, List<Integer> des) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, PiocherIndiceNonAutoriseException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.tirerIndice(findUser(idJ), des, partie);
@@ -375,7 +375,7 @@ public class Facade {
     }
 
     // se déplacer
-    public void deplacer(String idP, String idJ, Position pos) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, DeplacementNonAutoriseException {
+    public void deplacer(String idP, String idJ, Position pos) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, DeplacementNonAutoriseException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (pos == null) throw new DeplacementNonAutoriseException(); // check exception
@@ -385,7 +385,7 @@ public class Facade {
     }
 
     // lancer une accusation (dans une partie donnée)
-    public void accuser(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+    public void accuser(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (mc == null) throw new ActionNonAutoriseeException(); // check exception
@@ -396,7 +396,7 @@ public class Facade {
     }
 
     // émettre une hypothèse (dans une partie donnée)
-    public void hypothese(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException {
+    public void hypothese(String idP, String idJ, Map<TypeCarte, ICarte> mc) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (mc == null) throw new ActionNonAutoriseeException(); // check exception
@@ -407,7 +407,7 @@ public class Facade {
     }
 
     // reveler une carte (lors d'une hypothèse)
-    public void revelerCarte(String idP, String idJ, ICarte carte) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurActifException {
+    public void revelerCarte(String idP, String idJ, ICarte carte) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurActifException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (carte == null) throw new ActionNonAutoriseeException(); // celle-là, forte chance qu'elle te tue l'appli :-)
@@ -417,7 +417,7 @@ public class Facade {
     }
 
     // finir son tour (lors de la fin du tour et/ou sans avoir émis d'hypothèse/accusation)
-    public void passer(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, PasJoueurActifException {
+    public void passer(String idP, String idJ) throws JoueurPasDansLaPartieException, PartieInexistanteException, ActionNonAutoriseeException, PasJoueurCourantException, PasJoueurActifException, NonInscritException {
         Partie partie = findPartie(idP);
 
         if (partie.getJoueurs().containsKey(idJ)) GestionnairePartie.passer(findUser(idJ), partie);
@@ -430,8 +430,8 @@ public class Facade {
         if (partie.getJoueurs().containsKey(idJ)) {
             try {
                 GestionnairePartie.quitterPartie(findUser(idJ), partie);
-            } catch (PlusPersonneDansPartieException e) {
-                System.out.println("Plus personne dans la partie");
+            } catch (PlusPersonneDansPartieException | NonInscritException e) {
+                System.out.println("Plus personne dans la partie.");
             }
         }
         else throw new JoueurPasDansLaPartieException();

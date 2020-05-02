@@ -28,7 +28,47 @@ curl -X DELETE localhost:8080/serv/user/3
 
 - Connecter un utilisateur (la première pour windows, la deuxième pour linux) :
 curl -X POST -H "Content-Type:application/json" -d "{\"id\":null,\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/user/connexion
-curl -X POST -H "Content-Type:application/json" -d '{ "id": null, "pseudo": "test", "pwd": "test" }' localhost:8080/serv/user/connexion
+curl -X POST -H "Content-Type:application/json" -d '{ "id": null, "pseudo": "b", "pwd": "b" }' localhost:8080/serv/user/connexion
 
 - Déconnecter un utilisateur :
 curl -X DELETE localhost:8080/serv/user/connexion/2
+
+/////////////////////////////////////////////////////////////////////
+                    Requêtes sur les invitations
+/////////////////////////////////////////////////////////////////////
+
+- Récupérer le FLUX des invitations (flux illimité) :
+curl -X GET localhost:8080/serv/invitation
+
+- Mise en place du contexte (connexion des deux joueurs) :
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"a\",\"pwd\":\"a\"}" localhost:8080/serv/user/connexion
+ou
+curl -X POST -H "Content-Type:application/json" -d '{ "id": 1, "pseudo": "a", "pwd": "a" }' localhost:8080/serv/user/connexion
++ (dans les deux cas)
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/user/connexion
+ou
+curl -X POST -H "Content-Type:application/json" -d '{ "id": 2, "pseudo": "b", "pwd": "b" }' localhost:8080/serv/user/connexion
+
+- Ajouter une invitation (la première pour windows, la deuxième pour linux) :
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":"1",\"idPartie\":\"1\",\"hote\":{\"id\":\"1\",\"pseudo\":\"a\"},\"invites\":[{\"id\":\"2\",\"pseudo\":\"b\"}]}" localhost:8080/serv/invitation
+curl -X POST -H "Content-Type:application/json" -d { "id": "1", "idPartie": "1", "hote": { "id": "1", "pseudo": "a"}, "invites": [{ "id": "2", "pseudo": "b" }]}' localhost:8080/serv/invitation
+
+- Récupérer l'invitation avec l'id donné (flux illimité, la liste des invités change à chaque acceptation/refus) :
+curl -X GET localhost:8080/serv/invitation/1
+
+- Accepter l'invitation avec l'id 1 (la première pour windows, la deuxième pour linux) :
+curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/invitation/1/acceptation
+curl -X PUT -H "Content-Type:application/json" -d "{ "id ": "1", "pseudo": "b", "pwd": "b" }" localhost:8080/serv/invitation/1/acceptation
+
+- Refuser l'invitation avec l'id 2 (la première pour windows, la deuxième pour linux) :
+curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/invitation/2/refus
+curl -X PUT -H "Content-Type:application/json" -d "{ "id": 2, "pseudo": "b", "pwd": "b" }" localhost:8080/serv/invitation/2/refus
+
+- Supprimer l'invitation avec l'id 1 :
+curl -X DELETE localhost:8080/serv/invitation/1
+
+- Récupérer le FLUX des invitations émise par l'user 1 (flux illimité) :
+curl -X GET localhost:8080/serv/user/1/invitation/emise
+
+- Récupérer le FLUX des invitations reçue par l'user 2 (flux illimité) :
+curl -X GET localhost:8080/serv/user/2/invitation/recue

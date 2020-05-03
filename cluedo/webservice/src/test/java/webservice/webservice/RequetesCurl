@@ -1,4 +1,7 @@
-Requêtes curl permettant de tester le serveur REST (en curl car nous avons des flux et le client IntelliJ ne permet pas de voir les données de flux)
+Requêtes curl permettant de tester le serveur REST (en curl car nous avons des flux et le client IntelliJ ne permet pas de voir les données de flux).
+
+Ces requêtes permettent uniquement de tester le bon fonctionnement du service. Le service REST envoie beaucoup d'infos dans la console serveur.
+Pour une batterie de tests plus complètes (exceptions, erreurs etc...), il faut utiliser le fichier ControleurTest qui mock le modèle.
 
 REMARQUE :
 Les uris sont configurables/trouvables dans le fichier ServiceConfig.
@@ -34,20 +37,23 @@ curl -X POST -H "Content-Type:application/json" -d '{ "id": null, "pseudo": "b",
 curl -X DELETE localhost:8080/serv/user/connexion/2
 
 /////////////////////////////////////////////////////////////////////
+                Mise en place contexte pour la suite
+/////////////////////////////////////////////////////////////////////
+
+- Mise en place du contexte (connexion des deux joueurs) sous windows :
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"a\",\"pwd\":\"a\"}" localhost:8080/serv/user/connexion
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/user/connexion
+
+- Même chose pour linux :
+curl -X POST -H "Content-Type:application/json" -d '{ "id": 1, "pseudo": "a", "pwd": "a" }' localhost:8080/serv/user/connexion
+curl -X POST -H "Content-Type:application/json" -d '{ "id": 2, "pseudo": "b", "pwd": "b" }' localhost:8080/serv/user/connexion
+
+/////////////////////////////////////////////////////////////////////
                     Requêtes sur les invitations
 /////////////////////////////////////////////////////////////////////
 
 - Récupérer le FLUX des invitations (flux illimité) :
 curl -X GET localhost:8080/serv/invitation
-
-- Mise en place du contexte (connexion des deux joueurs) :
-curl -X POST -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"a\",\"pwd\":\"a\"}" localhost:8080/serv/user/connexion
-ou
-curl -X POST -H "Content-Type:application/json" -d '{ "id": 1, "pseudo": "a", "pwd": "a" }' localhost:8080/serv/user/connexion
-+ (dans les deux cas)
-curl -X POST -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/user/connexion
-ou
-curl -X POST -H "Content-Type:application/json" -d '{ "id": 2, "pseudo": "b", "pwd": "b" }' localhost:8080/serv/user/connexion
 
 - Ajouter une invitation (la première pour windows, la deuxième pour linux) :
 curl -X POST -H "Content-Type:application/json" -d "{\"id\":"1",\"idPartie\":\"1\",\"hote\":{\"id\":\"1\",\"pseudo\":\"a\"},\"invites\":[{\"id\":\"2\",\"pseudo\":\"b\"}]}" localhost:8080/serv/invitation
@@ -57,8 +63,8 @@ curl -X POST -H "Content-Type:application/json" -d { "id": "1", "idPartie": "1",
 curl -X GET localhost:8080/serv/invitation/1
 
 - Accepter l'invitation avec l'id 1 (la première pour windows, la deuxième pour linux) :
-curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/invitation/1/acceptation
-curl -X PUT -H "Content-Type:application/json" -d "{ "id ": "1", "pseudo": "b", "pwd": "b" }" localhost:8080/serv/invitation/1/acceptation
+curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/invitation/1/acceptation
+curl -X PUT -H "Content-Type:application/json" -d "{ "id ": "2", "pseudo": "b", "pwd": "b" }" localhost:8080/serv/invitation/1/acceptation
 
 - Refuser l'invitation avec l'id 2 (la première pour windows, la deuxième pour linux) :
 curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/invitation/2/refus
@@ -72,3 +78,72 @@ curl -X GET localhost:8080/serv/user/1/invitation/emise
 
 - Récupérer le FLUX des invitations reçue par l'user 2 (flux illimité) :
 curl -X GET localhost:8080/serv/user/2/invitation/recue
+
+/////////////////////////////////////////////////////////////////////
+                Mise en place contexte pour la suite
+/////////////////////////////////////////////////////////////////////
+
+- Mise en place du contexte (invitation + accepter) sous windows :
+curl -X POST -H "Content-Type:application/json" -d "{\"id\":"1",\"idPartie\":\"1\",\"hote\":{\"id\":\"1\",\"pseudo\":\"a\"},\"invites\":[{\"id\":\"2\",\"pseudo\":\"b\"}]}" localhost:8080/serv/invitation
+curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"2\",\"pseudo\":\"b\",\"pwd\":\"b\"}" localhost:8080/serv/invitation/1/acceptation
+
+- Même chose pour linux :
+curl -X POST -H "Content-Type:application/json" -d { "id": "1", "idPartie": "1", "hote": { "id": "1", "pseudo": "a"}, "invites": [{ "id": "2", "pseudo": "b" }]}' localhost:8080/serv/invitation
+curl -X PUT -H "Content-Type:application/json" -d "{ "id ": "2", "pseudo": "b", "pwd": "b" }" localhost:8080/serv/invitation/1/acceptation
+
+/////////////////////////////////////////////////////////////////////
+                    Requêtes sur les joueurs
+/////////////////////////////////////////////////////////////////////
+
+- Récupérer la main du joueur 1 dans la partie 1 :
+curl -X GET localhost:8080/serv/partie/1/joueur/1/carte
+
+- Récupérer la fiche d'enquête du joueur 1 dans la partie 1 :
+curl -X GET localhost:8080/serv/partie/1/joueur/1/fiche
+
+- Récupérer le lancer du joueur 1 dans partie 1 :
+curl -X GET localhost:8080/serv/partie/1/joueur/1/lancerDes
+
+- Récupérer le lancer du joueur 1 dans partie 1 :
+curl -X GET localhost:8080/serv/partie/1/joueur/1/tirerIndice
+[get avec un request body - à corriger]
+
+- Effectuer le déplacement du joueur 1 vers une nouvelle position dans partie 1 (windows puis linux) :
+curl -X POST -H "Content-Type:application/json" -d "{ \"x\": 2, \"y\": 2 }" localhost:8080/serv/partie/1/joueur/1/deplacer
+curl -X POST -H "Content-Type:application/json" -d "{ "x": 2, "y": 2 }" localhost:8080/serv/partie/1/joueur/1/deplacer
+
+- Effectuer une hypothèse pour le joueur 1 dans la partie 1 :
+curl -X POST -H "Content-Type:application/json" -d "[\"ROSE\",\"CHANDELIER\",\"LOUNGE\"]" localhost:8080/serv/partie/1/joueur/1/hypothese
+curl -X POST -H "Content-Type:application/json" -d "[ "ROSE", "CHANDELIER" , "LOUNGE" ]" localhost:8080/serv/partie/1/joueur/1/hypothese
+
+- Le joueur 2 relève la carte dans la partie 1 :
+curl -X PUT -H "Content-Type:application/json" -d "[\"Arme\",\"COUTEAU\"]" localhost:8080/serv/partie/1/joueur/2/carte
+
+- Lancer une accusation du joueur 1 dans la partie 1 :
+curl -X POST -H "Content-Type:application/json" -d "[\"ROSE\",\"CHANDELIER\",\"LOUNGE\"]" localhost:8080/serv/partie/1/joueur/1/accuser
+curl -X POST -H "Content-Type:application/json" -d "[ "ROSE", "CHANDELIER" , "LOUNGE" ]" localhost:8080/serv/partie/1/joueur/1/accuser
+
+- Terminer le tour du joueur 1 dans partie 1 (ou alors n'a rien à montrer durant son tour dans une hypothèse) :
+curl -X PUT -H localhost:8080/serv/partie/1/joueur/1/passer
+
+- Le joueur 1 quitte la partie 1 ([!] attention cela va terminer la partie) :
+curl -X DELETE -H localhost:8080/serv/partie/1/joueur/1
+
+/////////////////////////////////////////////////////////////////////
+                    Requêtes sur les parties
+/////////////////////////////////////////////////////////////////////
+
+- Récupérer le FLUX d'une partie 1 (flux illimité) :
+curl -X GET localhost:8080/serv/partie/1
+
+- Sauvegarde d'une partie par son id :
+curl -X PUT -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"a\",\"pwd\":\"a\"}" localhost:8080/serv/partie/1/sauvegarde
+curl -X PUT -H "Content-Type:application/json" -d "{ "id ": "1", "pseudo": "a", "pwd": "a" }" localhost:8080/serv/partie/1/sauvegarde
+
+- Restauration du FLUX d'une partie par son id (flux illimité) :
+curl -X GET -H "Content-Type:application/json" -d "{\"id\":\"1\",\"pseudo\":\"a\",\"pwd\":\"a\"}" localhost:8080/serv/partie/1/restauration
+curl -X GET -H "Content-Type:application/json" -d "{ "id ": "1", "pseudo": "a", "pwd": "a" }" localhost:8080/serv/partie/1/restauration
+[get avec un request body - à corriger]
+
+- Récupérer les parties sauvegardées d'un joueur (flux illmité) :
+curl -X GET localhost:8080/serv/user/1/sauvegardees

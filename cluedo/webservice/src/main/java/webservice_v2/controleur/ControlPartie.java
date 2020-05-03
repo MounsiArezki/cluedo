@@ -24,7 +24,7 @@ public class ControlPartie{
 
     private Facade facade = Facade.getFac();
 
-    // récupère la partie à restorer selon son id
+    // récupère une partie selon son id
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ServiceConfig.URL_PARTIE_ID, method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Partie> getPartieById(@PathVariable(name=ServiceConfig.PARTIE_ID_PARAM) String id) {
@@ -33,7 +33,8 @@ public class ControlPartie{
             p = facade.findPartie(id);
             return Flux.from(partieNotification).filter(p::equals);
         } catch (PartieInexistanteException e) {
-            // exception à traiter
+            // retour du code erreur ?
+            System.out.println("404 ws partie inexistante");
         }
         return null;
     }
